@@ -2,7 +2,7 @@
 
 ## Herança
 
-``` csharp
+```csharp
     class filho : pai {
 
     }
@@ -10,7 +10,7 @@
 
 ## For each
 
-``` csharp
+```csharp
     foreach(livro in estante) {
 
     }
@@ -24,11 +24,11 @@ acima da declaração. Contudo em csharp, de forma há deixar explicito que est�
 ocorrendo uma sobrescrita de um método, escreve-se override antes do nome do
 metodo.
 
-
 ### Sobrescrita de metodo da classe Pai no Filho, e chamada da implementação da
+
 ### classe pai
 
-``` csharp
+```csharp
     class Moto : Veiculo {
         public override void Mover(){
             Console.WriteLine("Mover chamado dentro de: Moto.Mover");
