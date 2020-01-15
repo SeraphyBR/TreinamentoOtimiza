@@ -1,0 +1,1 @@
+# Notas do Curso de SQL Server - Otimiza
