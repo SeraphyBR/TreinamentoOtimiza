@@ -24,9 +24,6 @@ acima da declaração. Contudo em csharp, de forma há deixar explicito que est�
 ocorrendo uma sobrescrita de um método, escreve-se override antes do nome do
 metodo.
 
-### Sobrescrita de metodo da classe Pai no Filho, e chamada da implementação da
-
-### classe pai
 
 ```csharp
     class Moto : Veiculo {
@@ -36,6 +33,8 @@ metodo.
         }
     }
 ```
+* Sobrescrita de metodo da classe Pai no Filho, e chamada da implementação da classe Pai
+
 ## Comentario de Documentação
 
 ```csharp
