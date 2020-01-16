@@ -233,3 +233,26 @@ Criação automatica de "metodos" Get e Set para acesso dos atributos de uma cla
         }
     }
 ```
+
+## Criando Exception e chamando construtor da classe Pai
+```csharp
+    class MinhaException : Exception {
+        public string LinhaDoErro; // Pode-se adicionar os atributos que quiser
+
+        // Metodo construtor chamando o construtor da classe pai
+        public MinhaException(string linha, string message) : base("Minha exception: " + message) {
+            LinhaDoErro = linha;
+        }
+    }
+```
+
+## Box e Unboxing
+* Util quando se quer colocar uma informação onde aceita apenas objetos.
+
+```csharp
+    static void Main(string[] args) {
+        int a = 10;
+        object b = a; //boxing (conversao de struct em objeto)
+        int c = (int) b; // Unboxing
+    }
+```
