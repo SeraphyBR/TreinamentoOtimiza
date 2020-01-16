@@ -11,7 +11,7 @@
 ## For each
 
 ```csharp
-    foreach(livro in estante) {
+    foreach(Tipo livro in estante) {
 
     }
 ```
@@ -60,3 +60,37 @@ metodo.
 
     }
 ```
+
+## Operadores Lógicos
+
+*  &, |  -> irá executar os dois lados mesmo se a primeira ja for falsa.
+* &&, || -> irá executar o primeiro lado e se ela for falsa não realiza a segunda.
+
+## Formatando string
+```csharp
+    string nome = "Luiz Junio";
+    string nome2 = "SeraphyBR";
+    string texto = String.Format("Bem vindo {0}! Feliz Natal! {1}", nome, nome2);
+```
+
+### Split
+```csharp
+    string nomes = "João, Maria, José, Jesus e Paulo.";
+    string[] separador = { ", ", " e "};
+    string[] nomesArray1 = nomes.Split(",");
+    string[] nomesArray2 = nomes.Split(separador, StringSplitOptions.None);
+```
+### Substring
+```csharp
+    string texto = "Olá a todos! Desejo feliz ano novo!";
+
+    int indexDesejo = texto.IndexOf("Desejo");
+    string frase = texto.Substring(indexDesejo);
+    string palavra = texto.Substring(indexDesejo, 6);
+
+```
+
+## Visual Studio
+
+* F1 -> Abre a documentação sobre o codigo selecionado.
+* F12 -> Abre a implementação de um metodo ou classe.
