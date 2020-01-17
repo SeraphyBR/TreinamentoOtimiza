@@ -235,6 +235,7 @@ Criação automatica de "metodos" Get e Set para acesso dos atributos de uma cla
 ```
 
 ## Criando Exception e chamando construtor da classe Pai
+
 ```csharp
     class MinhaException : Exception {
         public string LinhaDoErro; // Pode-se adicionar os atributos que quiser
@@ -247,12 +248,64 @@ Criação automatica de "metodos" Get e Set para acesso dos atributos de uma cla
 ```
 
 ## Box e Unboxing
-* Util quando se quer colocar uma informação onde aceita apenas objetos.
+
+-   Util quando se quer colocar uma informação onde aceita apenas objetos.
 
 ```csharp
     static void Main(string[] args) {
         int a = 10;
         object b = a; //boxing (conversao de struct em objeto)
         int c = (int) b; // Unboxing
+    }
+```
+
+## Arquivos
+
+### Escrita
+
+```csharp
+    // using System.IO;
+    class Program {
+        static void Main(string[] args) {
+            StreamWriter arquivo = new StreamWriter("C:\\Users\\seraphy\\Documents\\texto.txt");
+            arquivo.WriteLine("Hello World!);
+            arquivo.Close();
+        }
+    }
+```
+
+### Escrita com Using
+
+-   Criação de um novo escopo
+-   No fim do escopo é automaticamente liberado os recursos usados na manipulação do arquivo.
+-   arquivo.Dispose();
+
+```csharp
+    class Program {
+        static void Main(string[] args) {
+            using(StreamWriter arquivo = new StreamWriter("C:\\Users\\seraphy\\Documents\\texto.txt"))
+            {
+                arquivo.WriteLine("Hello World")
+            }
+        }
+    }
+```
+
+### leitura
+
+```csharp
+    // using System.IO;
+    class Program {
+        static void Main(string[] args) {
+            //Todo o arquivo em uma String
+            string texto = File.ReadAllText("C:\\Users\\seraphy\\Documents\\texto.txt");
+
+            //Cada linha uma posicao do array
+            string[] linhas = File.ReadAllLines("C:\\Users\\seraphy\\Documents\\texto.txt");
+
+            foreach(string linha in linhas){
+                Console.WriteLine("Linha: " + linha);
+            }
+        }
     }
 ```
