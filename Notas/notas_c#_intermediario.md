@@ -2,28 +2,32 @@
 
 -   Obs: Assembly em C# significa o Nome do Projeto
 
-## Auto-Implement Propriety
+## Propriedades (Auto-Implement Propriety)
 
-Criação automatica de "metodos" Get e Set para acesso dos atributos de uma classe
-
+ - Criação de "metodos" Get e Set para acesso dos atributos de uma classe.
+ - Permitem esconder a implementação de como os dados são manipulados internamente.
+ -
 ```csharp
     class Pessoa {
-        private string _nome;
-
         // Padrão automatico
         public string Nome { get; set; }
 
-        // Customizado
-        public string Name {
+        // Atributo privado usado com a propriedade customizada
+        private DateTime _dataNascimento;
+
+        // Propriedade Customizada
+        public string DataNascimento {
             get {
-                return _nome.ToLower();
+                return _dataNascimento.ToString();
             }
             set {
                 // value é o valor recebido da entrada
-                // p.Name = value;
-                _nome = value.Trim();
+                _dataNascimento = DateTime.Parse(value);
             }
         }; // Customizado
+
+        // Propriedade auto-implementada com atribuição
+        public int Idade {get; set; } = 20;
     }
 ```
 
@@ -292,7 +296,6 @@ Criação automatica de "metodos" Get e Set para acesso dos atributos de uma cla
 ```
 
 ### leitura
-
 ```csharp
     // using System.IO;
     class Program {
@@ -308,4 +311,17 @@ Criação automatica de "metodos" Get e Set para acesso dos atributos de uma cla
             }
         }
     }
+```
+
+## Formatar texto
+```csharp
+    string nome = "Luiz Junio";
+    string ano = "2020";
+
+    string texto = string.Format("Olá {0}! Feliz {1}!", nome, ano);
+    Console.WriteLine(texto);
+
+    Console.WriteLine("Olá {0}! Feliz {1}!", nome, ano);
+
+    Console.WriteLine($"Olá {nome}! Feliz {ano}!");
 ```
