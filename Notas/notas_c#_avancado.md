@@ -78,3 +78,31 @@
 ```
 
 ## Generics
+```csharp
+    // Serializador "Generico" usando object
+    public static void Serializar(object obj){
+        StreamWriter sw = new StreamWriter(
+            @"C:\Users\luiz.santos\Documents\" + obj.GetType().Name + ".txt"
+        );
+
+        JavaScriptSerializer serializador = new JavaScriptSerializer();
+        string objSerializado = serializador.Serializer();
+
+        sw.Write(objSerializado);
+        sw.Close();
+    }
+
+    // Usando sintaxe de Generics
+    public static T Deserializar<T>(){
+        StreamReader sr = new StreamReader(
+            //Obtem se o nome do tipo usando typeof(T).Name
+            @"C:\Users\luiz.santos\Documents\" + typeof(T).Name + ".txt"
+        );
+        string conteudo = sr.ReadToEnd();
+
+        JavaScriptSerializer serializador = new JavaScriptSerializer();
+        T obj = (T) serializador.Deserialize(conteudo, typeof(T));
+
+        return obj;
+    }
+```
