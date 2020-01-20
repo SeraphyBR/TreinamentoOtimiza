@@ -167,10 +167,11 @@
 ```
 
 ## LINQ
-* Sub-linguagem para manipulação de dados, como em listas, arrays e etc.
-* Representação da linguagem SQL em C#.
-* Uso de LAMBDA.
-* Diferente do SQL, o Select é a ultima expressão no LINQ.
+
+-   Sub-linguagem para manipulação de dados, como em listas, arrays e etc.
+-   Representação da linguagem SQL em C#.
+-   Uso de LAMBDA.
+-   Diferente do SQL, o Select é a ultima expressão no LINQ.
 
 ```csharp
     //LINQ e LAMBDA
@@ -193,6 +194,8 @@
     Console.ReadKey();
 ```
 
+### Com objetos
+
 ```csharp
     List<Usuario> lista = new List<Usuario>();
     lista.Add(new Usuario() { Nome = "José", Email = "jose@gmail.com" });
@@ -205,6 +208,31 @@
 
     foreach(var user in listaFiltrada){
         Console.WriteLine(user.Nome + " - " + user.Email);
+    }
+    Console.ReadKey();
+```
+
+### Usando Join
+
+```csharp
+    List<Livro> listaLivros = new List<Livro>();
+    listaLivros.Add(new Livro() { Id = 1, AutorId = 2, Titulo = "Amor amado" });
+    listaLivros.Add(new Livro() { Id = 2, AutorId = 2, Titulo = "Bem amado" });
+    listaLivros.Add(new Livro() { Id = 3, AutorId = 3, Titulo = "Um espião em DC" });
+    listaLivros.Add(new Livro() { Id = 4, AutorId = 1, Titulo = "A vida na terra" });
+
+    List<Autor> listaAutores = new List<Autor>();
+    listaAutores.Add(new Autor() { Id = 1, Nome = "Leonardo" });
+    listaAutores.Add(new Autor() { Id = 2, Nome = "Maria Maria" });
+    listaAutores.Add(new Autor() { Id = 3, Nome = "Joseph" });
+
+    var listaJoin = from livro in listaLivros
+                    join autor in listaAutores
+                    on livro.AutorId equals autor.Id
+                    select new { livro, autor };//Criacao de um tipo anonimo, sem nome.
+
+    foreach (var item in listaJoin) {
+        Console.WriteLine("Livro: " + item.livro.Titulo + " - Autor: " + item.autor.Nome);
     }
     Console.ReadKey();
 ```
