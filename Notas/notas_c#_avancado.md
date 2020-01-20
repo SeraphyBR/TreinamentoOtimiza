@@ -236,3 +236,90 @@
     }
     Console.ReadKey();
 ```
+
+### GroupBy e Distinct
+
+```csharp
+    int[] listaNums = {1,1,1,1,4,4,2,3,5,6,6,10,9,8};
+
+    //Mesmo resultado, irá mostrar sem repetição de valores
+    var listaFiltrada = listaNums.Distinct().OrderBy(a => a).Select(a => a);
+    var listaFiltrada = listaNums.OrderBy(a => a).GroupBy(a => a).Select(a => a);
+
+    foreach(var num in listaFiltrada){
+        //Usando o distinct
+        Console.WriteLine(num);
+
+        //Usando o GroupBy
+        Console.WriteLine(num.Key);
+    }
+    Console.ReadKey();
+```
+
+## Delegate
+
+-   Um tipo de ponteiro para Metodos.
+-   Voce pode associar metodos para um delegate, que quando chamado irá executar todos.
+-   Voce pode desvincular metodos de um delegate.
+-   Usado comumente com Eventos.
+-   Permite executar um metodo mesmo sem saber qual.
+-   Usado para se passar metodos como parametro para outros metodos.
+-   Muito utilizado a palavra Handler para designar um Delegate.
+-   Os metodos associados devem possue os mesmos tipos de retorno e parametros do delegate.
+
+```csharp
+    class Program {
+        static void Main(string[] args) {
+            //Tela - Cadastro de Usuario: Thumb (Foto de Perfil)
+            Foto foto = new Foto {Nome = "perfil.jpg", TamanhoX = 1920, TamanhoY = 1080};
+            //Atribuindo o metodo GerarThumb ao delegate filtros
+            FotoProcessador.filtros = new FotoFiltro().GerarThumb;
+            //Executa os metodos do delegate, passando a foto como parametro.
+            FotoProcessador.Processar(foto);
+
+            //Tela - Cadastro de Produtos: Colorir + TamanhoMed
+            Foto foto2 = new Foto {Nome = "produto.jpg", TamanhoX = 1920, TamanhoY = 1080};
+            FotoProcessador.filtros = new FotoFiltro().Colorir;
+            FotoProcessador.filtros += new FotoFiltro().RedimensionarTamMedio;
+            FotoProcessador.Processar(foto2);
+
+            //Tela - Cadastro de Albuns do Usuario - Retro: Preto e Branco
+            Foto foto3 = new Foto {Nome = "album.jpg", TamanhoX = 1920, TamanhoY = 1080};
+            FotoProcessador.filtros = new FotoFiltro().PretoBranco;
+            FotoProcessador.Processar(foto3);
+        }
+    }
+
+    class Foto {
+        public string Nome  { get; set; }
+        public int TamanhoX { get; set; }
+        public int TamanhoY { get; set; }
+    }
+
+    class FotoProcessador {
+        //Criação de um novo Delegate
+        public delegate void FotoFiltroHandler(Foto foto);
+
+        //Declaração da variavel filtros do tipo do Delegate
+        public static FotoFiltroHandler filtros;
+
+        public static void Processar(Foto foto){
+            filtros(foto);
+        }
+    }
+
+    public class FotoFiltro {
+        public void Colorir(Foto foto){
+            Console.WriteLine($"FotoFiltro > Colorir: {foto.Nome}");
+        }
+        public void GerarThumb(Foto foto){
+            Console.WriteLine($"FotoFiltro > GerarThumb: {foto.Nome}");
+        }
+        public void PretoBranco(Foto foto){
+            Console.WriteLine($"FotoFiltro > PretoBranco: {foto.Nome}");
+        }
+        public void RedimensionarTamMedio(Foto foto){
+            Console.WriteLine($"FotoFiltro > RedimensionarTamMedio: {foto.Nome}");
+        }
+    }
+```
