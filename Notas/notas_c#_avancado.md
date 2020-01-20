@@ -323,3 +323,56 @@
         }
     }
 ```
+
+## Threads
+
+-   using System.Threading;
+
+```csharp
+    class Program {
+        static int Rede = 0;
+        static object variavelDeControle = 0;
+
+        static void Main(string[] args) {
+            Console.WriteLine($"DataIni: {DateTime.Now}");
+
+            //Cria 5 threads (6 rodando, pois tem a thread principal da Main)
+            for(int i = 0; i < 5; i++){
+
+                //Instancia uma nova thread passando um metodo como parametro.
+                Thread t1 = new Thread(ThreadRepeticao);
+
+                //Quando essa propriedade fica com true, faz com que as
+                //Threads criadas fiquem dependente da thread principal,
+                //Logo elas são encerradas quando o programa principal chegar ao fim.
+                t1.IsBackground = true;
+
+                //Inicia a thread e passa i como parametro ao metodo ThreadRepeticao
+                t1.Start(i);
+            }
+
+            Thread t2 = new Thread(ThreadRepeticao);
+            t2.Start();
+            // O join fara com que a thread t2 se junte a thread principal
+            // Fazendo com que a thread principal espere a t2 acabar para poder
+            // prosseguir e mostrar a mensagem.
+            t2.Join();
+            Console.WriteLine("Vc passou por aqui!");
+
+            Console.ReadKey();
+        }
+
+        static void ThreadRepeticao(object Id){
+            for(int i = 0; i < 1000; i++){
+                // Lock irá bloquear os recursos dentro dele, impedindo que outras threads acessem
+                // durante o seu uso, isso irá fazer com que as threads acabem proximas uma das outras,
+                // nesse caso. o lock opera em FIFO.
+                lock(variavelDeControle){
+                    Console.WriteLine($"Thread: {Id} - Num: {i} ID Interno: {Thread.CurrentThread.ManagedThreadId}");
+                    Rede++;
+                }
+            }
+            Console.WriteLine($"DataIni: {DateTime.Now}");
+        }
+    }
+```
