@@ -473,7 +473,6 @@
 -   Servem para dizer uma informação sobre uma classe,metodo,propriedade e etc.
 -   Podem ser utilizadas para validação de propriedades.
 -   Em classes derivadas de Attribute é comum colocar o suffixo Attribute no nome.
--   Exemplo: É utilizada para dizer se uma classe pode ser serializada.
 
 ```csharp
     [MeuAtributo("Atributo Classe", Descricao = "Descrição do Atributo")]
@@ -495,6 +494,7 @@
 ```
 
 ### Validação com Data Annotation
+
 -   ValidationAttribute
 -   using System.ComponentModel.DataAnnotations;
 
@@ -547,6 +547,67 @@
             else {
                 return false;
             }
+        }
+    }
+```
+
+## Reflections
+
+-   Estrutura da linguagem c# (Não é um tipo ou palavra-chave)
+-   Permite identificar os campos de um objeto
+-   A serialização de objeto utiliza Reflections
+-   Uso da classe Type
+
+```csharp
+    class Program {
+        static void Main(string[] args) {
+            Usuario usuario = new Usuario(){
+                Nome = "José",
+                Email = "jose",
+                Senha = "12345ab"
+            };
+            Log.Gravar(usuario.Clone());
+
+            usuario.Nome = "José Costa";
+            Log.Gravar(usuario.Clone());
+
+            Carro carro = new Carro(){
+                Marca = "FIAT",
+                Modelo = "UNO"
+            }
+            Log.Gravar(carro);
+
+            Log.ApresentarLog();
+
+            Console.WriteLine("Log Gravado !");
+            Console.ReadKey();
+        }
+    }
+
+    class Log {
+        public static List<object> objetos = new List<object>();
+
+        public static void Gravar(object obj){
+            objetos.Add(obj);
+        }
+
+        public static void ApresentarLog(){
+            foreach(object obj in objetos){
+                Console.WriteLine("----- Nome classe: {0} -----", obj.GetType().Name);
+                foreach(var prop in obj.GetType().GetProperties()){
+                    Console.WriteLine($"{prop.Name} : {prop.GetValue(obj)}");
+                }
+            }
+        }
+    }
+
+    class Usuario : ICloneable {
+        public string Nome  { get; set; }
+        public string Email { get; set; }
+        public string Senha { get; set; }
+
+        public object Clone(){
+            return new Usuario() { Nome = this.Nome, Email = this.Email, Senha = this.Senha }
         }
     }
 ```
