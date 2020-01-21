@@ -376,3 +376,177 @@
         }
     }
 ```
+
+### AutoResetEvent e ManualResetEvent
+
+-   Funcionam como semaforos que interrompem ou liberam a execução de uma thread
+-   Servem de controle para as threads
+
+```csharp
+    static ManualResetEvent manual01;
+    static AutoResetEvent auto01;
+
+    static void Main(string[] args){
+        //Instancia com estado inicial de bloqueio
+        manual01 = new ManualResetEvent(false);
+        auto01 = new AutoResetEvent(false);
+
+        Thread t1 = new Thread(Executa01);
+        t1.Start();
+
+        Thread t2 = new Thread(Executa02);
+        t2.Start();
+
+        Thread.Sleep(5000);
+        manual01.Set();//Libera a execução das threads que estão esperando
+        manual01.Reset();//Bloqueia a execução
+
+        //Libera a execução das threads que estão esperando, e logo em seguida bloqueia.
+        auto01.Set();
+
+        Console.ReadKey();
+    }
+
+    static void Executa01(){
+        Console.WriteLine("01 - Iniciado Executa01.");
+        //Faz com que a thread espere a liberação vinda do manual01
+        manual01.WaitOne();
+        Console.WriteLine("02 - Em execução 01 Executa01.");
+        Console.WriteLine("03 - Em execução 02 Executa01.");
+        //Faz com que a thread espere a liberação vinda do manual01
+        manual01.WaitOne();
+        Console.WriteLine("04 - Finalizado Executa01.");
+    }
+
+    static void Executa02(){
+        Console.WriteLine("01 - Iniciado Executa02.");
+        //Faz com que a thread espere a liberação vinda do auto01
+        auto01.WaitOne();
+        Console.WriteLine("02 - Em execução 01 Executa02.");
+        Console.WriteLine("03 - Em execução 02 Executa02.");
+        Console.WriteLine("04 - Finalizado Executa01.");
+    }
+```
+
+## Task
+
+-   Utilizam threads em sua implementação
+-   Melhoramento da classe Thread
+-   using System.Threading.Tasks;
+
+```csharp
+    static void Main(string[] args) {
+        //Criando tasks usando o metodo Run passando uma função lambda
+        Task.Run(() => Metodo01());
+        Task.Run(() => Metodo01());
+
+        //Criando tasks sem lambda
+        Task.Factory.StartNew(Metodo01);
+
+        List<Task> lista = new List<Task>();
+        lista.Add(Task.Factory.StartNew(Metodo01));
+        lista.Add(Task.Factory.StartNew(Metodo01));
+        lista.Add(Task.Factory.StartNew(Metodo01));
+        lista.Add(Task.Factory.StartNew(Metodo01));
+
+        //Irá fazer com que a thread principal espere
+        //todas as tasks finalizarem
+        Task.WaitAll(lista.ToArray());
+
+        //Irá fazer com que a thread principal espere
+        //ao menos uma task finalizar
+        Task.WaitAny(lista.ToArray());
+
+        Console.WriteLine("Programa finalizado!!!");
+        Console.ReadKey();
+    }
+
+    static void Metodo01(){
+        for(int i = 0; i < 1000; i++){
+            Console.WriteLine($"Valor: {i} TaskID: {Task.CurrentId}");
+        }
+    }
+```
+
+## Atributos
+
+-   Servem para dizer uma informação sobre uma classe,metodo,propriedade e etc.
+-   Podem ser utilizadas para validação de propriedades.
+-   Em classes derivadas de Attribute é comum colocar o suffixo Attribute no nome.
+-   Exemplo: É utilizada para dizer se uma classe pode ser serializada.
+
+```csharp
+    [MeuAtributo("Atributo Classe", Descricao = "Descrição do Atributo")]
+    class Program {
+
+    }
+
+    //Definindo em que tipos de dados o atributo pode ser utilizado
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Method)]
+    class MeuAtributo : Attribute {
+        //Criação do seu proprio atributo
+        public string Nome { get; set; }
+        public string Descrição { get; set; }
+
+        public MeuAtributo(string nome){
+            Nome = nome;
+        }
+    }
+```
+
+### Validação com Data Annotation
+-   ValidationAttribute
+-   using System.ComponentModel.DataAnnotations;
+
+```csharp
+    class Program {
+        static void Main(string[] args) {
+            Usuario usuario = new Usuario() {Nome = "José", Email = "jose", Senha = "123456" };
+
+            ValidationContext contexto = new ValidationContext(usuario);
+            List<ValidationResult> resultados = new List<ValidationResult>();
+
+            //O validator irá validar todos os campos do objeto usuario.
+            //O parametro true serve para dizer que é para verificar todas as propriedades
+            if(Validator.TryValidateObject(usuario, contexto, resultados, true) == false) {
+                //Mensagens
+                foreach(var erro in resultados){
+                    Console.WriteLine(erro.ErrorMessage);
+                }
+            }
+            Console.ReadKey();
+        }
+    }
+
+    class Usuario {
+        //Adicionando o atributo required e setando a mensagem de erro
+        [Required(ErrorMessage = "O campo 'Nome' é de preenchimento obrigatório!")]
+        public string Nome  { get; set; }
+
+        // Usando um arquivo de Resources (.resx) para obter a mensagem de erro
+        // Isso permite definir mensagems personalizadas de acordo com o idioma
+        // Ex: Linguagem.resx, Linguagem.pt.resx, Linguagem.pt-BR.resx ...
+        [Required(ErrorMessageResourceType = typeof(Idiomas.Linguagem), ErrorMessageResourceName = "MSG_OBRIGATORIO")]
+        [EmailAddress]//Atributo que valida se a propriedade possue um endereço de email valido
+        public string Email { get; set; }
+
+        // Observe que o construtor de StringLenght recebe somente
+        // O valor máximo (primeiro parametro), mas voce pode atribuir valores a demais campos
+        // com Propriedade = valor
+        [Required, StringLength(10, MinimumLenght = 6)]
+        [MyValidacao]
+        public string Senha { get; set; }
+    }
+
+    //Criação de um atributo de validação customizado
+    class MyValidacaoAttribute : ValidationAttribute {
+        public override bool IsValid(object value){
+            if(((string) value).Lenght == 10){
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+```
