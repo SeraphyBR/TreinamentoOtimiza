@@ -265,6 +265,58 @@ ng new myangularproj --prefix=myap
 
 ### Estrutura de um projeto AngularJS
 
+#### main.ts
+-   Arquivo responsavel pelo bootstrap do projeto
+
 #### polyfills.ts
 
 -   Serve para incluir scripts que dão suporte e funcionalidades a browsers antigos.
+
+#### src/app/app.module.ts
+- Se trata de um module em Angular, diferente de modulo em ECMAScript (TypeScript/JavaScript)
+```typescript
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
+
+import { AppComponent } from "./app.component";
+
+// NgModule é um Decorator
+// Decorator é uma função que serve para aplicar metadados
+// a uma função,metodo,classe,argumentos de metodos.
+// Nesse caso está sendo aplicada em uma classe AppModule
+@NgModule({
+  declarations: [AppComponent],
+  imports: [BrowserModule],
+  providers: [],
+  //Diz qual dos componentes listados em declarations
+  //que será responsavel pelo bootstrap da aplicação
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+```
+
+### O que é um Componente
+- São pequenas partes independentes e reusaveis
+- São classes com um determinado clico de vida
+- Possuem um template para definir uma aparencia
+- Possuem um Selector(TAG) para ser usada em outras partes da aplicação
+
+```typescript
+import { Component } from '@angular/core'
+
+//Decorator
+@Component({
+    selector: 'app-first',
+    //Definição do template usando um arquivo externo
+    //Pode ser usado tambem passando uma URL Http
+    templateUrl: './myfirst.component.html'
+
+    //Segunda forma de definição do template
+    template: '<h1>my first component</h1>'
+})
+export class MyFirstComponent {
+    constructor() {
+
+    }
+}
+```
