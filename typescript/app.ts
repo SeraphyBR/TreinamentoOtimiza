@@ -1,10 +1,15 @@
-let message: string = "Help me, Obi-Wan!!!";
-console.log(message);
+import { Spacecraft, Containership } from "./base-ships";
+import { MillenniumFalcon } from "./starfighters";
 
-let episode: number = 4;
-console.log("This is episode " + 4);
-episode = episode + 1;
-console.log("Next episode is " + episode);
+import * as _ from "lodash";
+console.log(_.pad("Typescript Examples", 40, "="));
+let ship = new Spacecraft("Hiperdrive");
+ship.jumpIntoHyperspace();
 
-let favoriteDroid;
-favoriteDroid = "BB-8";
+let falcon = new MillenniumFalcon();
+falcon.jumpIntoHyperspace();
+
+let goodForTheJob = (ship: Containership) => ship.cargoContainers > 2;
+console.log(
+    `Is Falcon good for the job? ${goodForTheJob(falcon) ? "yes" : "no"}`
+);

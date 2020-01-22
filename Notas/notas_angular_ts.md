@@ -36,7 +36,7 @@ let shortestRun = function(parsecs: number): boolean {
 
 #### Arrow functions
 
--   parametros => implementacao
+-   (parametro: tipo,...) => implementacao;
 -   Permite escrever uma função ser utilizar a palavra chave function e return
 
 ```typescript
@@ -74,7 +74,9 @@ function inc(speed: number, inc?: number): number {
 inc(5, 1);
 //> 6
 
-//Informando um valor default logo na declaração
+//Informando um valor default logo na declaração.
+//Tambem pode ser feito uma chamada de uma outra função
+//no lugar do numero, que seja responsavel por definir um valor
 function inc(speed: number, inc: number = 1): number {
     let i = inc;
     return speed + i;
@@ -105,3 +107,164 @@ function countJedis(...jedis: number[]): number {
 countJedis(2, 3, 4);
 //> 9
 ```
+
+### Template String
+
+-   Começa e termina com `
+
+```typescript
+let isEnoughToBeatMF = function(parsecs: number): boolean {
+    return parsecs < 12;
+};
+
+let distance = 14;
+//Template script e operador ternario
+console.log(
+    `Is ${distance} parsecs enough to beat Millennium Falcon? ${
+        isEnoughToBeatMF(distance) ? "Yes" : "No"
+    }`
+);
+```
+
+### Classes
+
+```typescript
+//Forma normal
+class Spacecraft {
+    propulsor: string;
+
+    constructor(propulsor: string) {
+        // É obrigatorio o uso do this para se referenciar
+        // a uma propriedade ou metodo da classe
+        this.propulsor = propulsor;
+    }
+
+    //Para definir um metodo não se utiliza da palavra chave function
+    jumpIntoHyperspace() {
+        console.log("Entering hyperspace with " + this.propulsor);
+    }
+}
+
+//Forma reduzida
+class Spacecraft {
+    //A propriedade é definida no proprio construtor, como public
+    constructor(public propulsor: string) {}
+}
+
+let falcon = new Spacecraft("Hyperdrive");
+```
+
+### Herança
+
+```typescript
+class MillenniumFalcon extends Spacecraft {
+    constructor() {
+        super("hyperdrive");
+    }
+
+    //Sobrescrita do metodo da classe Spacecraft
+    jumpIntoHyperspace() {
+        if (Math.random() >= 0.5) {
+            //Chamada do metodo da classe pai/super
+            super.jumpIntoHyperspace();
+        } else {
+            console.log("Failed");
+        }
+    }
+}
+```
+
+### Interface
+
+```typescript
+interface Containership {
+    cargoContainers: number;
+}
+
+//Interface pode tambem ser extendida de outras interfaces
+interface Smugglership extends Containership {
+    hiddenContainers: number;
+    //Propriedade opcional
+    extraHiddenContainers?: number;
+}
+
+class MillenniumFalcon extends Spacecraft implements Containership {
+    cargoContainers: number;
+
+    constructor() {
+        super("Hyperdrive");
+        this.cargoContainers = 4;
+    }
+}
+
+// Uma função que recebe como parametro qualquer tipo que implementa a interface
+function goodForTheJob(ship: Containership): boolean {
+    return ship.cargoContainers > 2;
+}
+
+let falcon = new MillenniumFalcon();
+console.log(goodForTheJob(falcon));
+//> true
+```
+
+### Import e export - Divisão do programa em modulos
+
+```typescript
+//O caminho é relativo ao arquivo de onde sera feito o import
+import { Spacecraft, Containership } from "./base-ships";
+import { MillenniumFalcon } from "./starfighters";
+
+let ship = new Spacecraft("Hiperdrive");
+ship.jumpIntoHyperspace();
+
+let falcon = new MillenniumFalcon();
+falcon.jumpIntoHyperspace();
+```
+
+```typescript
+interface Containership {
+    cargoContainers: number;
+}
+
+// Para que o arquivo seja um modulo typescript, basta colocar um export
+// passando o nome das classes/interfaces... a serem exportadas no fim do arquivo.
+// Pode-se tambem colocar a palavra chave export na frente das classes e etc
+// a serem exportadas.
+export { Containership };
+```
+
+### Definição de tipos
+
+-   Tratam-se de arquivos que definem os tipos de uma biblioteca feita em javascript, para que o typescript possa reconhecer.
+-   \*.d.ts
+-   Voce pode obter essas definições de tipos usando o NPM
+
+```sh
+# Inicializa o npm no seu projeto
+npm init
+
+# Instala uma biblioteca ao seu projeto
+# o parametro --save indica que a biblioteca é necessaria tanto
+# em deseonvolvimento quanto em runtime
+npm install --save lodash@4.14
+
+# Instala uma definição de tipos para o lodash
+# o --save-dev indica que é somente necessaria durante desenvolvimento
+npm install --save-dev @types/lodash@4.14
+```
+
+## Angular JS
+
+### Criar um novo projeto com o angular-cli
+
+-   O prefixo é adicionado a cada componente que for criado, util quando usar varios componentes externos e ser capaz de diferenciar do seu.
+
+```sh
+ng new myangularproj --prefix=myap
+```
+
+### Estrutura de um projeto AngularJS
+
+#### polyfills.ts
+
+-   Serve para incluir scripts que dão suporte e funcionalidades a browsers antigos.
