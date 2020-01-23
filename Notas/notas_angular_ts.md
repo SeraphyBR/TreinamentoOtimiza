@@ -382,6 +382,11 @@ user = {
 
 <!--Se o user não for um jedi, essa div sera ocultada-->
 <div [hidden]="!user.isJedi">
+    <!-- Pequena nota sobre html/css
+    A propriedade hidden do DOM é controlada via CSS
+    Então se voce alterar o display da Div em um CSS global
+    pode influenciar na visibilidade desse elemento.
+    -->
     location of the jedi temple
 </div>
 
@@ -408,6 +413,8 @@ export class HeaderComponent {
 
     //Pode-se tambem expor o atributo com outro nome
     @Input("value") title: string;
+
+    @Input() randomBool: boolean;
 }
 ```
 
@@ -429,4 +436,70 @@ export class HeaderComponent {
 
 <!--Usando o nome definido em @Input-->
 <mt-header value="Título"></mt-header>
+
+<!--Para passar um boleano, numero ou qualquer coisa diferente de uma string literal-->
+<!--Voce deve usar property binding, senão rambomBool recebe a string "true"-->
+<mt-header title="Exemplo" [randomBool]="true"></mt-header>
+```
+
+#### Diretivas
+
+-   Componentes são diretivas com template.
+-   Servem para adicionar comportamento a um elemento do DOM.
+-   Existem 3 tipos de diretivas: componentes, estruturais e de atributos.
+
+##### Diretiva ngIf
+
+-   Diretiva estrutural, trabalha com o padrão de template do HTML5
+-   Permite renderizar um conteudo caso a expressão associada seja verdadeira.
+-   Alternativa melhor ao uso da propriedade 'hidden' do DOM.
+
+```html
+<!--ng if -->
+<input type="text" [value]="user.name" />
+<!--Uso de forma abreviada, com o * na frente (recomendada)-->
+<div *ngIf="user.isJedi">
+    location of the jedi temple
+</div>
+
+<!--Versão não-abreviada-->
+<input type="text" [value]="user.name" />
+<template [ngIf]="user.isJedi">
+    <div>
+        location of the jedi temple
+    </div>
+</template>
+```
+
+##### Diretiva ngFor
+
+-   Irá repetir o conteudo de um elemento para cada item de uma coleção de objetos.
+-   Por ser estrutural irá repetir o template do elemento.
+
+```html
+<!--ng for-->
+<ul>
+    <li *ngFor="let user of users">{{user.name}}</li>
+</ul>
+
+<!--nf for com index-->
+<ul>
+    <li *ngFor="let user of users; let i=index">
+        {{i+1}} - {{user.name}}
+    </li>
+</ul>
+```
+
+##### Diretiva ngSwitch
+
+-   Avalia uma expressão.
+-   Usa da diretiva ngSwitchCase para mostrar o conteudo equivalente.
+-   Funcionamento semelhante a um switch case comum em programação.
+
+```html
+<div [ngSwitch]="profile">
+    <p *ngSwitchCase="root">You can read & write</p>
+    <p *ngSwitchCase="user">You can read</p>
+    <p *ngSwitchDefault>go back, please!</p>
+</div>
 ```
