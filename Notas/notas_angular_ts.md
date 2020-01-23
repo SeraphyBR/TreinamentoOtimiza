@@ -1,5 +1,6 @@
 # Nota das aulas do curso De Angular (4,5,6) - Otimiza
 
+-   Curso da Udemy de referencia: https://www.udemy.com/course/angular-pt
 -   Documentação oficial: https://www.typescriptlang.org/docs/home.html
 
 ## Typescript
@@ -266,6 +267,7 @@ ng new myangularproj --prefix=myap
 ### Estrutura de um projeto AngularJS
 
 #### main.ts
+
 -   Arquivo responsavel pelo bootstrap do projeto
 
 #### polyfills.ts
@@ -273,7 +275,9 @@ ng new myangularproj --prefix=myap
 -   Serve para incluir scripts que dão suporte e funcionalidades a browsers antigos.
 
 #### src/app/app.module.ts
-- Se trata de um module em Angular, diferente de modulo em ECMAScript (TypeScript/JavaScript)
+
+-   Se trata de um module em Angular, diferente de modulo em ECMAScript (TypeScript/JavaScript)
+
 ```typescript
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
@@ -285,38 +289,144 @@ import { AppComponent } from "./app.component";
 // a uma função,metodo,classe,argumentos de metodos.
 // Nesse caso está sendo aplicada em uma classe AppModule
 @NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule],
-  providers: [],
-  //Diz qual dos componentes listados em declarations
-  //que será responsavel pelo bootstrap da aplicação
-  bootstrap: [AppComponent]
+    declarations: [AppComponent],
+    imports: [BrowserModule],
+    providers: [],
+    //Diz qual dos componentes listados em declarations
+    //que será responsavel pelo bootstrap da aplicação
+    bootstrap: [AppComponent]
 })
 export class AppModule {}
 ```
 
 ### O que é um Componente
-- São pequenas partes independentes e reusaveis
-- São classes com um determinado clico de vida
-- Possuem um template para definir uma aparencia
-- Possuem um Selector(TAG) para ser usada em outras partes da aplicação
+
+-   São pequenas partes independentes e reusaveis
+-   São classes com um determinado clico de vida
+-   Possuem um template para definir uma aparencia
+-   Possuem um Selector(TAG) para ser usada em outras partes da aplicação
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from "@angular/core";
 
 //Decorator
 @Component({
-    selector: 'app-first',
-    //Definição do template usando um arquivo externo
-    //Pode ser usado tambem passando uma URL Http
-    templateUrl: './myfirst.component.html'
+    //  O nome da TAG html
+    selector: "app-first",
+    // Definição do template usando um arquivo externo
+    // Pode ser usado tambem passando uma URL Http
+    templateUrl: "./myfirst.component.html",
 
-    //Segunda forma de definição do template
-    template: '<h1>my first component</h1>'
+    // Segunda forma de definição do template
+    // Definindo-a direto no decorator
+    // Recomendado apenas se o template for pequeno e simples
+    template: "<h1>my first component</h1>",
+
+    // Com multiplas linhas, se usa o ``
+    // Templates podem ter expressões que resolvem
+    // as propriedades dos componentes, chamado de String Interpolation
+    template: `
+        <h1>{{ title }}</h1>
+        <p>Welcome, {{ user.name }}!</p>
+    `
 })
 export class MyFirstComponent {
-    constructor() {
-
-    }
+    title: string = "My Star Wars Component!";
+    user = { name: "Luke Skywalker" };
+    constructor() {}
 }
+```
+
+#### Informando ao angular em qual módulo o componente pertence
+
+```typescript
+@NgModule({
+    declarations: [MyFirstComponent]
+})
+export class AppModule {}
+```
+
+#### Adicionando um novo componente ao projeto angular
+
+-   O comando abaixo irá gerar um novo diretorio em src/app/
+-   Irá criar 3 arquivos {html,css,ts}
+-   Automaticamente vai adicionar o componente ao modulo raiz AppModule
+
+```sh
+# o --skipTests=true irá fazer com que não crie arquivos de teste para
+# o novo componente
+ng generate component nomeDoComponente --skipTests=true
+
+# Versão reduzida
+ng g c nomeDoComponente --skipTests=true
+```
+
+#### Property Binding
+
+-   Serve para linkar o valor da propriedade de um elemento, a uma expressao angular
+-   Sintaxe com []
+-   Pode ser aplicada a qualquer propriedade do [DOM](https://www.w3schools.com/whatis/whatis_htmldom.asp)
+
+```typescript
+//No componente
+user = {
+    name: "Luke Skywalker",
+    isJedi: true
+};
+```
+
+```html
+<!--No template do coponente-->
+<!--Sempre que o valor de user mudar, vai mudar no input tambem-->
+<input type="text" [value]="user.name" />
+
+<!--Se o user não for um jedi, essa div sera ocultada-->
+<div [hidden]="!user.isJedi">
+    location of the jedi temple
+</div>
+
+<!--Caso isJedi for true, o angular vai adicionar a classe light na div -->
+<div [class.light]="user.isJedi"></div>
+<div class="light"></div>
+```
+
+#### Passando dados aos componentes
+
+-   Atribuição de valores as propriedades do componente
+
+```typescript
+// Deve se importar o decorator Input
+import { Component, Input } from "@angular/core";
+
+@Component({
+    selector: "mt-header",
+    template: "<h1>{{title}}</h1>"
+})
+export class HeaderComponent {
+    // Adicionando o decorator input ao atributo
+    @Input() title: string;
+
+    //Pode-se tambem expor o atributo com outro nome
+    @Input("value") title: string;
+}
+```
+
+```html
+<!--usando o header em outro componente-->
+<mt-header title="Minha App"></mt-header>
+
+<!--Resultado do codigo acima no DOM -->
+<mt-header title="Minha App">
+    <!--Template do component-->
+    <h1>Minha App</h1>
+</mt-header>
+
+<!--Usando template interpolation-->
+<mt-header title="{{isJedi ? 'Jedi' : 'Sith'}}"></mt-header>
+
+<!--Usando property binding-->
+<mt-header [title]="isJedi ? 'Jedi' : 'Sith'"></mt-header>
+
+<!--Usando o nome definido em @Input-->
+<mt-header value="Título"></mt-header>
 ```
