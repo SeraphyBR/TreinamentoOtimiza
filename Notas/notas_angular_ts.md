@@ -559,7 +559,7 @@ import { Component, Output, EventEmitter } from "@angular/core";
     template: '<button (click)="clicked()">Click!</button>'
 })
 export class ClickableComponent {
-    // A diretiva Output, ao inves de dizer que a propriedade recebe valores,
+    // O decorator Output, ao inves de dizer que a propriedade recebe valores,
     // significa que ela emite eventos, a saida do componente.
 
     // O nome do evento por padrão é o nome da propriedade.
