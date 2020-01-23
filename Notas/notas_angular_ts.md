@@ -503,3 +503,81 @@ export class HeaderComponent {
     <p *ngSwitchDefault>go back, please!</p>
 </div>
 ```
+
+#### Operador de Navegação segura
+
+-   Operador '?'
+-   Evita que erros/warnings surgem no Console do browser ao ler uma propriedade de algo não definido.
+
+```html
+<div>
+    <!--Caso student seja Undefined, não irá tentar ler a propriedade nome-->
+    Student: {{student?.name}}
+    <div *ngIf="student?.isJedi">
+        Jedi Temple: {{student?.temple}}
+    </div>
+</div>
+```
+
+#### Eventos de um componente
+
+-   Sem diretivas ng-\*
+-   sintaxe - '()'
+-   Usa-se () ao redor de um evento para linkar a um metodo de um componente
+
+```typescript
+import { Component } from '@angular/core'
+
+@Component({
+    selector: 'mt-clickable',
+    template: '<button (click)="clicked()">Click!</button>',
+
+    // Pode se tambem passar uma referencia ao evento usando $event
+    // que será passado ao metodo, e então poderá ser inspecionado.
+
+    // Em certos tipos de evento como keydown, voce pode associar a tecla
+    // separado por ponto.
+    template: '<input (keydown.space)="keyDown($event)">'
+})
+export class ClickableComponent {
+    clicked(): void {
+        console.log("Button clicked!")'
+    }
+    keyDown(event): void {
+        console.log(`Key down: ${event}`)
+    }
+}
+```
+
+#### Emitindo eventos em um Componente
+
+```typescript
+import { Component, Output, EventEmitter } from "@angular/core";
+
+@Component({
+    selector: "mt-clickable",
+    template: '<button (click)="clicked()">Click!</button>'
+})
+export class ClickableComponent {
+    // A diretiva Output, ao inves de dizer que a propriedade recebe valores,
+    // significa que ela emite eventos, a saida do componente.
+
+    // O nome do evento por padrão é o nome da propriedade.
+    @Output() myEvent = new EventEmitter();
+
+    clicked(): void {
+        //Emite de fato o evento
+        this.myEvent.emit();
+    }
+
+    //Metodo que sera executado quando o myEvent for disparado
+    willBeCalled(): void {
+        console.log("Event from clickable");
+    }
+}
+```
+
+```html
+<!--no template que usa o componente-->
+<mt-clickable (myEvent)="willBeCalled()"></mt-clickable>
+```
