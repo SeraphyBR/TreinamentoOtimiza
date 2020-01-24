@@ -353,12 +353,17 @@ export class AppModule {}
 -   Automaticamente vai adicionar o componente ao modulo raiz AppModule
 
 ```sh
-# o --skipTests=true irá fazer com que não crie arquivos de teste para
-# o novo componente
+# o --skipTests=true irá fazer com que não crie arquivos de teste
+# para o novo componente.
+# Obs: Use --spec=false caso use uma versão antiga do angular-cli
 ng generate component nomeDoComponente --skipTests=true
 
 # Versão reduzida
 ng g c nomeDoComponente --skipTests=true
+
+# Criando um componente dentro de outro
+# Seu uso é comum quando o componente está muito relacionado a outro
+ng g c restaurants/restaurant --skipTests=true
 ```
 
 #### Property Binding
