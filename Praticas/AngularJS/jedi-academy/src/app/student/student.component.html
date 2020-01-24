@@ -1,7 +1,11 @@
 <div *ngIf="student">
-    Student: {{student.name}}
-    <div *ngIf="student.isJedi">
-        Jedi Temple: {{student.temple}}
+    Student: <a href="#" (click)="clicked()">{{student?.name}}</a>
+    <div *ngIf="student?.isJedi">
+        Jedi Temple: {{student?.temple}}
+        <!--Uso da referencia de textarea-->
+        <button (click)="description.focus()">Focus!</button><br />
+        <!--Declaração da variavel de template description-->
+        <textarea #description></textarea>
     </div>
 </div>
 <p *ngIf="!student">

@@ -442,13 +442,13 @@ export class HeaderComponent {
 <mt-header title="Exemplo" [randomBool]="true"></mt-header>
 ```
 
-#### Diretivas
+### Diretivas
 
 -   Componentes são diretivas com template.
 -   Servem para adicionar comportamento a um elemento do DOM.
 -   Existem 3 tipos de diretivas: componentes, estruturais e de atributos.
 
-##### Diretiva ngIf
+#### Diretiva ngIf
 
 -   Diretiva estrutural, trabalha com o padrão de template do HTML5
 -   Permite renderizar um conteudo caso a expressão associada seja verdadeira.
@@ -471,7 +471,7 @@ export class HeaderComponent {
 </template>
 ```
 
-##### Diretiva ngFor
+#### Diretiva ngFor
 
 -   Irá repetir o conteudo de um elemento para cada item de uma coleção de objetos.
 -   Por ser estrutural irá repetir o template do elemento.
@@ -490,7 +490,7 @@ export class HeaderComponent {
 </ul>
 ```
 
-##### Diretiva ngSwitch
+#### Diretiva ngSwitch
 
 -   Avalia uma expressão.
 -   Usa da diretiva ngSwitchCase para mostrar o conteudo equivalente.
@@ -504,7 +504,7 @@ export class HeaderComponent {
 </div>
 ```
 
-#### Operador de Navegação segura
+### Operador de Navegação segura
 
 -   Operador '?'
 -   Evita que erros/warnings surgem no Console do browser ao ler uma propriedade de algo não definido.
@@ -519,7 +519,7 @@ export class HeaderComponent {
 </div>
 ```
 
-#### Eventos de um componente
+### Eventos de um componente
 
 -   Sem diretivas ng-\*
 -   sintaxe - '()'
@@ -549,7 +549,7 @@ export class ClickableComponent {
 }
 ```
 
-#### Emitindo eventos em um Componente
+### Emitindo eventos em um Componente
 
 ```typescript
 import { Component, Output, EventEmitter } from "@angular/core";
@@ -580,4 +580,27 @@ export class ClickableComponent {
 ```html
 <!--no template que usa o componente-->
 <mt-clickable (myEvent)="willBeCalled()"></mt-clickable>
+```
+
+### Váriaveis de template
+
+-   Servem para criar uma referencia a um elemento do DOM ou componente.
+-   Permite usar uma referencia do elemento dentro do template HTML, ou passar como parametro a um método.
+-   Prefixo #
+
+```html
+<!--Exemplo feito no arquivo src/app/student/student.component.html-->
+<div *ngIf="student">
+    Student: <a href="#" (click)="clicked()">{{student?.name}}</a>
+    <div *ngIf="student?.isJedi">
+        Jedi Temple: {{student?.temple}}
+        <!--Uso da referencia de textarea-->
+        <button (click)="description.focus()">Focus!</button><br />
+        <!--Declaração da variavel de template description-->
+        <textarea #description></textarea>
+    </div>
+</div>
+<p *ngIf="!student">
+    Sem dados para exibir
+</p>
 ```
