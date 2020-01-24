@@ -604,3 +604,75 @@ export class ClickableComponent {
     Sem dados para exibir
 </p>
 ```
+
+### Rotas
+
+-   Tornam a pagina dinamica.
+-   Permite que troque um componente para outros em seu lugar.
+-   É necessario mapear cada componente em uma rota.
+-   Uso do Tipo Routes do AngularJS.
+-   Uso da diretiva routerLink para navegar nas rotas.
+
+```html
+<!-- No template do componente -->
+<div>
+    <!-- Componente fixo -->
+    <mt-header></mt-header>
+</div>
+<div>
+    <!-- Componente dinamico usando rotas -->
+    <router-outlet></router-outlet>
+</div>
+```
+
+```typescript
+// Arquivo src/app/app.routes.ts
+import { Routes } from "@angular/router";
+import { HomeComponent } from "./home/home.component";
+import { AboutComponent } from "./about/about.component";
+
+export const ROUTES: Routes = [
+    { path: "", component: HomeComponent },
+    { path: "about", component: AboutComponent }
+];
+```
+
+```typescript
+// Arquivo src/app/app.modules.ts
+import { ROUTES } from './app.routes';
+
+@NgModule({
+    declarations: [...],
+    imports: [..., RouterModule.forRoot(ROUTES)],
+})
+export class AppModule { }
+```
+
+#### routerLink
+
+-   Diretiva usada para poder navegar pelas rotas
+-   Recebe o respectivo caminho
+
+```html
+<!-- no template de algum componente, passando o caminho -->
+<a routerLink="/restaurants">Restaurantes</a>
+<!-- ou usando property binding e passando um array -->
+<a [routerLink]="['/restaurants']">Restaurantes</a>
+```
+
+#### routerLinkActive
+
+-   É uma diretiva
+-   Aplica uma classe css a um elemento quando uma rota estiver ativa.
+-   Pode ser usado em qualquer elemento pai relativo a onde está o routerLink.
+
+```html
+<div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+    <ul class="nav navbar-nav">
+        <li routerLinkActive="active"><a href="#">Restaurantes</a></li>
+        <li routerLinkActive="active">
+            <a [routerLink]="['/about']">Sobre</a>
+        </li>
+    </ul>
+</div>
+```
