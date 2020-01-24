@@ -690,3 +690,9 @@ export class AppModule { }
     </ul>
 </div>
 ```
+
+### Injeção de Dependência
+
+-   É um padrão de projeto
+-   A aplicação deixa de instanciar seus objetos manualmente e passa a depender do framework para obter os objetos que ela quer usar.
+-   O framework gerencia a instanciação dos objetos, assim como suas dependencias, disponibilizando para os componentes da aplicação.
