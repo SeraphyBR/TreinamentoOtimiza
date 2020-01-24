@@ -639,6 +639,8 @@ export const ROUTES: Routes = [
 
 ```typescript
 // Arquivo src/app/app.modules.ts
+import { RouterModule } from "@angular/router";
+
 import { ROUTES } from './app.routes';
 
 @NgModule({
@@ -650,6 +652,7 @@ export class AppModule { }
 
 #### routerLink
 
+-   É uma diretiva
 -   Diretiva usada para poder navegar pelas rotas
 -   Recebe o respectivo caminho
 
@@ -663,10 +666,16 @@ export class AppModule { }
 #### routerLinkActive
 
 -   É uma diretiva
--   Aplica uma classe css a um elemento quando uma rota estiver ativa.
+-   Aplica uma classe CSS a um elemento quando uma rota estiver ativa.
 -   Pode ser usado em qualquer elemento pai relativo a onde está o routerLink.
 
 ```html
+<!-- Descrição de comportamento:
+    Nesse exemplo, quando for no texto Sobre, localizado em uma barra
+    de navegação, ele irá exibir o componente About e o routerLinkActive
+    vai aplicar uma classe CSS chamada 'active' no elemento 'li' relativo ao
+    routerLink, que irá destacar o "botão" do Sobre.
+-->
 <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
     <ul class="nav navbar-nav">
         <li routerLinkActive="active"><a href="#">Restaurantes</a></li>
