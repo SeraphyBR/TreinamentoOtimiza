@@ -696,3 +696,83 @@ export class AppModule { }
 -   É um padrão de projeto
 -   A aplicação deixa de instanciar seus objetos manualmente e passa a depender do framework para obter os objetos que ela quer usar.
 -   O framework gerencia a instanciação dos objetos, assim como suas dependencias, disponibilizando para os componentes da aplicação.
+
+```typescript
+@Component({
+    // Informando ao angular o que será injetado
+    // Para o componente e os filhos.
+    providers: [MyFirstService],
+
+    // Informando ao angular o que será injetado
+    // Somente para o componente
+    viewProviders: [MyFirstService]
+})
+export class MyFirstComponent {
+    // Ao invés de instanciar um servico/dependencia dentro
+    // do construtor, o componente pode receber o serviço
+    // diretamente pronto como argumento, a vantagem é que
+    // se o serviço depender de outro objeto, o componente não
+    // precisa se preocupar em instancia-lo
+    // constructor() {this.firstService = new MyFirstService}
+
+    constructor(private firstService: MyFirstService) {}
+}
+```
+
+```typescript
+// Informando ao angular o que será injetado
+// diretamente no Modulo, irá se aplicar a mesma instancia
+// a todos os componentes nesse Modulo
+@NgModule({
+    declarations: [...],
+    providers: [ MyFirstService ]
+})
+export class AppModule {}
+```
+
+### Serviços
+
+-   Classes que podem ser usadas para injetar em outros componentes ou serviços.
+-   São geralmente usados para encapsular o acesso a API's de backend.
+-   Podem ser singletons: são otimos candidatos a guardar dados compartilhados para toda a aplicação.
+-   Tambem podem guardar dados para somente parte de uma aplicação.
+
+```typescript
+import { Injectable } from '@angular/core'
+import { Http } from '@angular/http'
+
+// Decorator, não é necessario para que o seu serviço seja
+// injetado em outro objeto, mas sim para que ele possa receber
+// injeções do framework
+@Injectable()
+export class MyService {
+    constructor(private http: Http) { }
+
+    list(){
+        return this.http.get('/url')
+    }
+}
+```
+### Alguns serviços
+
+#### Title
+* Serviço para obter e alterar o titulo de uma página.
+* Um componente pode requisitar a injeção e usar um método para trocar o titulo.
+* Esse serviço existe porque não é possivel usar expressoes angular na pagina html inteira, como o titulo fica no Head e essa parte não faz parte do bootstrap, foi criado o serviço title.
+
+```typescript
+import { Title } from '@angular/plataform-browser'
+
+@Component({
+    viewProviders: [Title]
+})
+export class MyPageComponent {
+    constructor(title: Title){
+        title.setTitle(':: MyFancy Title ::');
+    }
+}
+```
+
+#### Http
+
+#### Router
