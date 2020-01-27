@@ -974,3 +974,28 @@ export class MyComponent implements OnInit {
     }
 }
 ```
+
+### Rotas Filhas dentro de outros componentes
+
+-   Utiliza-se o elemento children, que é do tipo Routes tambem.
+
+```typescript
+import { Routes } from "@angular/router";
+...
+
+export const ROUTES: Routes = [
+  { path: "", component: HomeComponent },
+  { path: "restaurants", component: RestaurantsComponent },
+  {
+    path: "restaurants/:id",
+    component: RestaurantDetailComponent,
+    children: [
+        //Define um dos componentes como padrão a ser mostrado
+      { path: "", redirectTo: "menu", pathMatch: "full" },
+      { path: "menu", component: MenuComponent },
+      { path: "reviews", component: ReviewsComponent }
+    ]
+  },
+  { path: "about", component: AboutComponent }
+];
+```
