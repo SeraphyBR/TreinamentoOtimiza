@@ -49,7 +49,7 @@ let tieFighters = ships.filter(function(ship) {
 let ties = ships.filter(ship => ship.type === "TieFighter");
 ```
 
-#### Dizendo que a variavel sera uma função
+#### Dizendo que a variavel será uma função
 
 ```typescript
 let call: (name: string) => void;
@@ -785,6 +785,7 @@ export class MyPageComponent {
 -   O método ngOnInit() será chamado uma vez no clico de vida do componente.
 
 ```typescript
+// Arquivo src/app/restaurants/restaurants.component.ts
 import { Component, OnInit } from "@angular/core";
 import { Restaurant } from "./restaurant/restaurant.model";
 import { RestaurantsService } from "./restaurants.service";
@@ -844,6 +845,88 @@ this.http
 
 #### Subscribe/Unsubscribe
 
+-   Um Observable só é "executado" quando um objeto se inscreve nele, até então ele é como um "corpo".
 -   Quando um objeto se inscreve em um Observable, é necessario remover a inscrição posterior para evitar Memory Leaks.
 -   Mesmo quando um componente sai da tela, um listener que foi inscrito pode continuar sendo chamado.
--   Os Observable retornados pela API http, pelos parametros do router e pelo pipe Async, não precisam de cancelamento de inscrição.
+-   Os Observable retornados pela API http, pelos parametros do router e pelo Pipe Async, não precisam de cancelamento de inscrição.
+
+### Tratamento de Erros com o Operador Catch
+
+-   Trechos de codigo do projeto do Curso, com uso de catch() e função externa para gerenciar erros.
+
+```typescript
+// arquivo src/app/restaurants/restaurants.service.ts
+import { MEAT_API } from "../app.api";
+import { Injectable } from "@angular/core";
+import { Http } from "@angular/http";
+import { Observable } from "rxjs/Observable";
+import "rxjs/add/operator/map";
+import "rxjs/add/operator/catch";
+import { ErrorHandler } from "../app.error-handler";
+
+@Injectable()
+export class RestaurantsService {
+    constructor(private http: Http) {}
+
+    restaurants(): Observable<Restaurant[]> {
+        return (
+            this.http
+                .get(`${MEAT_API}/restaurants`)
+                /*
+                O map está sendo responsavel em "converter"
+                o Observable<Response> do get para um
+                Observable<Restaurants[]>.
+
+                O metodo .json() vai obter um json do Corpo
+                do Response, sendo este compativel com o tipo Restaurant[].
+                A conversão do json para Restaurants[] ocorre implicitamente.
+                */
+                .map(response => response.json())
+                .catch(ErrorHandler.handleError)
+        );
+    }
+}
+```
+
+```typescript
+// arquivo src/app/app.error-handler.ts
+import { Response } from "@angular/http";
+import { Observable } from "rxjs/Observable";
+
+export class ErrorHandler {
+    static handleError(error: Response | any) {
+        let errorMessage: string;
+        if (error instanceof Response) {
+            errorMessage = `Erro ${error.status} ao acessar a URL ${error.url} - ${error.statusText}`;
+        } else {
+            errorMessage = error.toString;
+        }
+        console.log(errorMessage);
+        return Observable.throw(errorMessage);
+    }
+}
+```
+
+```typescript
+import { Component, OnInit } from "@angular/core";
+import { Restaurant } from "./restaurant/restaurant.model";
+import { RestaurantsService } from "./restaurants.service";
+
+@Component({
+    selector: "mt-restaurants",
+    templateUrl: "./restaurants.component.html"
+})
+export class RestaurantsComponent implements OnInit {
+    restaurants: Restaurant[];
+
+    constructor(private restaurantsService: RestaurantsService) {}
+
+    ngOnInit() {
+        // O subscribe irá obter o Restaurants[] do Observable
+        // retornado pelo metodo restaurants() de restaurantsService
+        this.restaurantsService
+            .restaurants()
+            .subscribe(restaurants => (this.restaurants = restaurants));
+    }
+}
+```
