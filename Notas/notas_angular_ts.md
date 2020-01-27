@@ -811,7 +811,7 @@ export class RestaurantsComponent implements OnInit {
 
 ### Reactive Programming
 
--   Resumidamente a ideia é, quando um evento acontecesse, os interessados são notificados e reagem a ele.
+-   Resumidamente a ideia é, quando um evento acontece, os interessados são notificados e reagem a ele.
 -   Baseado em eventos
 -   Os eventos veem em forma de Streams, uma sequencia de eventos que podem ser modificados ou transformados em uma nova cadeia de eventos.
 -   REACTIVE = ITERATOR(Passa item por item na stream) + OBSERVER(notifica os listeners interessados)
@@ -819,7 +819,7 @@ export class RestaurantsComponent implements OnInit {
 
 #### RXJS
 
--   Os metodos da api http retornam Observable<Response>, um dos objetos principais do RXJS.
+-   Os metodos da API http retornam Observable<Response>, um dos objetos principais do RXJS.
 -   Permite coisas interessantes como, por exemplo, facilmente refazer as chamadas http usando o método retry de Observable.
 -   Permite fazer multiplos mapeamentos até que a resposta seja da forma como voce espera.
 
@@ -927,6 +927,50 @@ export class RestaurantsComponent implements OnInit {
         this.restaurantsService
             .restaurants()
             .subscribe(restaurants => (this.restaurants = restaurants));
+    }
+}
+```
+
+### Parametrizando as Rotas
+
+-   Existem duas formas de obter parâmetros: a partir de snapshot ou subscribe.
+-   Snapshots são uteis quando a gente não se preocupa se a rota vai mudar, e o componente sai da tela, e volta depois.
+-   Subscribe é utilizado quando o componente continua na tela, mas precisa se atualizar quando um item for acionado.
+
+```typescript
+export const ROUTES: Route = [
+    // Um caminho pode ser parametrizado passando :nome
+    { path: "restaurant/:id", component: RestaurantComponent }
+];
+```
+
+```html
+<!-- Passando um valor para o parâmetro -->
+<a [routerLink]="['/restaurant', restaurant.id]">Bakery</a>
+```
+
+```typescript
+export class MyComponent implements OnInit {
+    myObj: any
+
+    // O objeto ActivatedRoute representa a rota ativa no momento
+    constructor(private route: ActivatedRoute){ }
+
+    // Snapshot
+    ngOnInit(){
+        // Obtendo o valor do parametro ID usando snapshot
+        const id = this.route.snapshot.params['id']
+        // Uma vez obtido o valor, voce pode consultar o seu backend para
+        // obter a informação
+        this.myObj = // ...obter os dados baseado no id
+    }
+
+    // Subscribe
+    ngOnInit(){
+        this.route.params.subscribe(params => {
+            const id = params['id']
+            this.myObj = // ...obter os dados baseado no id
+        })
     }
 }
 ```
