@@ -738,37 +738,39 @@ export class AppModule {}
 -   Tambem podem guardar dados para somente parte de uma aplicação.
 
 ```typescript
-import { Injectable } from '@angular/core'
-import { Http } from '@angular/http'
+import { Injectable } from "@angular/core";
+import { Http } from "@angular/http";
 
 // Decorator, não é necessario para que o seu serviço seja
 // injetado em outro objeto, mas sim para que ele possa receber
 // injeções do framework
 @Injectable()
 export class MyService {
-    constructor(private http: Http) { }
+    constructor(private http: Http) {}
 
-    list(){
-        return this.http.get('/url')
+    list() {
+        return this.http.get("/url");
     }
 }
 ```
+
 ### Alguns serviços
 
 #### Title
-* Serviço para obter e alterar o titulo de uma página.
-* Um componente pode requisitar a injeção e usar um método para trocar o titulo.
-* Esse serviço existe porque não é possivel usar expressoes angular na pagina html inteira, como o titulo fica no Head e essa parte não faz parte do bootstrap, foi criado o serviço title.
+
+-   Serviço para obter e alterar o titulo de uma página.
+-   Um componente pode requisitar a injeção e usar um método para trocar o titulo.
+-   Esse serviço existe porque não é possivel usar expressoes angular na pagina html inteira, como o titulo fica no Head e essa parte não faz parte do bootstrap, foi criado o serviço title.
 
 ```typescript
-import { Title } from '@angular/plataform-browser'
+import { Title } from "@angular/plataform-browser";
 
 @Component({
     viewProviders: [Title]
 })
 export class MyPageComponent {
-    constructor(title: Title){
-        title.setTitle(':: MyFancy Title ::');
+    constructor(title: Title) {
+        title.setTitle(":: MyFancy Title ::");
     }
 }
 ```
@@ -776,3 +778,72 @@ export class MyPageComponent {
 #### Http
 
 #### Router
+
+### Métodos do ciclo de vida - OnInit
+
+-   Sempre que é criado um componente com o angular-cli, ele automaticamente implementa a interface OnInit.
+-   O método ngOnInit() será chamado uma vez no clico de vida do componente.
+
+```typescript
+import { Component, OnInit } from "@angular/core";
+import { Restaurant } from "./restaurant/restaurant.model";
+import { RestaurantsService } from "./restaurants.service";
+
+@Component({
+    selector: "mt-restaurants",
+    templateUrl: "./restaurants.component.html"
+})
+export class RestaurantsComponent implements OnInit {
+    restaurants: Restaurant[];
+
+    constructor(private restaurantsService: RestaurantsService) {}
+
+    // Sempre que o componente entrar na tela, e todas as dependencias e
+    // injeções tiverem sido atribuidas ao componente, o metodo ngOnInit
+    // será chamado pelo angular
+    ngOnInit() {
+        // Momento ideal para fazer a inicialização do componente
+        this.restaurants = this.restaurantsService.restaurants();
+    }
+}
+```
+
+### Reactive Programming
+
+-   Resumidamente a ideia é, quando um evento acontecesse, os interessados são notificados e reagem a ele.
+-   Baseado em eventos
+-   Os eventos veem em forma de Streams, uma sequencia de eventos que podem ser modificados ou transformados em uma nova cadeia de eventos.
+-   REACTIVE = ITERATOR(Passa item por item na stream) + OBSERVER(notifica os listeners interessados)
+-   Angular utiliza da biblioteca RXJS para Reactive Programming
+
+#### RXJS
+
+-   Os metodos da api http retornam Observable<Response>, um dos objetos principais do RXJS.
+-   Permite coisas interessantes como, por exemplo, facilmente refazer as chamadas http usando o método retry de Observable.
+-   Permite fazer multiplos mapeamentos até que a resposta seja da forma como voce espera.
+
+```typescript
+this.http
+    .get("/url")
+    .retry(2)
+    .map(response => response.json())
+    .subscribe(data => (this.mydata = data));
+
+this.http
+    .post("/url", JSON.stringify(myData))
+    .map(response => response.json())
+    .map(result => result.id)
+    .subscribe(id => (this.id = id));
+```
+
+#### Observable vs Promises
+
+-   Observables continuam disparando eventos até que sejam explicitamente fechados.
+-   Promises são consideradas resolvidas depois do primeiro evento.
+-   Observables são mais flexiveis, pois, por exemplo, possuem capacidade de usar WebSockets.
+
+#### Subscribe/Unsubscribe
+
+-   Quando um objeto se inscreve em um Observable, é necessario remover a inscrição posterior para evitar Memory Leaks.
+-   Mesmo quando um componente sai da tela, um listener que foi inscrito pode continuar sendo chamado.
+-   Os Observable retornados pela API http, pelos parametros do router e pelo pipe Async, não precisam de cancelamento de inscrição.
