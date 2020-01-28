@@ -978,6 +978,7 @@ export class MyComponent implements OnInit {
 ### Rotas Filhas dentro de outros componentes
 
 -   Utiliza-se o elemento children, que é do tipo Routes tambem.
+-   Após definir as rotas filhas, basta criar um novo route-outlet no html do componente pai, e usar routerLink para um botão trocar de rota.
 
 ```typescript
 import { Routes } from "@angular/router";
@@ -998,4 +999,109 @@ export const ROUTES: Routes = [
   },
   { path: "about", component: AboutComponent }
 ];
+```
+
+### Pipes
+
+-   São responsáveis por uma transformação de dados para uma apresentação diferente.
+-   Chamados de filtros em Angular I
+-   Com pipes voce consegue transformar uma string em uppercase, lowercase, formatar números, moedas, datas...
+-   Os parâmetros de um Pipe são separados por :
+
+```typescript
+//in component
+user: = {name: 'Luke Skywalker', isJedi: true}
+```
+
+```html
+<!-- in template -->
+<div>{{user | json}}</div>
+<!-- renderizado -->
+<div>{ name: 'Luke Skywalker', isJedi: true }</div>
+
+<!-- in template -->
+<div>{{user.name | uppercase}}</div>
+<!-- renderizado -->
+<div>LUKE SKYWALKER</div>
+
+<!-- in template -->
+<div>{{user.name | lowercase}}</div>
+<!-- renderizado -->
+<div>luke skywalker</div>
+
+<!-- in template -->
+<div>{{0.5 | percent}}</div>
+<!-- renderizado -->
+<div>50%</div>
+
+<!-- in template, com parametros -->
+<div>{{birthday | date: 'dd/MM/yyyy'}}</div>
+<!-- renderizado -->
+<div>12/12/1994</div>
+
+<!-- in template -->
+<div>{{price | currency}}</div>
+<!-- renderizado -->
+<div>USD45.90</div>
+
+<!--
+    in template, com o primeiro parametro indicando moeda
+    e o segundo se é pra usar o simbolo no lugar da sigla
+-->
+<div>{{price | currency: 'BRL' : true}}</div>
+<!-- renderizado -->
+<div>R$45.90</div>
+
+<!-- in template -->
+<div>{{user.name | slice: 0:4}}</div>
+<!-- renderizado -->
+<div>Luke</div>
+
+<!-- in template -->
+<div>{{['one', 'two'] | slice: 0:1 | json | uppercase}}</div>
+<!-- renderizado -->
+<div>["ONE"]</div>
+
+<!-- Pipe Async
+    Ao invés de fazer o subscribe dentro do componente, obter a resposta e
+    atribuir a uma propriedade interna, o Pipe async vai ele mesmo fazer o subscribe,
+    obter os dados e iterar sobre ele.
+    Como vantagem o código fica mais limpo.
+-->
+<div class="box-body" *ngFor="let review of reviews | async">
+    <p>{{review.frase}}</p>
+</div>
+```
+
+### Localizando Preços para a moeda brasileira
+
+-   Por padrão o Pipe currency usa o padrão americano.
+-   Adiciona-se o pacote intl, para lidar com Internacionalização.
+
+```sh
+npm install --save intl
+```
+
+```typescript
+// No arquivo src/polyfills.ts
+import "intl";
+import "intl/locale-data/jsonp/pt-BR.js";
+```
+
+```typescript
+// No modulo principal da aplicação, src/app/app.module.ts
+...
+import { LOCALE_ID } from '@angular/core'
+
+@NgModule({
+  declarations: [...],
+  imports: [...],
+  // Uso da declaração estendida de um provider
+  // RestaurantsService == {provide: RestaurantsService, useClass: RestaurantsService}
+
+  // Sempre que um componente pedir esse token LOCALE_ID, ele vai receber o valor pt-BR
+  providers: [ RestaurantsService, {provide: LOCALE_ID, useValue: 'pt_BR'} ],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
 ```
