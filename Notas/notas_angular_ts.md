@@ -368,8 +368,8 @@ ng g c restaurants/restaurant --skipTests=true
 
 #### Property Binding
 
--   Serve para linkar o valor da propriedade de um elemento, a uma expressao angular
--   Sintaxe com []
+-   Serve para linkar o valor da propriedade de um elemento do DOM, a uma expressao angular
+-   Sintaxe [], de "One-Way Binding"
 -   Pode ser aplicada a qualquer propriedade do [DOM](https://www.w3schools.com/whatis/whatis_htmldom.asp)
 
 ```typescript
@@ -1104,4 +1104,42 @@ import { LOCALE_ID } from '@angular/core'
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+```
+
+### Template Forms
+
+-   É uma forma declarativa de configurar os seus formularios no template do componente.
+-   Uso da diretiva ngModel nos inputs, que devem ser controlados pelo framework.
+-   Quando se declara um <form> em template, o Angular automaticamente associa a diretiva NgForm de forma implicita.
+-   Com a diretiva ngForm, pode-se determinar a validade do form, o valor do form e outros status.
+
+```html
+<form>
+    <!--Com o uso da diretiva ngModel, name é obrigatório.-->
+    <!--Uma vez associado essa diretiva, o form passa a estar ciente-->
+    <!--do valor do campo, de forma que se o campo for válido,-->
+    <!--o form fica válido, e se for inválido, o form tambem.-->
+    <input type="text" name="name" ngModel />
+</form>
+```
+
+```typescript
+@Compoent({...})
+export class UserComponent {
+    username: string = "Nome do usuário"
+}
+```
+
+```html
+<form>
+    <!-- One-way binding
+    Apenas quando o valor no componente mudar, o campo é atualizado
+    -->
+    <input type="text" name="name" [ngModel]="username" />
+
+    <!-- Two-way binding
+    Se o campo mudar, o valor no componente é atualizado.
+    -->
+    <input type="text" name="name" [(ngModel)]="username" />
+</form>
 ```
