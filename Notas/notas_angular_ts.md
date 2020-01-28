@@ -1010,7 +1010,7 @@ export const ROUTES: Routes = [
 -   São responsáveis por uma transformação de dados para uma apresentação diferente.
 -   Chamados de filtros em Angular I
 -   Com pipes voce consegue transformar uma string em uppercase, lowercase, formatar números, moedas, datas...
--   Os parâmetros de um Pipe são separados por :
+-   Os parâmetros de um Pipe são separados por `:`
 
 ```typescript
 //in component
@@ -1186,3 +1186,39 @@ export class UserComponent {
     2. Pristine: Representa o estado inicial do campo ou form.
     3. Dirty: Representa o estado assim que o usuario digita no campo, não se volta desse estado.
     4. (un)touched: Indica quando o usuario toca/entra no campo.
+
+```html
+<form>
+    <!--Para saber em que estado um campo se encontra, é necessario-->
+    <!--obter uma referencia a diretiva ngModel-->
+    <input name="name" [ngModel]="username" #ipt="ngModel" />
+    <!--Se o campo for inválido, a mensagem será apresentada-->
+    <span *ngIf="ipt.invalid">Nome inválido</span>
+</form>
+```
+
+#### Validators
+
+-   As validações que se podem atribuir a um campo são:
+    1. Required: Especifica se um campo é obrigatório
+    2. Pattern - Regex: Recebe um padrão de espressão regular
+    3. {min,max}lenght: Recebe um número e checa se o valor atende o especificado
+
+```html
+<form>
+    <input
+        name="name"
+        [ngModel]="username"
+        #ipt="ngModel"
+        required
+        minlenght="5"
+    />
+    <span *ngIf="ipt.invalid">Nome inválido</span>
+</form>
+```
+
+#### Classes CSS disponiveis para feedback visual
+
+-   ng-valid | ng-invalid
+-   ng-pristine | ng-dirty
+-   ng-untouched | ng-touched
