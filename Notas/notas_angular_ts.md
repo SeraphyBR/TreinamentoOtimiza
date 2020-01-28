@@ -1110,7 +1110,7 @@ export class AppModule { }
 
 -   É uma forma declarativa de configurar os seus formularios no template do componente.
 -   Uso da diretiva ngModel nos inputs, que devem ser controlados pelo framework.
--   Quando se declara um <form> em template, o Angular automaticamente associa a diretiva NgForm de forma implicita.
+-   Quando se declara um form em template, o Angular automaticamente associa a diretiva NgForm de forma implicita.
 -   Com a diretiva ngForm, pode-se determinar a validade do form, o valor do form e outros status.
 
 ```html
@@ -1141,5 +1141,16 @@ export class UserComponent {
     Se o campo mudar, o valor no componente é atualizado.
     -->
     <input type="text" name="name" [(ngModel)]="username" />
+</form>
+```
+```html
+<!--Pode-se obter uma referencia ao ngForm e construir-->
+<!--expressoes que ajudam a controlar certos componentes do form-->
+<form #myForm="ngForm">
+    <input type="text" name="name" ngModel/>
+    <input type="text" name="lastname" ngModel/>
+    <input type="text" name="address" ngModel/>
+    <!--Habilitando um botão, baseado na validade do form-->
+    <button [disabled]="myForm.invalid"/>
 </form>
 ```
