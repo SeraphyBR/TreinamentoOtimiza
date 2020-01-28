@@ -46,6 +46,7 @@ let tieFighters = ships.filter(function(ship) {
 });
 
 // Arrow function correspondente
+// Obs: Uso do operador Strict Equals ===, pesquise a diferença!
 let ties = ships.filter(ship => ship.type === "TieFighter");
 ```
 
@@ -238,7 +239,7 @@ export { Containership };
 
 -   Tratam-se de arquivos que definem os tipos de uma biblioteca feita em javascript, para que o typescript possa reconhecer.
 -   \*.d.ts
--   Voce pode obter essas definições de tipos usando o NPM
+-   Voce pode obter essas definições de tipos usando o NPM.
 
 ```sh
 # Inicializa o npm no seu projeto
@@ -349,7 +350,7 @@ export class AppModule {}
 #### Adicionando um novo componente ao projeto angular
 
 -   O comando abaixo irá gerar um novo diretorio em src/app/
--   Irá criar 3 arquivos {html,css,ts}
+-   Irá criar 3 arquivos {html, css, ts}
 -   Automaticamente vai adicionar o componente ao modulo raiz AppModule
 
 ```sh
@@ -451,7 +452,10 @@ export class HeaderComponent {
 
 -   Componentes são diretivas com template.
 -   Servem para adicionar comportamento a um elemento do DOM.
--   Existem 3 tipos de diretivas: componentes, estruturais e de atributos.
+-   Existem 3 tipos de diretivas:
+    1. componentes
+    2. estruturais
+    3. de atributos
 
 #### Diretiva ngIf
 
@@ -1113,6 +1117,20 @@ export class AppModule { }
 -   Quando se declara um form em template, o Angular automaticamente associa a diretiva NgForm de forma implicita.
 -   Com a diretiva ngForm, pode-se determinar a validade do form, o valor do form e outros status.
 
+```typescript
+// no arquivo src/app/app.module.ts
+...
+import { FormsModule } from "@angular/forms";
+
+@NgModule({
+  declarations: [...],
+  imports: [..., FormsModule ],
+  providers: [...],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+```
+
 ```html
 <form>
     <!--Com o uso da diretiva ngModel, name é obrigatório.-->
@@ -1143,14 +1161,28 @@ export class UserComponent {
     <input type="text" name="name" [(ngModel)]="username" />
 </form>
 ```
+
 ```html
 <!--Pode-se obter uma referencia ao ngForm e construir-->
 <!--expressoes que ajudam a controlar certos componentes do form-->
-<form #myForm="ngForm">
-    <input type="text" name="name" ngModel/>
-    <input type="text" name="lastname" ngModel/>
-    <input type="text" name="address" ngModel/>
+
+<!--O novalidate serve para desabilitar a validação feita pelo browser, -->
+<!--uma vez que esta pode mudar de acordo com o browser, e-->
+<!--fazer com que o angular seja o responsável pela validação-->
+<form novalidate #myForm="ngForm">
+    <input type="text" name="name" ngModel />
+    <input type="text" name="lastname" ngModel />
+    <input type="text" name="address" ngModel />
     <!--Habilitando um botão, baseado na validade do form-->
-    <button [disabled]="myForm.invalid"/>
+    <button [disabled]="myForm.invalid" />
 </form>
 ```
+
+#### NgModel
+
+-   Diretiva
+-   Disponibiliza os seguintes estados para feedback visual:
+    1. (in)valid: Diz se o campo está de acordo com as regras de validação
+    2. Pristine: Representa o estado inicial do campo ou form.
+    3. Dirty: Representa o estado assim que o usuario digita no campo, não se volta desse estado.
+    4. (un)touched: Indica quando o usuario toca/entra no campo.
