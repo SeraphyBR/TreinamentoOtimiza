@@ -1200,8 +1200,8 @@ export class UserComponent {
 #### Validators
 
 -   As validações que se podem atribuir a um campo são:
-    1. Required: Especifica se um campo é obrigatório
-    2. Pattern - Regex: Recebe um padrão de espressão regular
+    1. required: Especifica se um campo é obrigatório
+    2. pattern - Regex: Recebe um padrão de espressão regular
     3. {min,max}lenght: Recebe um número e checa se o valor atende o especificado
 
 ```html
@@ -1214,6 +1214,14 @@ export class UserComponent {
         minlenght="5"
     />
     <span *ngIf="ipt.invalid">Nome inválido</span>
+    <input
+        name="number"
+        [`ngModel`]="number"
+        #iptNumber="`ngModel`"
+        required
+        pattern="^[0-9]*$"
+    />
+    <span *ngIf="iptNumber.invalid">Número inválido</span>
 </form>
 ```
 
@@ -1315,6 +1323,7 @@ export class InputComponent implements OnInit, AfterContentInit {
         errorMessage="Campo obrigatório e com min. 5 caracteres"
         label="Número"
     >
+        <!--O input será o conteudo que irá substituir o ng-content-->
         <input
             class="form-control"
             name="address"
@@ -1329,8 +1338,136 @@ export class InputComponent implements OnInit, AfterContentInit {
 
 ### ControlValueAccessor
 
--   Util para facilitar a reutilização de código.
 -   Interface
 -   No curso foi abordado como uma das soluções para o seguinte problema:
     -   Quando voce encapsula um input text (campo) de um form em um componente próprio, o form deixa de enxergar o campo.
     -   A solução, com `ControlValueAccessor`, é deixar o componente completamente isolado, com o input, e implementar a interface `ControlValueAccessor` que serve de ponte entre as diretivas de apoio de formulario, como `ngModel`, e o componente.
+-   Exemplo abaixo usando um Radio, no lugar de um input text.
+
+![radio-meat](assets/images/radio-meat.png)
+
+```typescript
+// Arquivo src/app/radio/radio-option.model.ts
+export class RadioOption {
+    constructor(public label: string, public value: any) {}
+}
+```
+
+```typescript
+// Arquivo src/app/order/order.component.ts
+import { Component, OnInit } from "@angular/core";
+import { RadioOption } from "app/radio/radio-option.model";
+
+@Component({
+    selector: "mt-order",
+    templateUrl: "./order.component.html"
+})
+export class OrderComponent implements OnInit {
+    paymentOptions: RadioOption[] = [
+        { label: "Dinheiro", value: "MON" },
+        { label: "Cartão de Débito", value: "DEB" },
+        { label: "Cartão Refeição", value: "REF" }
+    ];
+    constructor() {}
+    ngOnInit() {}
+}
+```
+
+```typescript
+import { Component, OnInit, Input, forwardRef } from "@angular/core";
+import { RadioOption } from "./radio-option.model";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
+
+@Component({
+    selector: "mt-radio",
+    templateUrl: "./radio.component.html",
+    // Deve-se registrar o componente junto com o provider NG_VALUE_ACCESSOR
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            // Passando uma referencia do proprio componente ao provider.
+            useExisting: forwardRef(() => RadioComponent),
+            multi: true
+        }
+    ]
+})
+export class RadioComponent implements OnInit, ControlValueAccessor {
+    @Input() options: RadioOption[];
+
+    value: any;
+
+    onChange: any;
+
+    constructor() {}
+
+    ngOnInit() {}
+
+    setValue(value: any) {
+        this.value = value;
+        this.onChange(this.value);
+    }
+
+    // Método da interface ControlValueAccessor
+    // É um método chamado pelas diretivas, quando elas querem
+    // passar um valor para o seu componente.
+    writeValue(obj: any): void {
+        this.value = obj;
+    }
+
+    // Método da interface ControlValueAccessor
+    // É um método chamado pelas diretivas, que recebe uma função que
+    // deve ser chamada sempre que o valor interno no componente mudar.
+    registerOnChange(fn: any): void {
+        this.onChange = fn;
+    }
+
+    // Método da interface ControlValueAccessor
+    // Não foi feita sua implementação por não ser necessaria nesse caso
+    // consulte a documentação para mais detalhes.
+    registerOnTouched(fn: any): void {}
+
+    // Método da interface ControlValueAccessor
+    // Não foi feita sua implementação por não ser necessaria nesse caso
+    // consulte a documentação para mais detalhes.
+    setDisabledState?(isDisabled: boolean): void {}
+}
+```
+
+```html
+<!--Arquivo src/app/radio/radio.component.html-->
+<div *ngFor="let option of options">
+    <label>
+        <div
+            (click)="setValue(option.value)"
+            class="iradio_flat-red"
+            [class.checked]="option.value === value"
+            aria-checked="false"
+            aria-disabled="false"
+            style="position: relative;"
+        >
+            <ins
+                class="iCheck-helper"
+                style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"
+            ></ins>
+        </div>
+        {{option.label}}
+    </label>
+</div>
+```
+
+```html
+<!--Parte do arquivo src/app/order/order.html-->
+<!-- accepted payments column -->
+<div class="col-sm-6 col-xs-12">
+    <p class="lead">Formas de Pagamento:</p>
+
+    <div class="form-group">
+        <mt-radio
+            [options]="paymentOptions"
+            name="paymentOption"
+            ngModel
+        ></mt-radio>
+    </div>
+</div>
+<!-- /.col -->
+```
