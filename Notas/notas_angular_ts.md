@@ -1113,7 +1113,7 @@ export class AppModule { }
 ### Template Forms
 
 -   É uma forma declarativa de configurar os seus formularios no template do componente.
--   Uso da diretiva ngModel nos inputs, que devem ser controlados pelo framework.
+-   Uso da diretiva `ngModel` nos inputs, que devem ser controlados pelo framework.
 -   Quando se declara um form em template, o Angular automaticamente associa a diretiva NgForm de forma implicita.
 -   Com a diretiva ngForm, pode-se determinar a validade do form, o valor do form e outros status.
 
@@ -1133,11 +1133,11 @@ export class AppModule {}
 
 ```html
 <form>
-    <!--Com o uso da diretiva ngModel, name é obrigatório.-->
+    <!--Com o uso da diretiva `ngModel`, name é obrigatório.-->
     <!--Uma vez associado essa diretiva, o form passa a estar ciente-->
     <!--do valor do campo, de forma que se o campo for válido,-->
     <!--o form fica válido, e se for inválido, o form tambem.-->
-    <input type="text" name="name" ngModel />
+    <input type="text" name="name" `ngModel` />
 </form>
 ```
 
@@ -1153,12 +1153,12 @@ export class UserComponent {
     <!-- One-way binding
     Apenas quando o valor no componente mudar, o campo é atualizado
     -->
-    <input type="text" name="name" [ngModel]="username" />
+    <input type="text" name="name" [`ngModel`]="username" />
 
     <!-- Two-way binding
     Se o campo mudar, o valor no componente é atualizado.
     -->
-    <input type="text" name="name" [(ngModel)]="username" />
+    <input type="text" name="name" [(`ngModel`)]="username" />
 </form>
 ```
 
@@ -1170,9 +1170,9 @@ export class UserComponent {
 <!--uma vez que esta pode mudar de acordo com o browser, e-->
 <!--fazer com que o angular seja o responsável pela validação-->
 <form novalidate #myForm="ngForm">
-    <input type="text" name="name" ngModel />
-    <input type="text" name="lastname" ngModel />
-    <input type="text" name="address" ngModel />
+    <input type="text" name="name" `ngModel` />
+    <input type="text" name="lastname" `ngModel` />
+    <input type="text" name="address" `ngModel` />
     <!--Habilitando um botão, baseado na validade do form-->
     <button [disabled]="myForm.invalid" />
 </form>
@@ -1190,8 +1190,8 @@ export class UserComponent {
 ```html
 <form>
     <!--Para saber em que estado um campo se encontra, é necessario-->
-    <!--obter uma referencia a diretiva ngModel-->
-    <input name="name" [ngModel]="username" #ipt="ngModel" />
+    <!--obter uma referencia a diretiva `ngModel`-->
+    <input name="name" [`ngModel`]="username" #ipt="`ngModel`" />
     <!--Se o campo for inválido, a mensagem será apresentada-->
     <span *ngIf="ipt.invalid">Nome inválido</span>
 </form>
@@ -1208,8 +1208,8 @@ export class UserComponent {
 <form>
     <input
         name="name"
-        [ngModel]="username"
-        #ipt="ngModel"
+        [`ngModel`]="username"
+        #ipt="`ngModel`"
         required
         minlenght="5"
     />
@@ -1222,3 +1222,115 @@ export class UserComponent {
 -   ng-valid | ng-invalid
 -   ng-pristine | ng-dirty
 -   ng-untouched | ng-touched
+
+### Content Projection
+
+-   Utíl para facilitar a reutilização de código
+-   Componente container
+-   No curso foi abordado como uma das soluções para o seguinte problema:
+    -   Quando voce encapsula um input text (campo) de um form em um componente próprio, o form deixa de enxergar o campo.
+    -   A solução, com `Content Projection`, é transformar esse componente, em um componente container, onde se aplica apenas o estilo visual e deixa o component parent passar o input text para dentro do container.
+-   Uso da tag `<ng-content>`, similar a `<route-outlet>`, representa um espaço onde vai entrar um conteudo, que vai ficar entre as tags do componente.
+
+```html
+<!--Arquivo src/app/shared/input/input.component.html-->
+<div
+    class="form-group"
+    [class.has-success]="hasSuccess()"
+    [class.has-error]="hasError()"
+>
+    <label class="control-label sr-only" for="inputSuccess"
+        ><i class="fa fa-check"></i> {{label}}</label
+    >
+    <ng-content></ng-content>
+    <span class="help-block" *ngIf="hasSuccess()"
+        ><i class="fa fa-check"></i> Ok</span
+    >
+    <span class="help-block" *ngIf="hasError()"
+        ><i class="fa fa-remove"></i> {{errorMessage}}</span
+    >
+</div>
+```
+
+```typescript
+// Arquivo src/app/shared/input/input.component.ts
+import {
+    Component,
+    OnInit,
+    Input,
+    ContentChild,
+    //Método de ciclo de vida
+    AfterContentInit
+} from "@angular/core";
+import { NgModel } from "@angular/forms";
+
+@Component({
+    //Mudamos o selector para *-container, para deixar claro ser um container
+    selector: "mt-input-container",
+    templateUrl: "./input.component.html"
+})
+export class InputComponent implements OnInit, AfterContentInit {
+    input: any;
+    @Input() label: string;
+    @Input() errorMessage: string;
+
+    // Com o decorator ContentChild voce pode obter uma referencia
+    // a uma diretiva, ou elemento.
+    @ContentChild(NgModel) model: NgModel;
+
+    constructor() {}
+
+    ngOnInit() {}
+
+    // Método que será chamado quando o conteudo que irá ficar
+    // no lugar do <ng-content> for definido
+    ngAfterContentInit() {
+        // Momento ideal para checar se ngModel existe, e o
+        // para pegar a referencia ngModel e atribuir ao input
+        this.input = this.model;
+        // Verifica se o conteudo possui uma tag ngModel
+        if (this.input === undefined) {
+            throw new Error(
+                "Esse componente precisa ser usado com uma diretiva ngModel"
+            );
+        }
+    }
+
+    hasSuccess(): boolean {
+        return this.input.valid && (this.input.dirty || this.input.touched);
+    }
+
+    hasError(): boolean {
+        return this.input.invalid && (this.input.dirty || this.input.touched);
+    }
+}
+```
+
+```html
+<!--Arquivo src/app/order/order.component.html-->
+<!--Arquivo de template do Component Parent, que irá conter o container-->
+<div class="col-sm-6 col-xs-12">
+    <!--Uso do componente container-->
+    <mt-input-container
+        errorMessage="Campo obrigatório e com min. 5 caracteres"
+        label="Número"
+    >
+        <input
+            class="form-control"
+            name="address"
+            ngModel
+            required
+            placeholder="Endereço"
+            minlength="5"
+        />
+    </mt-input-container>
+</div>
+```
+
+### ControlValueAccessor
+
+-   Util para facilitar a reutilização de código.
+-   Interface
+-   No curso foi abordado como uma das soluções para o seguinte problema:
+    -   Quando voce encapsula um input text (campo) de um form em um componente próprio, o form deixa de enxergar o campo.
+    -   A solução, com `ControlValueAccessor`, é deixar o componente completamente isolado, com o input, e implementar a interface `ControlValueAccessor` que serve de ponte entre as diretivas de apoio de formulario, como `ngModel`, e o componente.
