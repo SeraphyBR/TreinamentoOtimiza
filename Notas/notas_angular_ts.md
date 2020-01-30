@@ -1471,3 +1471,72 @@ export class RadioComponent implements OnInit, ControlValueAccessor {
 </div>
 <!-- /.col -->
 ```
+
+### Navegação Programatica via Router
+
+-   Navegando direto na programação:
+-   `import { Router } from "@angular/router";`
+-   `constructor(..., private router: Router) {}`
+-   `this.router.navigate(['/caminho'])`
+
+### Reactive Forms
+
+-   Nova forma do angular de implementar formularios.
+-   Em código
+-   Associação no template.
+-   Ao invés de usar `ngModel` e configurar validadores nos campos, iremos criar instancias de `formGroup`, ou `formControl`, dentro de um componente.
+
+```typescript
+@Component({...})
+export class UserComponent implements OnInit {
+    userForm: FormGroup
+
+    constructor(private fb: FormBuilder){}
+
+    ngOnInit(){
+        this.userForm = this.fb.group({
+            username: '',
+            password: '',
+
+            // Equivalente ao código acima
+            username: this.fb.control(''),
+            password: this.fb.control(''),
+
+            // Uso de validadores
+            username: this.fb.control('', [Validators.required]),
+            password: this.fb.control('', [Validators.minlenght(3)]),
+
+            // Uso de outro form group, para agrupar campos que fazem sentido em conjunto
+            // Vantagem: Aplicar validators a nivel do grupo para validar valores entre os componentes
+            address: this.fb.group({
+                street: '',
+                zip: ''
+            })
+        })
+    }
+}
+```
+
+```html
+<!--O form será associado ao grupo no componente com a diretiva formGroup-->
+<!--O grupo tambem é associado a classes de CSS para facilitar o feedback do usuario-->
+<form [formGroup]="userForm">
+    <!--Cada componente será associado com formControlName-->
+    <input type="text" formControlName="username" />
+    <input type="password" formControlName="password" />
+
+    <!--Se tiver outro grupo, este pode ser associado com formGroupName-->
+    <div formGroupName="address">
+        <input type="text" formControlName="street" />
+        <input type="text" formControlName="zip" />
+    </div>
+</form>
+```
+
+#### Validators (Reactive)
+
+-   Equivalente ao template forms, reactive forms tem os seguintes validators padrões:
+    -   minlength(..) | maxlength(..)
+    -   required
+    -   pattern(..)
+-   Declarados de forma estática na classe Validators
