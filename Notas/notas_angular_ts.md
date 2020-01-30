@@ -1482,11 +1482,31 @@ export class RadioComponent implements OnInit, ControlValueAccessor {
 ### Reactive Forms
 
 -   Nova forma do angular de implementar formularios.
--   Em código
+-   Em código, criação programatica de formularios.
+-   Maior controle na criação de formularios.
 -   Associação no template.
 -   Ao invés de usar `ngModel` e configurar validadores nos campos, iremos criar instancias de `formGroup`, ou `formControl`, dentro de um componente.
+-   A diretiva `formControlName` fornece as mesmas propriedades de estados que `ngModel`.
 
 ```typescript
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
+// Importando o modulo de Reactive Forms
+import { ReactiveFormsModule } from '@angular/forms';
+import { AppComponent } from "./app.component";
+
+@NgModule({
+    declarations: [AppComponent],
+    imports: [BrowserModule],
+    // Adicionando o modulo de Reactive Forms na lista de providers
+    providers: [..., ReactiveFormsModule],
+    bootstrap: [AppComponent]
+})
+export class AppModule {}
+```
+
+```typescript
+import { FormGroup, FormBuilder} from '@angular/forms'
 @Component({...})
 export class UserComponent implements OnInit {
     userForm: FormGroup
