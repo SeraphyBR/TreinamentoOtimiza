@@ -1506,7 +1506,7 @@ export class AppModule {}
 ```
 
 ```typescript
-import { FormGroup, FormBuilder} from '@angular/forms'
+import { FormGroup, FormBuilder, Validators} from '@angular/forms'
 @Component({...})
 export class UserComponent implements OnInit {
     userForm: FormGroup
@@ -1560,3 +1560,56 @@ export class UserComponent implements OnInit {
     -   required
     -   pattern(..)
 -   Declarados de forma estática na classe Validators
+
+#### Validators Personalizados
+
+```typescript
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms'
+@Component({...})
+export class UserComponent implements OnInit {
+    userForm: FormGroup
+
+    constructor(private fb: FormBuilder){}
+
+    ngOnInit(){
+        this.userForm = this.fb.group({
+            username: this.fb.control('', [Validators.required]),
+            password: this.fb.control('', [Validators.minlenght(3)]),
+            email: this.fb.control('', [Validators.required]),
+            emailConfirmation: this.fb.control('', [Validators.required])
+        },
+        // Parametro que aplica um validator a nivel de grupo,
+        // passando uma função
+        {validator: UserComponent.equalsTo}
+        )
+    }
+    static equalsTo(group: AbstractControl): {[key: string]: boolean} {
+        //Obtendo uma referencia a um campo do form
+        const email = group.get('email')
+        const emailConfirmation = group.get('emailConfirmation')
+        if(!email || !emailConfirmation){
+            //Retornando undefined o validator não será aplicado ao grupo
+            return undefined
+        }
+
+        if(email.value !== emailConfirmation.value){
+            // Retornando uma chave para auxiliar no feedback posterior
+            return { emailsNotMatch: true }
+        }
+        return undefined
+    }
+}
+```
+
+```html
+<div class="col-xs-12 col-sm-3">
+    <!--Todo grupo, seja atraves de formGroup, formControlName ou ngModel-->
+    <!--possui um metodo especifico para checar se tem determinado erro-->
+    <span
+        class="help-block pull-right has-error-block"
+        *ngIf="orderForm.hasError('emailsNotMatch')"
+    >
+        <i class="fa fa-remove"></i> Emails não conferem!
+    </span>
+</div>
+```
