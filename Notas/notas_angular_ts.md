@@ -1613,3 +1613,28 @@ export class UserComponent implements OnInit {
     </span>
 </div>
 ```
+
+### Módulos
+
+-   São itens de configuração do framework.
+-   Organização da aplicação.
+-   Servem para agregar componentes, diretivas, serviços ou pipes.
+-   Pode-se decidir o que será exportado para fora do Modulo e como a injeção de dependencias será configurada.
+-   Tipos de módulos:
+    -   Root Module:
+        -   Módulo raiz que tem a declaração dos componentes usados por toda a aplicação.
+        -   Faz o bootstrap da aplicação
+    -   Shared Module:
+        -   Modulo compartilhado com todos os componentes que são usados por outros módulos da aplicação
+    -   Core Module:
+        -   Possui todos os serviços da aplicação
+        -   Não contem componentes, apenas serviços
+        -   Exemplo: HttpModule
+    -   Feature Module:
+        -   Contem a implementação das funcionalidades da aplicação
+
+![diagrama](assets/images/diagrama-modulos.png)
+
+#### Lazy Loading
+
+-   É possivel dividir uma aplicação em partes independentes e definir que essas partes não sejam carregadas de imediato, apenas quando requisitadas, com isso o startup da aplicação vai ficar mais rápido porque de inicio as pessoas não vão precisar esperar por algo que elas não vão usar.
