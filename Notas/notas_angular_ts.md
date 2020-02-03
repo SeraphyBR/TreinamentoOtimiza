@@ -1635,6 +1635,56 @@ export class UserComponent implements OnInit {
 
 ![diagrama](assets/images/diagrama-modulos.png)
 
+-   Para declarar um modulo é necessario uma classe associada ao decorator NgModule.
+
+```typescript
+import { NgModule } from "@angular/core";
+
+@NgModule({
+    declarations: [...],
+    imports: [...],
+    providers: [...],
+    exports: [...] // Componentes que serão visíveis de fora
+})
+export class MyModule { }
+```
+
 #### Lazy Loading
 
 -   É possivel dividir uma aplicação em partes independentes e definir que essas partes não sejam carregadas de imediato, apenas quando requisitadas, com isso o startup da aplicação vai ficar mais rápido porque de inicio as pessoas não vão precisar esperar por algo que elas não vão usar.
+-   Lazy loading é fornecido no angular atraves do RouterModule
+
+```typescript
+// arquivo src/app/app.routes.ts
+...
+import { Routes } from "@angular/router";
+import { HomeComponent } from "./home/home.component";
+
+export const ROUTES: Routes = [
+    {path: '', component: HomeComponent},
+    // Quando o caminho about for acionado ele vai carregar
+    // a configuração que está dentro do módulo AboutModule
+    {path: 'about', loadChildren: './about/about.module#AboutModule'}
+]
+```
+
+```typescript
+// arquivo src/app/about/about.module.ts
+import { NgModule } from "@angular/core";
+import { AboutComponent } from "./about.component";
+import { Routes, RouterModule } from "@angular/router";
+
+const ROUTES: Routes = [
+    // Indicando rota padrão do modulo para o componente About
+    { path: "", component: AboutComponent }
+];
+
+@NgModule({
+    declarations: [AboutComponent],
+    // Importando as regras de navegação do AboutModule
+    // como esse é um modulo filho, usa-se o metodo forChild()
+    // diferente do modulo principal com forRoot()
+    imports: [RouterModule.forChild(ROUTES)]
+})
+export class AboutModule {}
+```
