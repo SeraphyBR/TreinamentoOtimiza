@@ -1723,7 +1723,7 @@ import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 export class SharedModule {}
 ```
 
-#### Relação entre providers e modulos
+#### Relação entre providers e módulos
 
 -   Transcrição do video 79 do curso
 
@@ -1736,7 +1736,7 @@ ele serve tanto para componentes quanto para os filhos.
 O ponto mais alto da hierarquia é um contexto de gestão independente chamado de contexto global.
 Esse contexto global pertence ao módulo raiz.
 
--   E qual seria a relação dos providers com o módulo? Se eu declarar um serviço na lista de providers de um modulo, ele vai ficar disponivel apenas para os componentes daquele modulo?
+-   E qual seria a relação dos providers com o módulo? Se eu declarar um serviço na lista de providers de um modulo, ele vai ficar disponível apenas para os componentes daquele modulo?
 
 > R: Não e sim, vai depender de como você vai carregar aquele modulo.
 > Por padrão um modulo não tem um contexto de injeção de dependencias como tem os componentes e
@@ -1745,8 +1745,8 @@ Esse contexto global pertence ao módulo raiz.
 > se o modulo for carregado junto com o modulo raiz.
 >
 > Se tivermos um modulo que seja carregado tardiamente, ou seja, via lazy loading, o modulo ganha um contexto de injeção de
-> dependencia separado, então os providers que estão na lista de providers de um modulo que é carregado tardiamente,
-> ele tem um contexto de injeção de dependencia isolado do restante da aplicação.
+> dependência separado, então os providers que estão na lista de providers de um modulo que é carregado tardiamente,
+> ele tem um contexto de injeção de dependência isolado do restante da aplicação.
 
 #### Core Module
 
@@ -1755,9 +1755,84 @@ Esse contexto global pertence ao módulo raiz.
 -   Cenario:
     > Voce tem uma aplicação que é carregada totalmente de forma imediata e voce configurou uma lista de providers em vários
     > módulos, mas acabou não percebendo que eles fazem parte, na verdade, da lista de providers, em runtime, do modulo raiz.
-    > E então aos poucos você foi decidindo carregar certos modulos de forma tardia, e percebeu que aqueles objetos
+    > E então aos poucos você foi decidindo carregar certos módulos de forma tardia, e percebeu que aqueles objetos
     > não estavam mais compartilhando dados entre partes da aplicação.
     >
     > Para consertar esse problema, voce teria que reestruturar a sua aplicação para que isso não aconteça.
 -   O core module serve para evitar o cenário acima.
 -   Passa-se a ter um modulo isolado, onde voce tem todos os providers da aplicação nesse modulo e esse modulo só é importado no módulo raiz, para evitar caso você venha a declarar um provider na lista de providers de um modulo e ele seja carregado tardiamente, você tenha uma instancia a mais que não era esperada, ali no meio do contexto de injeção de dependências.
+
+#### Adicionando serviços a um modulo compartilhado
+
+-   Permite reduzir a configuração da aplicação.
+-   Torna a existência de um Core Module obsoleta, pois permite o SharedModule exercer a mesma função.
+-   Angular possui um objeto chamado ModuleWithProviders que permite importar um modulo de forma diferente, uma com os providers e outra sem.
+-   Ideal para a situação onde importa-se um modulo em vários outros módulos que são carregados de forma tardia e tambem importa esse modulo no modulo raiz.
+
+```typescript
+// Arquivo src/app/shared/shared.module.ts
+// Importa-se o ModuleWithProviders
+import { NgModule, ModuleWithProviders } from "@angular/core";
+
+// COmponentes do shared module
+import { InputComponent } from "./input/input.component";
+import { RadioComponent } from "./radio/radio.component";
+import { RatingComponent } from "./rating/rating.component";
+
+// Módulos usados nos componentes
+import { CommonModule } from "@angular/common";
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+
+// Serviços que antes pertenciam ao Core Module
+import { ShoppingCartService } from "app/restaurant-detail/shopping-cart/shopping-cart.service";
+import { OrderService } from "app/order/order.service";
+import { RestaurantsService } from "app/restaurants/restaurants.service";
+
+@NgModule({
+    declarations: [InputComponent, RadioComponent, RatingComponent],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    exports: [
+        InputComponent,
+        RadioComponent,
+        RatingComponent,
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule
+    ]
+})
+export class SharedModule {
+    // Cria-se uma função que retorna o proprio módulo + providers
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: SharedModule,
+            providers: [ShoppingCartService, OrderService, RestaurantsService]
+        };
+    }
+}
+```
+
+```typescript
+// Arquivo src/app/app.module.ts
+import { NgModule, LOCALE_ID } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { HttpModule } from "@angular/http";
+import { RouterModule } from "@angular/router";
+import { ROUTES } from "./app.routes";
+import { AppComponent } from "./app.component";
+
+import { SharedModule } from "./shared/shared.module";
+
+@NgModule({
+  declarations: [...],
+  imports: [
+    BrowserModule,
+    HttpModule,
+    RouterModule.forRoot(ROUTES),
+    // Faz a importação do SharedModule + providers, dispensando o CoreModule
+    SharedModule.forRoot()
+  ],
+  providers: [{ provide: LOCALE_ID, useValue: "pt-BR" }],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+```
