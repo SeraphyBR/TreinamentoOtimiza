@@ -1688,3 +1688,37 @@ const ROUTES: Routes = [
 })
 export class AboutModule {}
 ```
+
+### Módulo compartilhado
+
+```typescript
+import { NgModule } from "@angular/core";
+import { InputComponent } from "./input/input.component";
+import { RadioComponent } from "./radio/radio.component";
+import { RatingComponent } from "./rating/rating.component";
+// Modulo que contem as diretivas básicas, importado indiretamente
+// pelo BrowseModule no Modulo Raiz
+import { CommonModule } from "@angular/common";
+// Como o componente de Input usa tanto ReactiveForm quanto NgModel
+// é necessario importar-los no Modulo
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+
+@NgModule({
+  declarations: [InputComponent, RadioComponent, RatingComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  // Serve para dizer quais componentes pertencentes ao modulo
+  // que queremos que possa ser utilizado por outros modulos
+  exports: [
+    InputComponent,
+    RadioComponent,
+    RatingComponent,
+    // Podemos re-exportar os módulos padrões, dessa forma
+    // o modulo que importar o SharedModule não vai precisar importar
+    // os módulos abaixo novamente
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule
+  ]
+})
+export class SharedModule {}
+```
