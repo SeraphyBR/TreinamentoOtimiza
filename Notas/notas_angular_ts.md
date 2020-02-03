@@ -23,7 +23,7 @@ let favoriteDroid = "BB-8";
 -   São um tipo de dados.
 -   Podem possuir nome ou serem anonimas.
 -   Tanto o parametro, quanto o retorno podem ser tipados.
--   Podem ser atribudas a variaveis.
+-   Podem ser atribuídas a variaveis.
 
 ```typescript
 function useTheForce(name: string): void {
@@ -64,7 +64,7 @@ call("R2");
 #### Parametros opcionais (função)
 
 -   Em javascript todos os parametros são opcionais, em typescript voce é obrigado a informar-los por padrão
--   Para um parametro ser opcional, adicione o suffixo '?'
+-   Para um parametro ser opcional, adicione o sufixo '?'
 
 ```typescript
 function inc(speed: number, inc?: number): number {
@@ -137,11 +137,11 @@ class Spacecraft {
 
     constructor(propulsor: string) {
         // É obrigatorio o uso do this para se referenciar
-        // a uma propriedade ou metodo da classe
+        // a uma propriedade ou método da classe
         this.propulsor = propulsor;
     }
 
-    //Para definir um metodo não se utiliza da palavra chave function
+    //Para definir um método não se utiliza da palavra chave function
     jumpIntoHyperspace() {
         console.log("Entering hyperspace with " + this.propulsor);
     }
@@ -164,10 +164,10 @@ class MillenniumFalcon extends Spacecraft {
         super("hyperdrive");
     }
 
-    //Sobrescrita do metodo da classe Spacecraft
+    //Sobrescrita do método da classe Spacecraft
     jumpIntoHyperspace() {
         if (Math.random() >= 0.5) {
-            //Chamada do metodo da classe pai/super
+            //Chamada do método da classe pai/super
             super.jumpIntoHyperspace();
         } else {
             console.log("Failed");
@@ -209,7 +209,7 @@ console.log(goodForTheJob(falcon));
 //> true
 ```
 
-### Import e export - Divisão do programa em modulos
+### Import e export - Divisão do programa em módulos
 
 ```typescript
 //O caminho é relativo ao arquivo de onde sera feito o import
@@ -246,12 +246,12 @@ export { Containership };
 npm init
 
 # Instala uma biblioteca ao seu projeto
-# o parametro --save indica que a biblioteca é necessaria tanto
+# o parametro --save indica que a biblioteca é necessária tanto
 # em deseonvolvimento quanto em runtime
 npm install --save lodash@4.14
 
 # Instala uma definição de tipos para o lodash
-# o --save-dev indica que é somente necessaria durante desenvolvimento
+# o --save-dev indica que é somente necessária durante desenvolvimento
 npm install --save-dev @types/lodash@4.14
 ```
 
@@ -269,7 +269,7 @@ ng new myangularproj --prefix=myap
 
 #### main.ts
 
--   Arquivo responsavel pelo bootstrap do projeto
+-   Arquivo responsável pelo bootstrap do projeto
 
 #### polyfills.ts
 
@@ -287,14 +287,14 @@ import { AppComponent } from "./app.component";
 
 // NgModule é um Decorator
 // Decorator é uma função que serve para aplicar metadados
-// a uma função,metodo,classe,argumentos de metodos.
+// a uma função,método,classe,argumentos de metodos.
 // Nesse caso está sendo aplicada em uma classe AppModule
 @NgModule({
     declarations: [AppComponent],
     imports: [BrowserModule],
     providers: [],
     //Diz qual dos componentes listados em declarations
-    //que será responsavel pelo bootstrap da aplicação
+    //que será responsável pelo bootstrap da aplicação
     bootstrap: [AppComponent]
 })
 export class AppModule {}
@@ -323,7 +323,7 @@ import { Component } from "@angular/core";
     // Recomendado apenas se o template for pequeno e simples
     template: "<h1>my first component</h1>",
 
-    // Com multiplas linhas, se usa o ``
+    // Com múltiplas linhas, se usa o ``
     // Templates podem ter expressões que resolvem
     // as propriedades dos componentes, chamado de String Interpolation
     template: `
@@ -369,7 +369,7 @@ ng g c restaurants/restaurant --skipTests=true
 
 #### Property Binding
 
--   Serve para linkar o valor da propriedade de um elemento do DOM, a uma expressao angular
+-   Serve para linkar o valor da propriedade de um elemento do DOM, a uma expressão angular
 -   Sintaxe [], de "One-Way Binding"
 -   Pode ser aplicada a qualquer propriedade do [DOM](https://www.w3schools.com/whatis/whatis_htmldom.asp)
 
@@ -532,7 +532,7 @@ export class HeaderComponent {
 
 -   Sem diretivas ng-\*
 -   sintaxe - '()'
--   Usa-se () ao redor de um evento para linkar a um metodo de um componente
+-   Usa-se () ao redor de um evento para linkar a um método de um componente
 
 ```typescript
 import { Component } from '@angular/core'
@@ -542,7 +542,7 @@ import { Component } from '@angular/core'
     template: '<button (click)="clicked()">Click!</button>',
 
     // Pode se tambem passar uma referencia ao evento usando $event
-    // que será passado ao metodo, e então poderá ser inspecionado.
+    // que será passado ao método, e então poderá ser inspecionado.
 
     // Em certos tipos de evento como keydown, voce pode associar a tecla
     // separado por ponto.
@@ -618,7 +618,7 @@ export class ClickableComponent {
 
 -   Tornam a pagina dinamica.
 -   Permite que troque um componente para outros em seu lugar.
--   É necessario mapear cada componente em uma rota.
+-   É necessário mapear cada componente em uma rota.
 -   Uso do Tipo Routes do AngularJS.
 -   Uso da diretiva routerLink para navegar nas rotas.
 
@@ -712,7 +712,7 @@ export class AppModule { }
     viewProviders: [MyFirstService]
 })
 export class MyFirstComponent {
-    // Ao invés de instanciar um servico/dependencia dentro
+    // Ao invés de instanciar um servico/dependência dentro
     // do construtor, o componente pode receber o serviço
     // diretamente pronto como argumento, a vantagem é que
     // se o serviço depender de outro objeto, o componente não
@@ -738,7 +738,7 @@ export class AppModule {}
 
 -   Classes que podem ser usadas para injetar em outros componentes ou serviços.
 -   São geralmente usados para encapsular o acesso a API's de backend.
--   Podem ser singletons: são otimos candidatos a guardar dados compartilhados para toda a aplicação.
+-   Podem ser singletons: são ótimos candidatos a guardar dados compartilhados para toda a aplicação.
 -   Tambem podem guardar dados para somente parte de uma aplicação.
 
 ```typescript
@@ -764,7 +764,7 @@ export class MyService {
 
 -   Serviço para obter e alterar o titulo de uma página.
 -   Um componente pode requisitar a injeção e usar um método para trocar o titulo.
--   Esse serviço existe porque não é possivel usar expressoes angular na pagina html inteira, como o titulo fica no Head e essa parte não faz parte do bootstrap, foi criado o serviço title.
+-   Esse serviço existe porque não é possível usar expressões angular na pagina html inteira, como o titulo fica no Head e essa parte não faz parte do bootstrap, foi criado o serviço title.
 
 ```typescript
 import { Title } from "@angular/plataform-browser";
@@ -804,7 +804,7 @@ export class RestaurantsComponent implements OnInit {
     constructor(private restaurantsService: RestaurantsService) {}
 
     // Sempre que o componente entrar na tela, e todas as dependencias e
-    // injeções tiverem sido atribuidas ao componente, o metodo ngOnInit
+    // injeções tiverem sido atribuidas ao componente, o método ngOnInit
     // será chamado pelo angular
     ngOnInit() {
         // Momento ideal para fazer a inicialização do componente
@@ -825,7 +825,7 @@ export class RestaurantsComponent implements OnInit {
 
 -   Os metodos da API http retornam Observable<Response>, um dos objetos principais do RXJS.
 -   Permite coisas interessantes como, por exemplo, facilmente refazer as chamadas http usando o método retry de Observable.
--   Permite fazer multiplos mapeamentos até que a resposta seja da forma como voce espera.
+-   Permite fazer múltiplos mapeamentos até que a resposta seja da forma como voce espera.
 
 ```typescript
 this.http
@@ -845,12 +845,12 @@ this.http
 
 -   Observables continuam disparando eventos até que sejam explicitamente fechados.
 -   Promises são consideradas resolvidas depois do primeiro evento.
--   Observables são mais flexiveis, pois, por exemplo, possuem capacidade de usar WebSockets.
+-   Observables são mais flexíveis, pois, por exemplo, possuem capacidade de usar WebSockets.
 
 #### Subscribe/Unsubscribe
 
 -   Um Observable só é "executado" quando um objeto se inscreve nele, até então ele é como um "corpo".
--   Quando um objeto se inscreve em um Observable, é necessario remover a inscrição posterior para evitar Memory Leaks.
+-   Quando um objeto se inscreve em um Observable, é necessário remover a inscrição posterior para evitar Memory Leaks.
 -   Mesmo quando um componente sai da tela, um listener que foi inscrito pode continuar sendo chamado.
 -   Os Observable retornados pela API http, pelos parametros do router e pelo Pipe Async, não precisam de cancelamento de inscrição.
 
@@ -877,12 +877,12 @@ export class RestaurantsService {
             this.http
                 .get(`${MEAT_API}/restaurants`)
                 /*
-                O map está sendo responsavel em "converter"
+                O map está sendo responsável em "converter"
                 o Observable<Response> do get para um
                 Observable<Restaurants[]>.
 
-                O metodo .json() vai obter um json do Corpo
-                do Response, sendo este compativel com o tipo Restaurant[].
+                O método .json() vai obter um json do Corpo
+                do Response, sendo este compatível com o tipo Restaurant[].
                 A conversão do json para Restaurants[] ocorre implicitamente.
                 */
                 .map(response => response.json())
@@ -927,7 +927,7 @@ export class RestaurantsComponent implements OnInit {
 
     ngOnInit() {
         // O subscribe irá obter o Restaurants[] do Observable
-        // retornado pelo metodo restaurants() de restaurantsService
+        // retornado pelo método restaurants() de restaurantsService
         this.restaurantsService
             .restaurants()
             .subscribe(restaurants => (this.restaurants = restaurants));
@@ -1184,12 +1184,12 @@ export class UserComponent {
 -   Disponibiliza os seguintes estados para feedback visual:
     1. (in)valid: Diz se o campo está de acordo com as regras de validação
     2. Pristine: Representa o estado inicial do campo ou form.
-    3. Dirty: Representa o estado assim que o usuario digita no campo, não se volta desse estado.
-    4. (un)touched: Indica quando o usuario toca/entra no campo.
+    3. Dirty: Representa o estado assim que o usuário digita no campo, não se volta desse estado.
+    4. (un)touched: Indica quando o usuário toca/entra no campo.
 
 ```html
 <form>
-    <!--Para saber em que estado um campo se encontra, é necessario-->
+    <!--Para saber em que estado um campo se encontra, é necessário-->
     <!--obter uma referencia a diretiva `ngModel`-->
     <input name="name" [`ngModel`]="username" #ipt="`ngModel`" />
     <!--Se o campo for inválido, a mensagem será apresentada-->
@@ -1201,7 +1201,7 @@ export class UserComponent {
 
 -   As validações que se podem atribuir a um campo são:
     1. required: Especifica se um campo é obrigatório
-    2. pattern - Regex: Recebe um padrão de espressão regular
+    2. pattern - Regex: Recebe um padrão de expressão regular
     3. {min,max}lenght: Recebe um número e checa se o valor atende o especificado
 
 ```html
@@ -1225,7 +1225,7 @@ export class UserComponent {
 </form>
 ```
 
-#### Classes CSS disponiveis para feedback visual
+#### Classes CSS disponíveis para feedback visual
 
 -   ng-valid | ng-invalid
 -   ng-pristine | ng-dirty
@@ -1527,7 +1527,7 @@ export class UserComponent implements OnInit {
             password: this.fb.control('', [Validators.minlenght(3)]),
 
             // Uso de outro form group, para agrupar campos que fazem sentido em conjunto
-            // Vantagem: Aplicar validators a nivel do grupo para validar valores entre os componentes
+            // Vantagem: Aplicar validators a nível do grupo para validar valores entre os componentes
             address: this.fb.group({
                 street: '',
                 zip: ''
@@ -1603,8 +1603,8 @@ export class UserComponent implements OnInit {
 
 ```html
 <div class="col-xs-12 col-sm-3">
-    <!--Todo grupo, seja atraves de formGroup, formControlName ou ngModel-->
-    <!--possui um metodo especifico para checar se tem determinado erro-->
+    <!--Todo grupo, seja através de formGroup, formControlName ou ngModel-->
+    <!--possui um método especifico para checar se tem determinado erro-->
     <span
         class="help-block pull-right has-error-block"
         *ngIf="orderForm.hasError('emailsNotMatch')"
@@ -1651,8 +1651,8 @@ export class MyModule { }
 
 #### Lazy Loading
 
--   É possivel dividir uma aplicação em partes independentes e definir que essas partes não sejam carregadas de imediato, apenas quando requisitadas, com isso o startup da aplicação vai ficar mais rápido porque de inicio as pessoas não vão precisar esperar por algo que elas não vão usar.
--   Lazy loading é fornecido no angular atraves do RouterModule
+-   É possível dividir uma aplicação em partes independentes e definir que essas partes não sejam carregadas de imediato, apenas quando requisitadas, com isso o startup da aplicação vai ficar mais rápido porque de inicio as pessoas não vão precisar esperar por algo que elas não vão usar.
+-   Lazy loading é fornecido no angular através do RouterModule
 
 ```typescript
 // arquivo src/app/app.routes.ts
@@ -1682,7 +1682,7 @@ const ROUTES: Routes = [
 @NgModule({
     declarations: [AboutComponent],
     // Importando as regras de navegação do AboutModule
-    // como esse é um modulo filho, usa-se o metodo forChild()
+    // como esse é um modulo filho, usa-se o método forChild()
     // diferente do modulo principal com forRoot()
     imports: [RouterModule.forChild(ROUTES)]
 })
@@ -1700,14 +1700,14 @@ import { RatingComponent } from "./rating/rating.component";
 // pelo BrowseModule no Modulo Raiz
 import { CommonModule } from "@angular/common";
 // Como o componente de Input usa tanto ReactiveForm quanto NgModel
-// é necessario importar-los no Modulo
+// é necessário importar-los no Modulo
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 @NgModule({
     declarations: [InputComponent, RadioComponent, RatingComponent],
     imports: [CommonModule, FormsModule, ReactiveFormsModule],
     // Serve para dizer quais componentes pertencentes ao modulo
-    // que queremos que possa ser utilizado por outros modulos
+    // que queremos que possa ser utilizado por outros módulos
     exports: [
         InputComponent,
         RadioComponent,
