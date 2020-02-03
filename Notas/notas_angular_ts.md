@@ -37,7 +37,7 @@ let shortestRun = function(parsecs: number): boolean {
 
 #### Arrow functions
 
--   (parametro: tipo,...) => implementacao;
+-   (parametro: tipo,...) => implementação;
 -   Permite escrever uma função ser utilizar a palavra chave function e return
 
 ```typescript
@@ -78,7 +78,7 @@ inc(5, 1);
 
 //Informando um valor default logo na declaração.
 //Tambem pode ser feito uma chamada de uma outra função
-//no lugar do numero, que seja responsavel por definir um valor
+//no lugar do numero, que seja responsável por definir um valor
 function inc(speed: number, inc: number = 1): number {
     let i = inc;
     return speed + i;
@@ -90,7 +90,7 @@ inc(5, 1);
 
 #### Parametros REST
 
--   Permite passar inumeros valores como parametro, sem ter que literalmente criar um array na chamada
+-   Permite passar inúmeros valores como parametro, sem ter que literalmente criar um array na chamada
 -   Chamada mais simples da função
 -   préfixo ... antes do nome do parametro do tipo array
 
@@ -1689,7 +1689,7 @@ const ROUTES: Routes = [
 export class AboutModule {}
 ```
 
-### Módulo compartilhado
+#### Módulo compartilhado
 
 ```typescript
 import { NgModule } from "@angular/core";
@@ -1704,21 +1704,60 @@ import { CommonModule } from "@angular/common";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 @NgModule({
-  declarations: [InputComponent, RadioComponent, RatingComponent],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  // Serve para dizer quais componentes pertencentes ao modulo
-  // que queremos que possa ser utilizado por outros modulos
-  exports: [
-    InputComponent,
-    RadioComponent,
-    RatingComponent,
-    // Podemos re-exportar os módulos padrões, dessa forma
-    // o modulo que importar o SharedModule não vai precisar importar
-    // os módulos abaixo novamente
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule
-  ]
+    declarations: [InputComponent, RadioComponent, RatingComponent],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    // Serve para dizer quais componentes pertencentes ao modulo
+    // que queremos que possa ser utilizado por outros modulos
+    exports: [
+        InputComponent,
+        RadioComponent,
+        RatingComponent,
+        // Podemos re-exportar os módulos padrões, dessa forma
+        // o modulo que importar o SharedModule não vai precisar importar
+        // os módulos abaixo novamente
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule
+    ]
 })
 export class SharedModule {}
 ```
+
+#### Relação entre providers e modulos
+
+-   Transcrição do video 79 do curso
+
+Sempre quando declaramos um provider na lista de providers de um componente
+estamos limitando a instancia daquele serviço e disponibilizando para o componente
+e seus filhos, sempre que eles precisarem do serviço. Podemos dizer que o componente
+tem um contexto de injeção de dependência, pra ele esse contexto é hierárquico, porque
+ele serve tanto para componentes quanto para os filhos.
+
+O ponto mais alto da hierarquia é um contexto de gestão independente chamado de contexto global.
+Esse contexto global pertence ao módulo raiz.
+
+-   E qual seria a relação dos providers com o módulo? Se eu declarar um serviço na lista de providers de um modulo, ele vai ficar disponivel apenas para os componentes daquele modulo?
+
+> R: Não e sim, vai depender de como você vai carregar aquele modulo.
+> Por padrão um modulo não tem um contexto de injeção de dependencias como tem os componentes e
+> como tem o Módulo raiz, na verdade ele não tem. Então sempre que voce declarar um provider na lista de providers de um modulo,
+> esses providers são adicionados a lista de providers do modulo raiz, ou seja, no contexto global. Porem isso só vai ser verdadeiro
+> se o modulo for carregado junto com o modulo raiz.
+>
+> Se tivermos um modulo que seja carregado tardiamente, ou seja, via lazy loading, o modulo ganha um contexto de injeção de
+> dependencia separado, então os providers que estão na lista de providers de um modulo que é carregado tardiamente,
+> ele tem um contexto de injeção de dependencia isolado do restante da aplicação.
+
+#### Core Module
+
+-   A ideia do core module é evitar uma mudança de comportamento, caso decida-se trocar o modo de carregamento do seu modulo, exemplo: tirar do carregamento junto do modulo raiz (Eager loading) para um carregamento tardio (Lazy Loading).
+-   Se for feito como no exemplo acima, e esse modulo tiver muitos providers, voce corre o risco de modificar o comportamento da aplicação, sem perceber muito.
+-   Cenario:
+    > Voce tem uma aplicação que é carregada totalmente de forma imediata e voce configurou uma lista de providers em vários
+    > módulos, mas acabou não percebendo que eles fazem parte, na verdade, da lista de providers, em runtime, do modulo raiz.
+    > E então aos poucos você foi decidindo carregar certos modulos de forma tardia, e percebeu que aqueles objetos
+    > não estavam mais compartilhando dados entre partes da aplicação.
+    >
+    > Para consertar esse problema, voce teria que reestruturar a sua aplicação para que isso não aconteça.
+-   O core module serve para evitar o cenário acima.
+-   Passa-se a ter um modulo isolado, onde voce tem todos os providers da aplicação nesse modulo e esse modulo só é importado no módulo raiz, para evitar caso você venha a declarar um provider na lista de providers de um modulo e ele seja carregado tardiamente, você tenha uma instancia a mais que não era esperada, ali no meio do contexto de injeção de dependências.
