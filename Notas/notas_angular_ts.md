@@ -1864,12 +1864,17 @@ import { AppComponent } from "./app.component";
 })
 export class AppModule {}
 ```
+
 ### Animações
+
 -   Trazem movimento à aplicação
--   O Angular possui um Modulo especifico para animações que é baseada na spec *Web Animations API*
+-   O Angular possui um Modulo especifico para animações que é baseada na spec _Web Animations API_.
 -   Módulo @angular/animations
+-   Possui um Polyfills para browsers que ainda não suportam o _Web Animations API_
 
 ```typescript
+// Importando as funções para definir a animação
+import { trigger, state, style, transition, animate } from "@angular/animations"
 @Component({
     // Aplicando a trigger stretch ao template do botão, e associando
     // a propriedade buttonState, quando ela mudar de valor, irá acionar uma
@@ -1895,3 +1900,108 @@ export class AppModule {}
 })
 export class ButtonComponent { buttonState = 'normal'}
 ```
+
+#### Instalação do módulo de animações
+
+```sh
+# No curso foi usado a versão 4 para mander a compatibilidade com os outros módulos
+npm install --save @angular/animations@4.0.0
+
+# Polyfill
+npm install --save web-animations-js
+```
+
+```typescript
+// arquivo src/polyfills.ts
+...
+import 'web-animations-js/web-animations.min.js'
+```
+
+```typescript
+// Arquivo src/app/app.module.ts
+import { NgModule, LOCALE_ID } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from "@angular/plataform-browser/animations"
+import { HttpModule } from "@angular/http";
+import { RouterModule, PreloadAllModules } from "@angular/router";
+import { ROUTES } from "./app.routes";
+import { AppComponent } from "./app.component";
+
+@NgModule({
+  declarations: [...],
+  imports: [
+    BrowserModule,
+    // Módulo de animações
+    BrowserAnimationsModule,
+    HttpModule,
+    RouterModule.forRoot(ROUTES, {preloadingStrategy: PreloadAllModules}),
+  ],
+  providers: [{ provide: LOCALE_ID, useValue: "pt-BR" }],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+```
+
+#### Usando Observable com Snackbar
+-   Usado para que o snackbar desapareça depois de um tempo.
+-   A implementação abaixo possui um problema de comportamento.
+
+```typescript
+import { Component, OnInit } from "@angular/core";
+import { trigger, state, style, transition, animate } from "@angular/animations";
+import { NotificationService } from "../notification.service";
+import { Observable } from "rxjs/Observable";
+// Importando o operador Timer de Observable
+import 'rxjs/add/observable/timer'
+
+@Component({
+  selector: "mt-snackbar",
+  templateUrl: "./snackbar.component.html",
+  styleUrls: ["./snackbar.component.css"],
+  animations: [
+    trigger("snack-visibility", [
+      state( "hidden",
+        style({
+          opacity: 0,
+          bottom: "0px"
+        })
+      ),
+      state(
+        "visible",
+        style({
+          opacity: 1,
+          bottom: "30px"
+        })
+      ),
+      transition("hidden => visible", animate("500ms 0s ease-in")),
+      transition("visible => hidden", animate("500ms 0s ease-out"))
+    ])
+  ]
+})
+export class SnackbarComponent implements OnInit {
+  message: string = "Hello there!";
+
+  snackVisibility: string = "hidden";
+
+  constructor(private notificationService: NotificationService) {}
+
+  ngOnInit() {
+    this.notificationService.notifier.subscribe(message => {
+      this.message = message
+      this.snackVisibility = 'visible'
+      // Quando uma nova mensagem chegar, irá iniciar um outro observable
+      // que irá iniciar um timer, e quando o timer acabar ele vai mudar a
+      // visibilidade do snackbar para hidden.
+
+      // Problema: Sempre que o evento de notificação ocorrer, irá ser criado um
+      // novo timer, devido a isso irá ocorrer uma competição entre os timers
+      // fazendo com que a mensagem suma antes do esperado devido a um timer antigo
+      // ter esgotado.
+      Observable.timer(3000).subscribe(timeout => this.snackVisibility = 'hidden')
+    })
+  }
+}
+```
+
+#### Usando os Operadores Do e SwitchMap
+-   Resolve o problema de concorrência da implementação acima
