@@ -2005,3 +2005,30 @@ export class SnackbarComponent implements OnInit {
 
 #### Usando os Operadores Do e SwitchMap
 -   Resolve o problema de concorrência da implementação acima
+-   Diferença do `subscribe` e `do`:
+    - O subscribe coloca um listener no `Observable` e só apartir desse ponto que o `Observable` vai notificar, diferentemente, o `do` permite executar uma ação no instante que chega a mensagem, ele faz parte da configuração, apenas com o `do` o `Observable` não vai ainda mandar mensagens.
+-   O `switchMap` vai trocar o `Observable` Inteiro, permite o encadeamento de `Observable`, mas permitindo usar apenas um `subscribe`.
+-   Com a implementação abaixo, não vai ocorrer o problema acima devido a um comportamento especial do switchMap, ele faz automaticamente um `unsubscribe` se quando uma nova mensagem chegar, o `Observable` antigo estiver ativo.
+
+```typescript
+// Importa-se os operadores do e switchMap
+import 'rxjs/add/operator/do'
+import 'rxjs/add/operator/switchMap'
+
+@Component({...})
+export class SnackbarComponent implements OnInit {
+  message: string = "Hello there!";
+
+  snackVisibility: string = "hidden";
+
+  constructor(private notificationService: NotificationService) {}
+
+  ngOnInit() {
+    this.notificationService.notifier.do(message => {
+      this.message = message
+      this.snackVisibility = 'visible'
+    }).switchMap(message => Observable.timer(3000))
+    .subscribe(timeout => this.snackVisibility = 'hidden')
+  }
+}
+```
