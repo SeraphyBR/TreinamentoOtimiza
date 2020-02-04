@@ -1836,3 +1836,62 @@ import { SharedModule } from "./shared/shared.module";
 })
 export class AppModule {}
 ```
+
+### Pré-carregamento de todos os Módulos em segundo plano
+
+-   Não gera atrasos.
+-   Carregamento tárdio em background.
+-   Serve para evitar que o usuário perceba uma demora quando um modulo lazy-loading for iniciado.
+
+```typescript
+// Arquivo src/app/app.module.ts
+import { NgModule, LOCALE_ID } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { HttpModule } from "@angular/http";
+import { RouterModule, PreloadAllModules } from "@angular/router";
+import { ROUTES } from "./app.routes";
+import { AppComponent } from "./app.component";
+
+@NgModule({
+  declarations: [...],
+  imports: [
+    BrowserModule,
+    HttpModule,
+    RouterModule.forRoot(ROUTES, {preloadingStrategy: PreloadAllModules}),
+  ],
+  providers: [{ provide: LOCALE_ID, useValue: "pt-BR" }],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+```
+### Animações
+-   Trazem movimento à aplicação
+-   O Angular possui um Modulo especifico para animações que é baseada na spec *Web Animations API*
+-   Módulo @angular/animations
+
+```typescript
+@Component({
+    // Aplicando a trigger stretch ao template do botão, e associando
+    // a propriedade buttonState, quando ela mudar de valor, irá acionar uma
+    // transição.
+    template: `<button [@stretch]="buttonState">Click</button>`
+    animations: [
+        trigger('stretch', [
+            // definindo os estados da animação
+            state('normal', style({width: '40px'})),
+            state('stretched', style({width: '120px'})),
+            // definindo a velocidade da transição de estados,
+            // assim de fato criando uma animação.
+            transition('normal => stretched', animate('300ms')),
+            transition('stretched => normal', animate('500ms')),
+
+            // Uso do estado especial "*", chamado de wildcard, que representa
+            // qualquer estado.
+            // O código abaixo diz que para qualquer transição de um estado para outro qualquer,
+            // terá uma velocidade de animação de 500ms
+            transition('* => *', animate('500ms'))
+        ])
+    ]
+})
+export class ButtonComponent { buttonState = 'normal'}
+```
