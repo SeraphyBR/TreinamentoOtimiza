@@ -1897,7 +1897,7 @@ import { trigger, state, style, transition, animate } from "@angular/animations"
             transition('* => *', animate('500ms')),
 
             // Uso do estado especial "void", que representa o estado em que o componente
-            // não está na arvore de componentes, ou seja, ainda não foi carregado na tela.
+            // não está na arvore de componentes do DOM, ou seja, não está na tela.
             // Logo a transição abaixo representa o momento em que o botão entra na tela.
             transition('void => normal', [
                 // É tambem possível aplicar estilos na propria transição
@@ -1908,6 +1908,7 @@ import { trigger, state, style, transition, animate } from "@angular/animations"
                 // ease-out sai acelerando;
                 // ease-in-out é os dois de cima juntos;
                 animate('500ms 0s ease-in-out')
+                // função animate('duração(ms/s) delay(ms/s) aceleração(easing)')
             ])
         ])
     ]
@@ -1957,70 +1958,81 @@ export class AppModule {}
 ```
 
 #### Usando Observable com Snackbar
+
 -   Usado para que o snackbar desapareça depois de um tempo.
 -   A implementação abaixo possui um problema de comportamento.
 
 ```typescript
 import { Component, OnInit } from "@angular/core";
-import { trigger, state, style, transition, animate } from "@angular/animations";
+import {
+    trigger,
+    state,
+    style,
+    transition,
+    animate
+} from "@angular/animations";
 import { NotificationService } from "../notification.service";
 import { Observable } from "rxjs/Observable";
 // Importando o operador Timer de Observable
-import 'rxjs/add/observable/timer'
+import "rxjs/add/observable/timer";
 
 @Component({
-  selector: "mt-snackbar",
-  templateUrl: "./snackbar.component.html",
-  styleUrls: ["./snackbar.component.css"],
-  animations: [
-    trigger("snack-visibility", [
-      state( "hidden",
-        style({
-          opacity: 0,
-          bottom: "0px"
-        })
-      ),
-      state(
-        "visible",
-        style({
-          opacity: 1,
-          bottom: "30px"
-        })
-      ),
-      transition("hidden => visible", animate("500ms 0s ease-in")),
-      transition("visible => hidden", animate("500ms 0s ease-out"))
-    ])
-  ]
+    selector: "mt-snackbar",
+    templateUrl: "./snackbar.component.html",
+    styleUrls: ["./snackbar.component.css"],
+    animations: [
+        trigger("snack-visibility", [
+            state(
+                "hidden",
+                style({
+                    opacity: 0,
+                    bottom: "0px"
+                })
+            ),
+            state(
+                "visible",
+                style({
+                    opacity: 1,
+                    bottom: "30px"
+                })
+            ),
+            transition("hidden => visible", animate("500ms 0s ease-in")),
+            transition("visible => hidden", animate("500ms 0s ease-out"))
+        ])
+    ]
 })
 export class SnackbarComponent implements OnInit {
-  message: string = "Hello there!";
+    message: string = "Hello there!";
 
-  snackVisibility: string = "hidden";
+    snackVisibility: string = "hidden";
 
-  constructor(private notificationService: NotificationService) {}
+    constructor(private notificationService: NotificationService) {}
 
-  ngOnInit() {
-    this.notificationService.notifier.subscribe(message => {
-      this.message = message
-      this.snackVisibility = 'visible'
-      // Quando uma nova mensagem chegar, irá iniciar um outro observable
-      // que irá iniciar um timer, e quando o timer acabar ele vai mudar a
-      // visibilidade do snackbar para hidden.
+    ngOnInit() {
+        this.notificationService.notifier.subscribe(message => {
+            this.message = message;
+            this.snackVisibility = "visible";
+            // Quando uma nova mensagem chegar, irá iniciar um outro observable
+            // que irá iniciar um timer, e quando o timer acabar ele vai mudar a
+            // visibilidade do snackbar para hidden.
 
-      // Problema: Sempre que o evento de notificação ocorrer, irá ser criado um
-      // novo timer, devido a isso irá ocorrer uma competição entre os timers
-      // fazendo com que a mensagem suma antes do esperado devido a um timer antigo
-      // ter esgotado.
-      Observable.timer(3000).subscribe(timeout => this.snackVisibility = 'hidden')
-    })
-  }
+            // Problema: Sempre que o evento de notificação ocorrer, irá ser criado um
+            // novo timer, devido a isso irá ocorrer uma competição entre os timers
+            // fazendo com que a mensagem suma antes do esperado devido a um timer antigo
+            // ter esgotado.
+            Observable.timer(3000).subscribe(
+                timeout => (this.snackVisibility = "hidden")
+            );
+        });
+    }
 }
 ```
 
 #### Usando os Operadores Do e SwitchMap
+
 -   Resolve o problema de concorrência da implementação acima
 -   Diferença do `subscribe` e `do`:
-    - O subscribe coloca um listener no `Observable` e só apartir desse ponto que o `Observable` vai notificar, diferentemente, o `do` permite executar uma ação no instante que chega a mensagem, ele faz parte da configuração, apenas com o `do` o `Observable` não vai ainda mandar mensagens.
+    -   O subscribe coloca um listener no `Observable` e só apartir desse ponto que o `Observable` vai notificar, diferentemente, o `do` permite executar uma ação no instante que chega a mensagem, ele faz parte da configuração, apenas com o `do` o `Observable` não vai ainda mandar mensagens.
 -   O `switchMap` vai trocar o `Observable` Inteiro, permite o encadeamento de `Observable`, mas permitindo usar apenas um `subscribe`.
 -   Com a implementação abaixo, não vai ocorrer o problema acima devido a um comportamento especial do switchMap, ele faz automaticamente um `unsubscribe` se quando uma nova mensagem chegar, o `Observable` antigo estiver ativo, ou seja, ele abandona o timer dele pelo novo.
 
@@ -2048,6 +2060,7 @@ export class SnackbarComponent implements OnInit {
 ```
 
 #### Animações com Keyframes
+
 -   Animação que contem vários marcos, ou passos.
 -   Cada passo possui um estilo de css diferente.
 -   Permite criar animações um pouco mais complexas.
@@ -2055,23 +2068,79 @@ export class SnackbarComponent implements OnInit {
 -   Cada KeyFrame possui um estilo único, que representa o estado de um objeto.
 
 ```typescript
-import { trigger, state, style, transition, animate } from "@angular/animations"
+import {
+    trigger,
+    state,
+    style,
+    transition,
+    animate,
+    keyframes
+} from "@angular/animations";
 @Component({
     animations: [
-        trigger('tgr', [
-            ...
-            transition('st1 => st2', [
-                animate('500ms 0s ease-in-out', keyframes ([
-                    // offset: 0 significa o inicio da animação
-                    style({transform: 'transform(0px, 0px)', offset: 0}),
-                    // offset: 0.6 significa 60% da animação
-                    style({transform: 'transform(100px, 0px)', offset: 0.6}),
-                    // offset: 1 significa o fim da animação
-                    style({transform: 'transform(140px, -30px)', offset: 1})
-                ]))
+        trigger("tgr", [
+            ...transition("st1 => st2", [
+                animate(
+                    "500ms 0s ease-in-out",
+                    keyframes([
+                        // offset: 0 significa o inicio da animação
+                        style({ transform: "transform(0px, 0px)", offset: 0 }),
+                        // offset: 0.6 significa 60% da animação
+                        style({
+                            transform: "transform(100px, 0px)",
+                            offset: 0.6
+                        }),
+                        // offset: 1 significa o fim da animação
+                        style({
+                            transform: "transform(140px, -30px)",
+                            offset: 1
+                        })
+                    ])
+                )
             ])
         ])
     ]
 })
-export class MyComponent { }
+export class MyComponent {}
+```
+
+### Rotas com Wildcard (Página não encontrada)
+
+-   Rota a ser usada, caso não bata com nenhuma outra.
+
+```typescript
+import { Routes } from "@angular/router";
+import { HomeComponent } from "./home/home.component";
+import { NotFoundComponent } from "./not-found/not-found.component";
+
+export const ROUTES: Routes = [
+    { path: "", component: HomeComponent },
+    // Wildcard, deve-ser a ultima rota devido ao
+    // funcionamento do Router, que é similar a um switch case
+    { path: "**", component: NotFoundComponent }
+];
+```
+
+### Construindo a Aplicação
+
+-   No build de produção, o Typescript é traduzido em Javascript
+-   HTML é convertido em typescript e depois em Javascript, que irá gerar os códigos dos templates
+-   Todo o código não utilizado é removido.
+-   Todo o código gerado passa por um minify, ou seja, é removido os espaços e quebras de linha para melhorar o carregamento da página ao reduzir o tamanho dos arquivos.
+
+```sh
+# Compilação Just-in-time
+# Faz uma build com as configurações de desenvolvimento, o mesmo do ng serve.
+# Tambem gera arquivos *.map para permitir o debug ao mapear o código em javascript
+# ao escrito em Typescript.
+# A compilação dos templates html para javascript ocorre direto no Browser, pois o angular
+# passa o código desse "compilador" na build.
+ng build
+
+# Compilação Ahead-of-time
+# Faz um build para produção, sem *.map.
+# É quando ocorre a minificação e a conversão dos templates para typescript e depois Javascript.
+# Diferente do build acima, a compilação dos templates ocorre antes da aplicação vir ao browser,
+# logo menos código do framework é passado na compilação final.
+ng build --proc
 ```
