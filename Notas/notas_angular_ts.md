@@ -2190,3 +2190,13 @@ import { AppComponent } from "./app.component";
 })
 export class AppModule {}
 ```
+
+## Extras
+
+### Observable valueChanges de Reactive Forms
+
+-   [valueChanges](https://angular.io/guide/observables-in-angular#reactive-forms)
+
+### Operadores debounceTime e distintUntilChanged
+
+-   [debounceTime](https://rxjs-dev.firebaseapp.com/api/operators/debounceTime)
