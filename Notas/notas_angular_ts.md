@@ -2128,7 +2128,8 @@ export const ROUTES: Routes = [
 -   No build de produção, o Typescript é traduzido em Javascript
 -   HTML é convertido em typescript e depois em Javascript, que irá gerar os códigos dos templates
 -   Todo o código não utilizado é removido.
--   Todo o código gerado passa por um minify, ou seja, é removido os espaços e quebras de linha para melhorar o carregamento da página ao reduzir o tamanho dos arquivos.
+-   Todo o código gerado passa por um minify, ou seja, é removido os espaços, quebras de linha e comentarios para melhorar o carregamento da página ao reduzir o tamanho dos arquivos.
+-   Todo o código gerado passa por um Uglify que irá renomear alguns nomes de variaveis e funções para versões reduzidas, por exemplo, passando a ter uma letra como nome de variavel/função.
 
 ```sh
 # Compilação Just-in-time
@@ -2154,10 +2155,10 @@ ng serve --prod
 ### Modificando a estratégia de navegação (Hash)
 
 -   Modificamos a forma como angular fará a navegação para `Hash`, antigo padrão nas primeiras versões do angular.
+-   Mudando a estrátegia de navegação para `Hash`, adequamos a aplicação a servidores http mais tradicionais, em que voce não tem acesso ao ambiente e não pode configurar uma regra onde o 404 leve novamente para o index.html, em servidores http modernos e atuais, como apache e entre outros, não é necessário mudar a estratégia de navegação na aplicação, basta apenas configurar o servidor para quando não encontrar a pagina requisitada ele retornar ao browser o `index.html`.
 -   Com o `Hash` sempre que tiver uma requisição a uma rota especifica, será passado um indice com todas as rotas da aplicação, assim o servidor deixa de lidar com as rotas por sí.
 -   Sem usar essa estrátegia de navegação por padrão, quando rodar o build de produção em um servidor, ele não irá encontrar uma rota como: `http://localhost:8000/restaurants/bread-bakery/menu`, pois este foi gerado pela aplicação e não é um caminho real de arquivos que o browser buscaria.
 -   Com o uso da estrátegia Hash, por padrão os caminhos na aplicação ficaram como `http://localhost:8000/#/restaurants/bread-bakery/menu`.
--   Mudando a estrátegia de navegação para hash, adequamos a aplicação a servidores http mais tradicionais, em que voce não tem acesso ao ambiente e não pode configurar uma regra onde o 404 leve novamente para o index.html.
 
 ```typescript
 // Arquivo src/app/app.module.ts
