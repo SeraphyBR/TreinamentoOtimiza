@@ -2144,7 +2144,11 @@ ng build
 # Ocorre a minificação e a conversão dos templates para typescript e depois Javascript.
 # Diferente do build acima, a compilação dos templates ocorre antes da aplicação vir ao browser,
 # logo menos código do framework é passado na compilação final.
-ng build --proc
+ng build --prod
+
+# É tambem possível subir um servidor com as configurações de produção, a diferença é que
+# ele não vai produzir os arquivos na pasta dist.
+ng serve --prod
 ```
 
 ### Modificando a estratégia de navegação (Hash)
