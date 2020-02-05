@@ -2146,3 +2146,39 @@ ng build
 # logo menos código do framework é passado na compilação final.
 ng build --proc
 ```
+
+### Modificando a estratégia de navegação (Hash)
+
+-   Modificamos a forma como angular fará a navegação para `Hash`, antigo padrão nas primeiras versões do angular.
+-   Com o `Hash` sempre que tiver uma requisição a uma rota especifica, será passado um indice com todas as rotas da aplicação, assim o servidor deixa de lidar com as rotas por sí.
+-   Sem usar essa estrátegia de navegação por padrão, quando rodar o build de produção em um servidor, ele não irá encontrar uma rota como: `http://localhost:8000/restaurants/bread-bakery/menu`, pois este foi gerado pela aplicação e não é um caminho real de arquivos que o browser buscaria.
+-   Com o uso da estrátegia Hash, por padrão os caminhos na aplicação ficaram como `http://localhost:8000/#/restaurants/bread-bakery/menu`.
+-   Mudando a estrátegia de navegação para hash, adequamos a aplicação a servidores http mais tradicionais, em que voce não tem acesso ao ambiente e não pode configurar uma regra onde o 404 leve novamente para o index.html.
+
+```typescript
+// Arquivo src/app/app.module.ts
+import { NgModule, LOCALE_ID } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from "@angular/plataform-browser/animations"
+import { HttpModule } from "@angular/http";
+import { RouterModule, PreloadAllModules } from "@angular/router";
+// Importa-se a estrátegia Hash
+import { LocationStrategy, HashLocationStrategy } from '@angular/common'
+import { ROUTES } from "./app.routes";
+import { AppComponent } from "./app.component";
+
+@NgModule({
+  declarations: [...],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    HttpModule,
+    RouterModule.forRoot(ROUTES, {preloadingStrategy: PreloadAllModules}),
+  ],
+
+  // Informa ao angular para usar a estrátegia Hash
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}, { provide: LOCALE_ID, useValue: "pt-BR" }],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+```
