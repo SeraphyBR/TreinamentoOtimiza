@@ -1883,8 +1883,8 @@ import { trigger, state, style, transition, animate } from "@angular/animations"
     animations: [
         trigger('stretch', [
             // definindo os estados da animação
-            state('normal', style({width: '40px'})),
-            state('stretched', style({width: '120px'})),
+            state('normal', style({width: '40px', opacity: 1})),
+            state('stretched', style({width: '120px', opacity: 1})),
             // definindo a velocidade da transição de estados,
             // assim de fato criando uma animação.
             transition('normal => stretched', animate('300ms')),
@@ -1894,7 +1894,21 @@ import { trigger, state, style, transition, animate } from "@angular/animations"
             // qualquer estado.
             // O código abaixo diz que para qualquer transição de um estado para outro qualquer,
             // terá uma velocidade de animação de 500ms
-            transition('* => *', animate('500ms'))
+            transition('* => *', animate('500ms')),
+
+            // Uso do estado especial "void", que representa o estado em que o componente
+            // não está na arvore de componentes, ou seja, ainda não foi carregado na tela.
+            // Logo a transição abaixo representa o momento em que o botão entra na tela.
+            transition('void => normal', [
+                // É tambem possível aplicar estilos na propria transição
+                style({opacity: 0, transform: 'translate(-30px, -10px)'}),
+
+                // ease-in / ease-out / ease-in-out mudam como a animação irá acelerar:
+                // ease-in significa que o componente entra acelerando;
+                // ease-out sai acelerando;
+                // ease-in-out é os dois de cima juntos;
+                animate('500ms 0s ease-in-out')
+            ])
         ])
     ]
 })
@@ -2008,7 +2022,7 @@ export class SnackbarComponent implements OnInit {
 -   Diferença do `subscribe` e `do`:
     - O subscribe coloca um listener no `Observable` e só apartir desse ponto que o `Observable` vai notificar, diferentemente, o `do` permite executar uma ação no instante que chega a mensagem, ele faz parte da configuração, apenas com o `do` o `Observable` não vai ainda mandar mensagens.
 -   O `switchMap` vai trocar o `Observable` Inteiro, permite o encadeamento de `Observable`, mas permitindo usar apenas um `subscribe`.
--   Com a implementação abaixo, não vai ocorrer o problema acima devido a um comportamento especial do switchMap, ele faz automaticamente um `unsubscribe` se quando uma nova mensagem chegar, o `Observable` antigo estiver ativo.
+-   Com a implementação abaixo, não vai ocorrer o problema acima devido a um comportamento especial do switchMap, ele faz automaticamente um `unsubscribe` se quando uma nova mensagem chegar, o `Observable` antigo estiver ativo, ou seja, ele abandona o timer dele pelo novo.
 
 ```typescript
 // Importa-se os operadores do e switchMap
@@ -2031,4 +2045,33 @@ export class SnackbarComponent implements OnInit {
     .subscribe(timeout => this.snackVisibility = 'hidden')
   }
 }
+```
+
+#### Animações com Keyframes
+-   Animação que contem vários marcos, ou passos.
+-   Cada passo possui um estilo de css diferente.
+-   Permite criar animações um pouco mais complexas.
+-   Os pontos, onde uma animação tem que mudar, são chamados de KeyFrames.
+-   Cada KeyFrame possui um estilo único, que representa o estado de um objeto.
+
+```typescript
+import { trigger, state, style, transition, animate } from "@angular/animations"
+@Component({
+    animations: [
+        trigger('tgr', [
+            ...
+            transition('st1 => st2', [
+                animate('500ms 0s ease-in-out', keyframes ([
+                    // offset: 0 significa o inicio da animação
+                    style({transform: 'transform(0px, 0px)', offset: 0}),
+                    // offset: 0.6 significa 60% da animação
+                    style({transform: 'transform(100px, 0px)', offset: 0.6}),
+                    // offset: 1 significa o fim da animação
+                    style({transform: 'transform(140px, -30px)', offset: 1})
+                ]))
+            ])
+        ])
+    ]
+})
+export class MyComponent { }
 ```
