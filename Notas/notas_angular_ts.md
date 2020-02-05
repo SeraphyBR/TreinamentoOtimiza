@@ -2147,6 +2147,9 @@ ng build
 # logo menos código do framework é passado na compilação final.
 ng build --prod
 
+# Para mudar o url base do projeto
+ng build --prod --bh=/url/
+
 # É tambem possível subir um servidor com as configurações de produção, a diferença é que
 # ele não vai produzir os arquivos na pasta dist.
 ng serve --prod
