@@ -136,7 +136,7 @@ class Spacecraft {
     propulsor: string;
 
     constructor(propulsor: string) {
-        // É obrigatorio o uso do this para se referenciar
+        // É obrigatório o uso do this para se referenciar
         // a uma propriedade ou método da classe
         this.propulsor = propulsor;
     }
@@ -247,7 +247,7 @@ npm init
 
 # Instala uma biblioteca ao seu projeto
 # o parametro --save indica que a biblioteca é necessária tanto
-# em deseonvolvimento quanto em runtime
+# em desenvolvimento quanto em runtime
 npm install --save lodash@4.14
 
 # Instala uma definição de tipos para o lodash
@@ -259,7 +259,7 @@ npm install --save-dev @types/lodash@4.14
 
 ### Criar um novo projeto com o angular-cli
 
--   O prefixo é adicionado a cada componente que for criado, util quando usar varios componentes externos e ser capaz de diferenciar do seu.
+-   O prefixo é adicionado a cada componente que for criado, util quando usar vários componentes externos e ser capaz de diferenciar do seu.
 
 ```sh
 ng new myangularproj --prefix=myap
@@ -304,7 +304,7 @@ export class AppModule {}
 
 -   São pequenas partes independentes e reusaveis
 -   São classes com um determinado clico de vida
--   Possuem um template para definir uma aparencia
+-   Possuem um template para definir uma aparência
 -   Possuem um Selector(TAG) para ser usada em outras partes da aplicação
 
 ```typescript
@@ -428,7 +428,7 @@ export class HeaderComponent {
 <!--usando o header em outro componente-->
 <mt-header title="Minha App"></mt-header>
 
-<!--Resultado do codigo acima no DOM -->
+<!--Resultado do código acima no DOM -->
 <mt-header title="Minha App">
     <!--Template do component-->
     <h1>Minha App</h1>
@@ -568,7 +568,7 @@ import { Component, Output, EventEmitter } from "@angular/core";
     template: '<button (click)="clicked()">Click!</button>'
 })
 export class ClickableComponent {
-    // O decorator Output, ao inves de dizer que a propriedade recebe valores,
+    // O decorator Output, ao invés de dizer que a propriedade recebe valores,
     // significa que ela emite eventos, a saida do componente.
 
     // O nome do evento por padrão é o nome da propriedade.
@@ -745,7 +745,7 @@ export class AppModule {}
 import { Injectable } from "@angular/core";
 import { Http } from "@angular/http";
 
-// Decorator, não é necessario para que o seu serviço seja
+// Decorator, não é necessário para que o seu serviço seja
 // injetado em outro objeto, mas sim para que ele possa receber
 // injeções do framework
 @Injectable()
@@ -856,7 +856,7 @@ this.http
 
 ### Tratamento de Erros com o Operador Catch
 
--   Trechos de codigo do projeto do Curso, com uso de catch() e função externa para gerenciar erros.
+-   Trechos de código do projeto do Curso, com uso de catch() e função externa para gerenciar erros.
 
 ```typescript
 // arquivo src/app/restaurants/restaurants.service.ts
@@ -1422,12 +1422,12 @@ export class RadioComponent implements OnInit, ControlValueAccessor {
     }
 
     // Método da interface ControlValueAccessor
-    // Não foi feita sua implementação por não ser necessaria nesse caso
+    // Não foi feita sua implementação por não ser necessária nesse caso
     // consulte a documentação para mais detalhes.
     registerOnTouched(fn: any): void {}
 
     // Método da interface ControlValueAccessor
-    // Não foi feita sua implementação por não ser necessaria nesse caso
+    // Não foi feita sua implementação por não ser necessária nesse caso
     // consulte a documentação para mais detalhes.
     setDisabledState?(isDisabled: boolean): void {}
 }
@@ -1539,7 +1539,7 @@ export class UserComponent implements OnInit {
 
 ```html
 <!--O form será associado ao grupo no componente com a diretiva formGroup-->
-<!--O grupo tambem é associado a classes de CSS para facilitar o feedback do usuario-->
+<!--O grupo tambem é associado a classes de CSS para facilitar o feedback do usuário-->
 <form [formGroup]="userForm">
     <!--Cada componente será associado com formControlName-->
     <input type="text" formControlName="username" />
@@ -1578,7 +1578,7 @@ export class UserComponent implements OnInit {
             email: this.fb.control('', [Validators.required]),
             emailConfirmation: this.fb.control('', [Validators.required])
         },
-        // Parametro que aplica um validator a nivel de grupo,
+        // Parametro que aplica um validator a nível de grupo,
         // passando uma função
         {validator: UserComponent.equalsTo}
         )
@@ -1635,7 +1635,7 @@ export class UserComponent implements OnInit {
 
 ![diagrama](assets/images/diagrama-modulos.png)
 
--   Para declarar um modulo é necessario uma classe associada ao decorator NgModule.
+-   Para declarar um modulo é necessário uma classe associada ao decorator NgModule.
 
 ```typescript
 import { NgModule } from "@angular/core";
@@ -2079,7 +2079,8 @@ import {
 @Component({
     animations: [
         trigger("tgr", [
-            ...transition("st1 => st2", [
+            ...,
+            transition("st1 => st2", [
                 animate(
                     "500ms 0s ease-in-out",
                     keyframes([
@@ -2115,6 +2116,7 @@ import { NotFoundComponent } from "./not-found/not-found.component";
 
 export const ROUTES: Routes = [
     { path: "", component: HomeComponent },
+    ...,
     // Wildcard, deve-ser a ultima rota devido ao
     // funcionamento do Router, que é similar a um switch case
     { path: "**", component: NotFoundComponent }
@@ -2139,7 +2141,7 @@ ng build
 
 # Compilação Ahead-of-time
 # Faz um build para produção, sem *.map.
-# É quando ocorre a minificação e a conversão dos templates para typescript e depois Javascript.
+# Ocorre a minificação e a conversão dos templates para typescript e depois Javascript.
 # Diferente do build acima, a compilação dos templates ocorre antes da aplicação vir ao browser,
 # logo menos código do framework é passado na compilação final.
 ng build --proc
