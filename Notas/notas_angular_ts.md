@@ -2196,7 +2196,44 @@ export class AppModule {}
 ### Observable valueChanges de Reactive Forms
 
 -   [valueChanges](https://angular.io/guide/observables-in-angular#reactive-forms)
+-   No curso foi usado a propriedade valueChanges de FormControl, que é um Observable.
+-   Quem se increver nessa propriedade é notificado de mudanças no valor do campo.
 
 ### Operadores debounceTime e distintUntilChanged
 
 -   [debounceTime](https://rxjs-dev.firebaseapp.com/api/operators/debounceTime)
+-   O debounceTime só vai emitir o observable se a diferença entre 2 eventos for maior que o tempo informado
+-   [distinctUntilChanged](https://rxjs-dev.firebaseapp.com/api/operators/distinctUntilChanged)
+-   O distinctUntilChanged só vai emitir o observable se seu valor foi diferente do anterior.
+
+```typescript
+//imports usados
+...
+import { FormBuilder, FormGroup, FormControl } from "@angular/forms";
+import "rxjs/add/operator/switchMap";
+import "rxjs/add/operator/debounceTime";
+import "rxjs/add/operator/distinctUntilChanged";
+import "rxjs/add/operator/catch";
+import "rxjs/add/observable/from";
+import { Observable } from "rxjs/Observable";
+...
+
+// O código abaixo ira fazer com que, sempre que um valor mudar na barra de busca
+// ele espere 500ms entre uma mudança e outra para lançar outro evento
+// e que eles sejam diferentes entre si, para então atualizar a lista de restaurantes a serem
+// exibidos.
+this.searchControl.valueChanges
+    .debounceTime(500)
+    .distinctUntilChanged()
+    .do(searchTerm => console.log(`q=${searchTerm}`))
+    .switchMap(searchTerm =>
+        this.restaurantsService
+            .restaurants(searchTerm)
+            // O catch serve para evitar que o observable valueChanges quebre
+            // devido a um problema de rede e pare de mandar solicitações ao backend.
+            // No corpo do catch é criado um novo observable passando um array vazio para
+            // ser passado no subscribe.
+            .catch(error => Observable.from([]))
+    )
+    .subscribe(restaurants => this.restaurants = restaurants)
+```
