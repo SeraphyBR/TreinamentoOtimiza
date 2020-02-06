@@ -255,7 +255,7 @@ npm install --save lodash@4.14
 npm install --save-dev @types/lodash@4.14
 ```
 
-## Angular JS
+## Angular 4
 
 ### Criar um novo projeto com o angular-cli
 
