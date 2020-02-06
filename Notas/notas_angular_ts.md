@@ -2237,3 +2237,64 @@ this.searchControl.valueChanges
     )
     .subscribe(restaurants => this.restaurants = restaurants)
 ```
+
+## Angular 4.3 - Mudanças
+
+-   Introduziu um novo modulo para acesso http, chamado HttpClient.
+-   Tipagem dos métodos de serviço
+-   Nova funcionalidade chamada http interceptors, capaz de modificar um request antes de ser processado.
+
+### HttpClient
+
+-   Antiga forma de importar o modulo http
+
+```typescript
+import { HttpModule } from "@angular/http";
+
+@NgModule({
+    imports: [HttpModule]
+})
+export class AppModule {}
+```
+
+-   Nova forma
+
+```typescript
+import { HttpClientModule } from "@angular/common/http";
+
+@NgModule({
+    imports: [HttpClientModule]
+})
+export class AppModule {}
+```
+
+-   Uso
+
+```typescript
+import { HttpClient } from "@angular/common/http";
+
+@Injectable()
+export class MyService {
+    constructor(private http: HttpClient) {}
+}
+```
+
+-   O novo módulo http possui os mesmos métodos para requisições http.
+-   Não é mais necessário o uso do operador map para retornar o corpo da resposta, isso é feito automaticamente.
+-   Respostas tipadas.
+
+```typescript
+restaurantById(id: string): Observable<Restaurant> {
+    return this.http.get<Restaurant>(`restaurants/${id}`);
+}
+```
+
+```typescript
+//ou para acessar mais informações da resposta, como o header
+this.http
+    .get<Restaurant[]>(`/restaurants`, { observe: "response" })
+    .subscribe(resp => {
+        resp.headers.get("X-PageSize"); //custom header
+        this.rests = resp.body; // Restaurant[]
+    });
+```
