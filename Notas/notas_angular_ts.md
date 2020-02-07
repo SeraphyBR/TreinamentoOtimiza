@@ -2298,3 +2298,55 @@ this.http
         this.rests = resp.body; // Restaurant[]
     });
 ```
+
+## Introdução a JWT
+
+-   https://jwt.io/introduction/
+
+### O que é um token?
+
+-   É um dado que serve para identificar um usuário, ou outra aplicação.
+-   Representa o direito de acessar algo.
+
+### O que é JWT?
+
+-   JSON WEB TOKEN
+-   É uma padronização de formato de tokens.
+-   Usa o formato JSON para formatação.
+-   Com o uso de um padrão, a aplicação não precisa lidar com múltiplos formatos diferentes, como os cookies explicados abaixo e outros, como os que são implementados em browsers mobiles.
+
+### Identificação em uma aplicação web tradicional
+
+-   Em uma aplicação web tradicional, a autenticação é feita por meio de cookies.
+-   Em algum momento o browser informa os dados do usuário para o backend da aplicação, e este gera um cookie que identifica exclusivamente aquele usuário.
+-   Sempre quando for feito uma chamada nova a esta mesma aplicação, o browser automaticamente manda esse cookie previamente criado e assim o backend é capaz de identificar esse usuário que está associado ao id do cookie.
+-   Assim funciona o protocolo http.
+-   Cookies não são exclusivos para autenticação, mas são fundamentais para a identificação de um browser, devido a natureza do protocolo http.
+
+### Estrutura de um Token JWT
+
+-   É dividido em três partes:
+    -   Header:
+        -   Escrito em formato json
+        -   É onde ficam as informações sobre o token, por exemplo, como o algoritmo usado para assinar o token e o tipo do token (é opcional, mas se existir será sempre "JWT")
+        -   Os campos que carregam as informações são chamados de claims
+        -   ```json
+            {
+                "alg": "HS256",
+                "typ": "JWT"
+            }
+            ```
+    -   Payload:
+        -   É o corpo do token
+        -   É escrito em formato JSON
+        -   Carrega informações, claims, que são de interesse da aplicação.
+        -   Esses claims podem ser classificados como registrados (definidos pela especificação JWT), públicos ou privados.
+        -   ```json
+            {
+
+                "sub": "user@host.com",
+                "iss": "my-token-manager",
+                "exp": "1503183549"
+            }
+            ```
+    -   Signature
