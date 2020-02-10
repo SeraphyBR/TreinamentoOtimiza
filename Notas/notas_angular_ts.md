@@ -2326,6 +2326,7 @@ this.http
 ### Estrutura de um Token JWT
 
 -   É dividido em três partes:
+
     -   Header:
         -   Escrito em formato json
         -   É onde ficam as informações sobre o token, por exemplo, como o algoritmo usado para assinar o token e o tipo do token (é opcional, mas se existir será sempre "JWT")
@@ -2337,16 +2338,36 @@ this.http
             }
             ```
     -   Payload:
+
         -   É o corpo do token
         -   É escrito em formato JSON
         -   Carrega informações, claims, que são de interesse da aplicação.
         -   Esses claims podem ser classificados como registrados (definidos pela especificação JWT), públicos ou privados.
         -   ```json
             {
+                // Clains privados, interessam apenas aqueles
+                // que produzem e consomem o token
+                "profile": "admin",
+                "name": "John",
 
+                // Subject, representa o principal interessado,
+                // pode ser algo que identifique o usuário
                 "sub": "user@host.com",
+                // Representa quem gerou o token
                 "iss": "my-token-manager",
+                // Tempo de expiração do token em segundos
                 "exp": "1503183549"
             }
             ```
+
     -   Signature
+
+É gerado usando uma biblioteca chamada auth0
+
+```typescript
+    jwt.sign({
+        sub: 'user@host.com',
+        exp: Math.floor(Date.now / 1000) + (60 \* 60),
+        iss: 'meat-api'
+    }, 'my-signature-password')
+```
