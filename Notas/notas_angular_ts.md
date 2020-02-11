@@ -2446,3 +2446,34 @@ export class MyResponseInterceptor implements HttpInterceptor {
         iss: 'meat-api'
     }, 'my-signature-password')
 ```
+
+## Angular 5,6
+
+### Internacionalização
+
+-   Não é mais usado o pacote externo intl, logo não é necessário do polyfill adicionado posteriormente.
+
+```typescript
+import { AppComponent } from "./app.component";
+import { registerLocaleData } from "@angular/common";
+import localePt from '@angular/common/locales/pt'
+
+// Apartir do Angular 5, o pt-br virou o pt padrão (#orgulho)
+registerLocaleData(localePt, 'pt')
+
+@NgModule({
+  declarations: [...],
+  imports: [...],
+  providers: [
+    { provide: LOCALE_ID, useValue: "pt" },
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+```
+
+### Novo atributo updateOn para forms
+
+-   Ao invés de sempre que houver uma modificação em um campo, o angular fazer a validação e notificação de alteração, agora é possível atrasar para só ocorrer quando for retirado o foco do campo.
+-   [Post em um blog explicando o uso do updateOn="blur"](https://netbasal.com/boosting-performance-with-the-new-updateon-option-in-angular-v5-18857279ace2)
+-   [documentação citando o updateOn blur](https://angular.io/api/forms/FormControl#configure-the-control-to-update-on-a-blur-event)
