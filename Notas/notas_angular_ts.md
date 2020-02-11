@@ -462,6 +462,7 @@ export class HeaderComponent {
 -   Diretiva estrutural, trabalha com o padrão de template do HTML5
 -   Permite renderizar um conteudo caso a expressão associada seja verdadeira.
 -   Alternativa melhor ao uso da propriedade 'hidden' do DOM.
+-   https://angular.io/api/common/NgIf
 
 ```html
 <!--ng if -->
@@ -2297,6 +2298,80 @@ this.http
         resp.headers.get("X-PageSize"); //custom header
         this.rests = resp.body; // Restaurant[]
     });
+```
+
+### Interceptors
+
+-   Funcionalidade adicionada com o novo HttpClient
+-   https://angular.io/guide/http#http-interceptors
+-   Com esse mecanismo a aplicação consegue capturar o momento anterior ou posterior a uma chamada HTTP e fazer alterações comuns a todas as chamadas como, por exemplo, atribuir um novo header a requisição dinamicamente, sem precisar colocar em vários pontos da aplicação.
+-   É um padrão de projeto bem versátil e dá para fazer coisas como:
+    -   Loggin: Um interceptor pode ser criado para logar quando a requisição está sendo feita e com o que.
+    -   Profiling: Um interceptor tambem pode ser usado para calcular o tempo que as requisições a um backend estão levando, de modo que se descubra quais são os pontos que precisam de otimização.
+    -   Error handling: Um interceptor pode interceptar a resposta tambem, e se for o caso, promover um tratamento de erro global para a aplicação.
+
+#### Declaração
+
+```typescript
+export class MyCustomHeaderInterceptor implements HttpInterceptor {
+    // Primeiro argumento é o request que pode ser alterado.
+    // O segundo argumento é o objeto que representa o próximo interceptor
+    // na fila de interceptors, ou a implementação que fará a requisição ao backend.
+    intercept(
+        request: HttpRequest<any>,
+        next: HttpHandler
+    ): Observable<HttpEvent<any>> {
+        const myRequest = request.clone({
+            setHeaders: { "X-Custom-Header": "Value" }
+        });
+        // Sinalizando que a chamada continue com o request modificado
+        return next.handle(myRequest);
+    }
+}
+```
+
+#### Registrando um interceptor no módulo principal
+
+```typescript
+@NgModule({
+    providers: [
+        {
+            // token
+            provide: HTTP_INTERCEPTORS,
+            // Classe do interceptor
+            useClass: MyCustomHeaderInterceptor,
+            // Indica que o interceptor fará parte de uma lista de interceptors
+            // registrados com o mesmo token
+            multi: true
+        },
+        {
+            // Declarando outro interceptor a aplicação,
+            // a ordem de chamada irá respeitar a ordem da declaração
+            provide: HTTP_INTERCEPTORS,
+            useClass: MyAnotherInterceptor,
+            multi: true
+        }
+    ]
+})
+export class AppModule {}
+```
+
+#### Interceptando a resposta
+
+```typescript
+export class MyResponseInterceptor implements HttpInterceptor {
+    intercept(
+        request: HttpRequest<any>,
+        next: HttpHandler
+    ): Observable<HttpEvent<any>> {
+        return next.handle(request)
+        .do(response => console.log(response.headers))
+        .catch(error => {
+            if(error.status === 401) {...}
+            return Observable.throw(error)
+        });
+    }
+}
 ```
 
 ## Introdução a JWT
