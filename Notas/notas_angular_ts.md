@@ -2477,3 +2477,8 @@ export class AppModule {}
 -   Ao invés de sempre que houver uma modificação em um campo, o angular fazer a validação e notificação de alteração, agora é possível atrasar para só ocorrer quando for retirado o foco do campo.
 -   [Post em um blog explicando o uso do updateOn="blur"](https://netbasal.com/boosting-performance-with-the-new-updateon-option-in-angular-v5-18857279ace2)
 -   [documentação citando o updateOn blur](https://angular.io/api/forms/FormControl#configure-the-control-to-update-on-a-blur-event)
+
+### Compilação
+-   As versões 5 e 6 trouxaram varias otimizações de compilação e empacotamento.
+-   Agora quando rodar ng serve ele vai fazer o rebuild apenas das alterações, e não do projeto inteiro novamente, ou seja um build incremental.
+-  Uma das otimizações é a remoção dos espaços em brancos dos templates dos componentes, mas isso pode gerar um efeito colateral na aparência da aplicação, ja pode afetar certos estilos. Por isso existe uma opção chamada Preserve white spaces que pode ser configurado a nível de componente ou aplicação.
