@@ -2484,3 +2484,50 @@ export class AppModule {}
 -   As versões 5 e 6 trouxaram varias otimizações de compilação e empacotamento.
 -   Agora quando rodar ng serve ele vai fazer o rebuild apenas das alterações, e não do projeto inteiro novamente, ou seja um build incremental.
 -   Uma das otimizações é a remoção dos espaços em brancos dos templates dos componentes, mas isso pode gerar um efeito colateral na aparência da aplicação, ja pode afetar certos estilos. Por isso existe uma opção chamada [preserveWhitespaces](https://angular.io/guide/angular-compiler-options#preservewhitespaces) que pode ser configurado a nível de componente, no decorator, ou aplicação.
+
+### RxJS 6
+
+-   Os operadores agora não são métodos estaticos de Observable, mas sim funções que são chamadas dentro do operador Pipe.
+-   O operador Do foi renomeado para Tap.
+-   O operador Catch foi renomeado para CatchError
+-   O operador Throw foi renomeado para ThrowError
+
+```typescript
+import { Component, OnInit } from "@angular/core";
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate
+} from "@angular/animations";
+import { NotificationService } from "../notification.service";
+import { Observable, timer } from "rxjs";
+import { tap, switchMap } from "rxjs/operators"
+
+@Component({
+  selector: "mt-snackbar",
+  templateUrl: "./snackbar.component.html",
+  styleUrls: ["./snackbar.component.css"],
+  animations: [...]
+})
+export class SnackbarComponent implements OnInit {
+  message: string = "Hello there!";
+
+  snackVisibility: string = "hidden";
+
+  constructor(private notificationService: NotificationService) {}
+
+  ngOnInit() {
+    this.notificationService.notifier.pipe(
+      tap(message => {
+      this.message = message
+      this.snackVisibility = 'visible'
+    }),
+      switchMap(message => timer(3000))
+    )
+    .subscribe(timeout => this.snackVisibility = 'hidden')
+  }
+}
+```
+# Fim - 12/02/2020
