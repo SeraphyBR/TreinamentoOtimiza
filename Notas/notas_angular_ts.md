@@ -2131,6 +2131,7 @@ export const ROUTES: Routes = [
 -   Todo o código não utilizado é removido.
 -   Todo o código gerado passa por um minify, ou seja, é removido os espaços, quebras de linha e comentarios para melhorar o carregamento da página ao reduzir o tamanho dos arquivos.
 -   Todo o código gerado passa por um Uglify que irá renomear alguns nomes de variaveis e funções para versões reduzidas, por exemplo, passando a ter uma letra como nome de variavel/função.
+-   [Angular AOT compilation](https://angular.io/guide/aot-compiler)
 
 ```sh
 # Compilação Just-in-time
@@ -2479,6 +2480,7 @@ export class AppModule {}
 -   [documentação citando o updateOn blur](https://angular.io/api/forms/FormControl#configure-the-control-to-update-on-a-blur-event)
 
 ### Compilação
+
 -   As versões 5 e 6 trouxaram varias otimizações de compilação e empacotamento.
 -   Agora quando rodar ng serve ele vai fazer o rebuild apenas das alterações, e não do projeto inteiro novamente, ou seja um build incremental.
--  Uma das otimizações é a remoção dos espaços em brancos dos templates dos componentes, mas isso pode gerar um efeito colateral na aparência da aplicação, ja pode afetar certos estilos. Por isso existe uma opção chamada Preserve white spaces que pode ser configurado a nível de componente ou aplicação.
+-   Uma das otimizações é a remoção dos espaços em brancos dos templates dos componentes, mas isso pode gerar um efeito colateral na aparência da aplicação, ja pode afetar certos estilos. Por isso existe uma opção chamada [preserveWhitespaces](https://angular.io/guide/angular-compiler-options#preservewhitespaces) que pode ser configurado a nível de componente, no decorator, ou aplicação.
