@@ -7,7 +7,7 @@
 
 -   O uso de ; é opcional
 
-### Declaração de variaveis
+### Declaração de variáveis
 
 ```typescript
 let message: string = "Help me, Obi-Wan!!!";
@@ -50,21 +50,21 @@ let tieFighters = ships.filter(function(ship) {
 let ties = ships.filter(ship => ship.type === "TieFighter");
 ```
 
-#### Dizendo que a variavel será uma função
+#### Dizendo que a variável será uma função
 
 ```typescript
 let call: (name: string) => void;
-// Passando uma arrow function a variavel
+// Passando uma arrow function a variável
 call = name => console.log("Do you copy, " + name + "?");
 
 call("R2");
 //> Do you copy, R2?
 ```
 
-#### Parametros opcionais (função)
+#### Parâmetros opcionais (função)
 
--   Em javascript todos os parametros são opcionais, em typescript voce é obrigado a informar-los por padrão
--   Para um parametro ser opcional, adicione o sufixo '?'
+-   Em javascript todos os parâmetros são opcionais, em typescript voce é obrigado a informar-los por padrão
+-   Para um parâmetro ser opcional, adicione o sufixo '?'
 
 ```typescript
 function inc(speed: number, inc?: number): number {
@@ -88,11 +88,11 @@ inc(5, 1);
 //> 6
 ```
 
-#### Parametros REST
+#### Parâmetros REST
 
--   Permite passar inúmeros valores como parametro, sem ter que literalmente criar um array na chamada
+-   Permite passar inúmeros valores como parâmetro, sem ter que literalmente criar um array na chamada
 -   Chamada mais simples da função
--   préfixo ... antes do nome do parametro do tipo array
+-   prefixo ... antes do nome do parâmetro do tipo array
 
 ```typescript
 function countJedis(jedis: number[]): number {
@@ -265,7 +265,7 @@ npm install --save-dev @types/lodash@4.14
 ng new myangularproj --prefix=myap
 ```
 
-### Estrutura de um projeto AngularJS
+### Estrutura de um projeto Angular
 
 #### main.ts
 
@@ -620,7 +620,7 @@ export class ClickableComponent {
 -   Tornam a pagina dinamica.
 -   Permite que troque um componente para outros em seu lugar.
 -   É necessário mapear cada componente em uma rota.
--   Uso do Tipo Routes do AngularJS.
+-   Uso do Tipo Routes do Angular.
 -   Uso da diretiva routerLink para navegar nas rotas.
 
 ```html
