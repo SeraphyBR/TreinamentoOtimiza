@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="P05_ControleXF.Controles.ImagePage">
+    <ContentPage.Content>
+        <StackLayout x:Name="StackLayout1">
+            <Image 
+                Source="https://upload.wikimedia.org/wikipedia/commons/b/bb/Archlogo900.png"
+                Aspect="AspectFill"
+                IsOpaque="False"
+                x:Name="ImageOne"
+                
+                VerticalOptions="FillAndExpand"
+                />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

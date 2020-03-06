@@ -1,0 +1,7 @@
+﻿<Application
+    x:Class="P05_ControleXF.UWP.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:P05_ControleXF.UWP"
+    RequestedTheme="Light">
+</Application>

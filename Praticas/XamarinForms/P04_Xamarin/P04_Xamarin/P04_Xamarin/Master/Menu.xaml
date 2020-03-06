@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pag="clr-namespace:P04_Xamarin.Pages"
+             x:Class="P04_Xamarin.Master.Menu">
+    <MasterDetailPage.Master>
+        <!-- Menu -->
+        <ContentPage Title="Menu" BackgroundColor="#102113">
+            <StackLayout>
+                <StackLayout
+                    BackgroundColor="YellowGreen"
+                    Padding="30">
+                    <Image
+                        Source="LogoXamarin.png"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
+                </StackLayout>
+                <StackLayout Spacing="50">
+                    <Button
+                        Text="Miguel De Icaza"
+                        FontSize="28"
+                        TextColor="White"
+                        BackgroundColor="Transparent"
+                        Clicked="ToPerfil1" />
+                    <Button
+                        Text="Joseph Hill"
+                        FontSize="28"
+                        TextColor="White"
+                        BackgroundColor="Transparent" />
+                    <Button
+                        Text="Nat Friedman"
+                        FontSize="28"
+                        TextColor="White"
+                        BackgroundColor="Transparent" />
+                    <Button
+                        Text="Sobre a Xamarin"
+                        FontSize="28"
+                        TextColor="White"
+                        BackgroundColor="Transparent"
+                        Clicked="ToAboutXamarin" />
+                </StackLayout>
+            </StackLayout>
+        </ContentPage>
+    </MasterDetailPage.Master>
+    <MasterDetailPage.Detail>
+        <!-- Páginas -->
+        <NavigationPage>
+            <x:Arguments>
+                <pag:Perfil1 />
+            </x:Arguments>
+        </NavigationPage>
+    </MasterDetailPage.Detail>
+</MasterDetailPage>

@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="P04_Xamarin.Pages.Perfil1">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Spacing="0">
+                <RelativeLayout
+                VerticalOptions="Start"
+                HeightRequest="300">
+                    <Image
+                    Source="Fundo.png"
+                    RelativeLayout.WidthConstraint="{
+                        ConstraintExpression
+                        Type=RelativeToParent,
+                        Property=Width,
+                        Factor=1
+                    }" />
+
+                    <Image
+                    x:Name="Perfil"
+                    Source="Perfil.png"
+                    WidthRequest="120"
+                    RelativeLayout.XConstraint="{
+                        ConstraintExpression
+                        Type=RelativeToParent,
+                        Property=Width,
+                        Factor=0.5,
+                        Constant=-60
+                    }"
+                    RelativeLayout.YConstraint="{
+                        ConstraintExpression
+                        Type=RelativeToParent,
+                        Property=Height,
+                        Factor=0.2
+                    }" />
+                    <Label
+                    Text="Miguel De Icaza"
+                    RelativeLayout.XConstraint="{
+                        ConstraintExpression
+                        Type=RelativeToView,
+                        ElementName=Perfil,
+                        Property=X,
+                        Factor=1,
+                        Constant=14
+                    }"
+                    RelativeLayout.YConstraint="{
+                        ConstraintExpression
+                        Type=RelativeToView,
+                        ElementName=Perfil,
+                        Property=Y,
+                        Factor=1,
+                        Constant=180
+                    }" />
+                </RelativeLayout>
+                <Grid HeightRequest="120" BackgroundColor="#102113">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <StackLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                        <Label Text="47" TextColor="White" FontSize="32" />
+                        <Label Text="anos" TextColor="White" HorizontalTextAlignment="Center" FontSize="12" />
+                    </StackLayout>
+
+                    <StackLayout Grid.Column="1" Grid.Row="0" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                        <Label Text="23/11/1972" TextColor="White" FontSize="32" />
+                        <Label Text="nasceu" TextColor="White" HorizontalTextAlignment="Center" FontSize="12" />
+                    </StackLayout>
+                </Grid>
+                <StackLayout
+                        Padding="30"
+                        VerticalOptions="FillAndExpand"
+                        HorizontalOptions="FillAndExpand">
+                    <Label Text="Miguel de Icaza nasceu na Cidade do México e estudou na Universidade Nacional Autônoma do México UNAM.&#10;Ele começou a escrever software em 1992.&#10;Icaza começou o projeto GNOME em Agosto de 1997. Ele e Federico Mena, criaram um completo sistema de desktop livre e um componente para sistemas GNU/Linux. Antes disso, Icaza já havia trabalhado em um gerente de arquivos, o Midnight Commander, assim como no núcleo Linux." />
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
