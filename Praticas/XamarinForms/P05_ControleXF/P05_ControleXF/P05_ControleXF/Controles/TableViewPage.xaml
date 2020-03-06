@@ -7,18 +7,18 @@
             <TableView Intent="Settings">
                 <TableRoot>
                     <TableSection Title="Backup">
-                        <SwitchCell Text="Backup de Imagens" On="False"/>
-                        <SwitchCell Text="Backup de Texto" On="False"/>
-                        <SwitchCell Text="Backup do Chat" On="False"/>
+                        <SwitchCell Text="Backup de Imagens" On="False" />
+                        <SwitchCell Text="Backup de Texto" On="False" />
+                        <SwitchCell Text="Backup do Chat" On="False" />
                         <ViewCell>
                             <StackLayout Orientation="Horizontal">
-                                <Label Text="Backup frequencia"/>
-                                <Slider HorizontalOptions="FillAndExpand" Minimum="0" Maximum="7"/>
+                                <Label Text="Backup frequencia" />
+                                <Slider HorizontalOptions="FillAndExpand" Minimum="0" Maximum="7" />
                             </StackLayout>
                         </ViewCell>
                     </TableSection>
                     <TableSection Title="Segurança">
-                        <SwitchCell Text="Senhas criptografadas" On="True"/>
+                        <SwitchCell Text="Senhas criptografadas" On="True" />
                     </TableSection>
                 </TableRoot>
             </TableView>

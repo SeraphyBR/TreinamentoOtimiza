@@ -1,21 +1,16 @@
-﻿using System;
+﻿using P05_ControleXF.Modelos;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using P05_ControleXF.Modelos;
 
 namespace P05_ControleXF.Controles
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class ListViewPage : ContentPage
-	{
-		public ListViewPage ()
-		{
-			InitializeComponent ();
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class ListViewPage : ContentPage
+    {
+        public ListViewPage()
+        {
+            InitializeComponent();
             var lista = new List<Pessoa> {
                 new Pessoa { Nome = "Luiz", Idade = "20"},
                 new Pessoa { Nome = "Carlos", Idade = "19"},
@@ -24,6 +19,6 @@ namespace P05_ControleXF.Controles
                 new Pessoa { Nome = "José", Idade = "61"}
             };
             ListPessoas.ItemsSource = lista;
-		}
-	}
+        }
+    }
 }

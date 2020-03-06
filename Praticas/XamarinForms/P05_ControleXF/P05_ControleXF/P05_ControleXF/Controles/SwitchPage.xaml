@@ -6,9 +6,8 @@
         <StackLayout>
             <Switch
                 IsToggled="False"
-                Toggled="HandleToggledEvent"
-                />
-            <Label x:Name="LabelSwitch"/>
+                Toggled="HandleToggledEvent" />
+            <Label x:Name="LabelSwitch" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -4,14 +4,13 @@
              x:Class="P05_ControleXF.Controles.ImagePage">
     <ContentPage.Content>
         <StackLayout x:Name="StackLayout1">
-            <Image 
+            <Image
                 Source="https://upload.wikimedia.org/wikipedia/commons/b/bb/Archlogo900.png"
                 Aspect="AspectFill"
                 IsOpaque="False"
                 x:Name="ImageOne"
-                
-                VerticalOptions="FillAndExpand"
-                />
+
+                VerticalOptions="FillAndExpand" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

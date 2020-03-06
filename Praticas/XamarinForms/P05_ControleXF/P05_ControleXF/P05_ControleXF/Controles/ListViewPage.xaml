@@ -27,9 +27,9 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            
-            <BoxView HorizontalOptions="FillAndExpand" HeightRequest="5" Color="Black"/>
-            
+
+            <BoxView HorizontalOptions="FillAndExpand" HeightRequest="5" Color="Black" />
+
             <ListView x:Name="ListPessoas">
                 <ListView.ItemTemplate>
                     <DataTemplate>

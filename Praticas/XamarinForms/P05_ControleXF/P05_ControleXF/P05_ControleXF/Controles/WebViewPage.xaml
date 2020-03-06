@@ -5,22 +5,21 @@
     <ContentPage.Content>
         <StackLayout>
             <StackLayout Orientation="Horizontal">
-                <Entry x:Name="EntryEndereco" HorizontalOptions="FillAndExpand"/>
-                <Button x:Name="ButtonEnterPage" Text="Acessar Página" Clicked="HandleClickedEvent"/>
-                <Button x:Name="ButtonBack" Text="Voltar" Clicked="HandleClickedEvent"/>
-                <Button x:Name="ButtonNext" Text="Próximo" Clicked="HandleClickedEvent"/>
+                <Entry x:Name="EntryEndereco" HorizontalOptions="FillAndExpand" />
+                <Button x:Name="ButtonEnterPage" Text="Acessar Página" Clicked="HandleClickedEvent" />
+                <Button x:Name="ButtonBack" Text="Voltar" Clicked="HandleClickedEvent" />
+                <Button x:Name="ButtonNext" Text="Próximo" Clicked="HandleClickedEvent" />
             </StackLayout>
             <WebView
                 x:Name="WebView1"
                 Source="https://www.google.com.br"
                 Navigated="HandleNavigatedEvent"
                 Navigating="HandleNavigatingEvent"
-                
-                HorizontalOptions="FillAndExpand" 
-                VerticalOptions="FillAndExpand">
 
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand">
             </WebView>
-            <Label x:Name="LabelStatus"/>
+            <Label x:Name="LabelStatus" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

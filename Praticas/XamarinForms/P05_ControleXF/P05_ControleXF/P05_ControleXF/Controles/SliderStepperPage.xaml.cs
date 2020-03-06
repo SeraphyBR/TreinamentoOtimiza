@@ -13,13 +13,12 @@ namespace P05_ControleXF.Controles
 
         private void HandleValueChanged(object sender, ValueChangedEventArgs args)
         {
-            if(sender is Stepper) {
+            if (sender is Stepper) {
                 LabelStepperValue.Text = args.NewValue.ToString();
             }
-            if(sender is Slider) {
+            if (sender is Slider) {
                 LabelSliderValue.Text = args.NewValue.ToString();
             }
         }
-
     }
 }
