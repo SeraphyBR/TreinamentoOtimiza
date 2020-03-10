@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="P06_Tarefa.Telas.Inicio">
+             x:Class="P06_Tarefa.Telas.Inicio"
+             NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <StackLayout>
             <StackLayout BackgroundColor="Green">
@@ -31,8 +32,8 @@
                     <Image VerticalOptions="Center">
                         <Image.Source>
                             <OnPlatform x:TypeArguments="ImageSource">
-                                <On Platform="Android, iOS" Value="4.png"/>
-                                <On Platform="UWP" Value="Resources/4.png"/>
+                                <On Platform="Android, iOS" Value="p4.png"/>
+                                <On Platform="UWP" Value="Resources/p4.png"/>
                             </OnPlatform>
                         </Image.Source>
                     </Image>
@@ -61,8 +62,8 @@
                     <Image VerticalOptions="Center">
                         <Image.Source>
                             <OnPlatform x:TypeArguments="ImageSource">
-                                <On Platform="Android, iOS" Value="2.png"/>
-                                <On Platform="UWP" Value="Resources/2.png"/>
+                                <On Platform="Android, iOS" Value="p2.png"/>
+                                <On Platform="UWP" Value="Resources/p2.png"/>
                             </OnPlatform>
                         </Image.Source>
                     </Image>

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using P06_Tarefa.Modelos;
+using System.Globalization;
 
 namespace P06_Tarefa.Telas
 {
@@ -16,9 +17,9 @@ namespace P06_Tarefa.Telas
 		public Inicio ()
 		{
 			InitializeComponent ();
-            var day = DateTime.Now.DayOfWeek.ToString();
-            var date = DateTime.Now.ToString("dd/MM");
-            LabelToday.Text = $"{day}, {date}";
+            CultureInfo culture = new CultureInfo("pt-BR");
+            string data = DateTime.Now.ToString("dddd, dd {0} MMMM {0} yyyy", culture);
+            LabelToday.Text = string.Format(data, "de");
             this.LoadTarefas();
 		}
 
@@ -31,12 +32,13 @@ namespace P06_Tarefa.Telas
         {
             StackTarefas.Children.Clear();
             var lista = new GerenciadorTarefa().Lista;
+            int i = 0;
             foreach(Tarefa t in lista) {
-                this.AddLinhaStackLayout(t);
+                this.AddLinhaStackLayout(t, i++);
             }
         }
 
-        public void AddLinhaStackLayout(Tarefa t)
+        public void AddLinhaStackLayout(Tarefa t, int idx)
         {
             var linha = new StackLayout() {
                 Orientation = StackOrientation.Horizontal,
@@ -47,8 +49,22 @@ namespace P06_Tarefa.Telas
                 VerticalOptions = LayoutOptions.Center,
                 Source = ImageSource.FromFile("CheckOff.png")
             };
+
+            TapGestureRecognizer checkTap = new TapGestureRecognizer();
+            checkTap.Tapped += delegate {
+                new GerenciadorTarefa().Finalizar(idx, DateTime.Now);
+                this.LoadTarefas();
+            };
+            ImgCheck.GestureRecognizers.Add(checkTap);
+
             if (Device.RuntimePlatform == Device.UWP) {
                 ImgCheck.Source = ImageSource.FromFile("Resources/CheckOff.png");
+            }
+            if(t.DataFinalizacao != null) {
+                ImgCheck.Source = ImageSource.FromFile("CheckOn.png");
+                if (Device.RuntimePlatform == Device.UWP) {
+                    ImgCheck.Source = ImageSource.FromFile("Resources/CheckOn.png");
+                }   
             }
 
             View viewTarefa = null;
@@ -78,16 +94,23 @@ namespace P06_Tarefa.Telas
 
             var ImgPrioridade = new Image() {
                 VerticalOptions = LayoutOptions.Center,
-                Source = ImageSource.FromFile($"{t.Prioridade}.png")
+                Source = ImageSource.FromFile($"p{t.Prioridade}.png")
             };
             if (Device.RuntimePlatform == Device.UWP) {
-                ImgPrioridade.Source = ImageSource.FromFile($"Resources/{t.Prioridade}.png");
+                ImgPrioridade.Source = ImageSource.FromFile($"Resources/p{t.Prioridade}.png");
             }
 
             var ImgDelete = new Image() {
                 VerticalOptions = LayoutOptions.Center,
-                Source = ImageSource.FromFile("Delete.png")
+                Source = ImageSource.FromFile("Delete.png"),
             };
+            TapGestureRecognizer deleteTap = new TapGestureRecognizer();
+            deleteTap.Tapped += delegate {
+                new GerenciadorTarefa().Remover(idx);
+                this.LoadTarefas();
+            };
+            ImgDelete.GestureRecognizers.Add(deleteTap);
+
             if (Device.RuntimePlatform == Device.UWP) {
                 ImgDelete.Source = ImageSource.FromFile("Resources/Delete.png");
             }

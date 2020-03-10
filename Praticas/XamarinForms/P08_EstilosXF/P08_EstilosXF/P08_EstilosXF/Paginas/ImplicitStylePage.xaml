@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="P08_EstilosXF.Paginas.ImplicitStylePage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="BackgroundColor" Value="Green"/>
+                <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+            </Style> 
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Welcome to Xamarin.Forms! 1" />
+            <Label Text="Welcome to Xamarin.Forms! 2" />
+            <Label Text="Welcome to Xamarin.Forms! 3" />
+            <Label Text="Welcome to Xamarin.Forms! 4" />
+            <StackLayout>
+                <StackLayout.Resources>
+                    <ResourceDictionary>
+                        <Style TargetType="Label">
+                            <Setter Property="BackgroundColor" Value="YellowGreen"/>
+                            <Setter Property="HorizontalOptions" Value="StartAndExpand"/>
+                        </Style>
+                    </ResourceDictionary>
+                </StackLayout.Resources>
+                <Label Text="Welcome to Xamarin.Forms! a" />
+                <Label Text="Welcome to Xamarin.Forms! b" />
+                <Label Text="Welcome to Xamarin.Forms! c" />
+                <Label Text="Welcome to Xamarin.Forms! d" />
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

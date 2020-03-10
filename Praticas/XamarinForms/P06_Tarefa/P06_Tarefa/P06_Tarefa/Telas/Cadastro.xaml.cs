@@ -39,7 +39,8 @@ namespace P06_Tarefa.Telas
                     var source = i.Source as FileImageSource;
                     string nivelp = source.File.ToString()
                         .Replace("Resources/", "")
-                        .Replace(".png", "");
+                        .Replace(".png", "")
+                        .Replace("p", "");
                     this.Prioridade = byte.Parse(nivelp);
                 }
             }

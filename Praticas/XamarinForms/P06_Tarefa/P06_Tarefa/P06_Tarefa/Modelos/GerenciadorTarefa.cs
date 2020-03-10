@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace P06_Tarefa.Modelos
 {
@@ -11,9 +12,9 @@ namespace P06_Tarefa.Modelos
         public GerenciadorTarefa()
         {
             if (App.Current.Properties.ContainsKey("Tarefas")) {
-                object o = App.Current.Properties["Tarefas"];
-                if(o is List<Tarefa> l) {
-                    this.Lista = l;
+                object obj = App.Current.Properties["Tarefas"];
+                if(obj is string json) {
+                    this.Lista = JsonConvert.DeserializeObject<List<Tarefa>>(json);
                 }
                 else {
                     this.Lista = new List<Tarefa>();
@@ -26,27 +27,29 @@ namespace P06_Tarefa.Modelos
         public void Adicionar(Tarefa t)
         {
             this.Lista.Add(t);
-            UpdateChangesOnProperties(this.Lista);
+            UpdateChangesOnProperties();
         }
 
         public void Finalizar(int idx, DateTime dataFinalizacao)
         {
             this.Lista[idx].DataFinalizacao = dataFinalizacao;
-            UpdateChangesOnProperties(this.Lista);
+            UpdateChangesOnProperties();
         }
 
         public void Remover(int idx)
         {
             this.Lista.RemoveAt(idx);
-            UpdateChangesOnProperties(this.Lista);
+            UpdateChangesOnProperties();
         }
 
-        private void UpdateChangesOnProperties(List<Tarefa> lt)
+        private void UpdateChangesOnProperties()
         {
             if (App.Current.Properties.ContainsKey("Tarefas")) {
                 App.Current.Properties.Remove("Tarefas");
             }
-            App.Current.Properties.Add("Tarefas", lt);
+
+            string json = JsonConvert.SerializeObject(this.Lista);
+            App.Current.Properties.Add("Tarefas", json);
         }
     }
 }
