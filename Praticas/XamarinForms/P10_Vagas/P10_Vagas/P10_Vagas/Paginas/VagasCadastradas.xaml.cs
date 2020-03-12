@@ -16,5 +16,15 @@ namespace P10_Vagas.Paginas
 		{
 			InitializeComponent ();
 		}
+
+        public void EditarVaga(object sender, EventArgs args)
+        {
+
+        }
+
+        public void ExcluirVaga(object sender, EventArgs args)
+        {
+
+        }
 	}
 }

@@ -8,38 +8,36 @@
                 <Label Text="Vagas" FontSize="24"/>
                 <Label Text="encontre o seu emprego aqui" FontSize="12"/>
             </StackLayout>
-            <StackLayout Orientation="Horizontal">
-                <Button Text="Adicionar" Clicked="HandleClickedEvent" />
-                <Button Text="Minhas Vagas" Clicked="HandleClickedEvent"/>
-            </StackLayout>
             <Entry Placeholder="Pesquisar"/>
             <Label Text="15 vagas encontradas"/>
             <ListView>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="100"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Label Grid.Column="0" Text="{Binding Nome}" FontAttributes="Bold"/>
-                            <Label Grid.Column="0" Text="{Binding Empresa}" />
-                            <Label Grid.Column="0" Text="{Binding Cidade}" />
-                            <Label Text="Editar" Grid.Column="1">
-                                <Label.GestureRecognizers>
-                                  <TapGestureRecognizer Tapped="HandleTappedEvent" CommandParameter="{Binding .}"/>
-                                </Label.GestureRecognizers>
-                            </Label>
-                            <Label Text=" | " Grid.Column="1"/>
-                            <Label Text="Excluir" Grid.Column="1">
-                                <Label.GestureRecognizers>
-                                  <TapGestureRecognizer Tapped="HandleTappedEvent" CommandParameter="{Binding .}"/>
-                                </Label.GestureRecognizers>
-                            </Label>
-                        </Grid>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Label Grid.Column="0" Text="{Binding Nome}" FontAttributes="Bold"/>
+                                <Label Grid.Column="0" Text="{Binding Empresa}" />
+                                <Label Grid.Column="0" Text="{Binding Cidade}" />
+                                <Label Text="Editar" Grid.Column="1">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="EditarVaga" CommandParameter="{Binding .}"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                                <Label Text=" | " Grid.Column="1"/>
+                                <Label Text="Excluir" Grid.Column="1">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="ExcluirVaga" CommandParameter="{Binding .}"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </Grid>
+                        </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

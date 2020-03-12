@@ -13,27 +13,29 @@
                 <Button x:Name="ButtonMinhasVagas" Text="Minhas Vagas" Clicked="HandleClickedEvent"/>
             </StackLayout>
             <Entry Placeholder="Pesquisar"/>
-            <Label Text="15 vagas encontradas"/>
-            <ListView>
+            <Label x:Name="LabelCount" Text="15 vagas encontradas"/>
+            <ListView x:Name="ListaVagas">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="100"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Label Grid.Column="0" Text="{Binding Nome}" FontAttributes="Bold"/>
-                            <Label Grid.Column="0" Text="{Binding Empresa}" />
-                            <Label Grid.Column="0" Text="{Binding Cidade}" />
-                            <Label Text="+Detalhes" Grid.Column="1">
-                                <Label.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="ShowDetalhes" CommandParameter="{Binding .}"/>
-                                </Label.GestureRecognizers>
-                            </Label>
-                        </Grid>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Label Grid.Column="0" Text="{Binding Nome}" FontAttributes="Bold"/>
+                                <Label Grid.Column="0" Text="{Binding Empresa}" />
+                                <Label Grid.Column="0" Text="{Binding Cidade}" />
+                                <Label Text="+Detalhes" Grid.Column="1">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="ShowDetalhes" CommandParameter="{Binding .}"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </Grid>
+                        </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

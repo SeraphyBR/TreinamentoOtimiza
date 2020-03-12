@@ -35,6 +35,9 @@ namespace P10_Vagas.Paginas
                         Telefone = EntryTelefone.Text,
                         Email = EntryEmail.Text
                     };
+                    var db = new Database("vagas");
+                    db.Adicionar(v);
+                    Navigation.PopAsync();
                 }
             }
         }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using P10_Vagas.Modelos;
+using P10_Vagas.Banco;
 
 namespace P10_Vagas.Paginas
 {
@@ -16,6 +17,10 @@ namespace P10_Vagas.Paginas
 		public ConsultaVaga ()
 		{
 			InitializeComponent ();
+            var db = new Database("vagas");
+            var lista = db.Consultar();
+            ListaVagas.ItemsSource = lista;
+            LabelCount.Text = $"{lista.Count} vagas encontradas";
 		}
 
         public void HandleClickedEvent(object sender, EventArgs args)
