@@ -8,14 +8,26 @@
             <StackLayout>
                 <Button
                     x:Name="ButtonImplicitStylePage"
-                    Text="Implicit Style" 
+                    Text="Implicit Style"
                     Clicked="HandleClickedEvent" />
                 <Button
                     x:Name="ButtonExplicitStylePage"
-                    Text="Explicit Style" 
+                    Text="Explicit Style"
+                    Clicked="HandleClickedEvent" />
+                <Button
+                    x:Name="ButtonGlobalStylePage"
+                    Text="Global Style"
+                    Clicked="HandleClickedEvent" />
+                <Button
+                    x:Name="ButtonInheritStylePage"
+                    Text="Inherit Style"
+                    Clicked="HandleClickedEvent" />
+                <Button
+                    x:Name="ButtonDynamicStylePage"
+                    Text="Dynamic Style"
                     Clicked="HandleClickedEvent" />
             </StackLayout>
-        </ContentPage> 
+        </ContentPage>
     </MasterDetailPage.Master>
     <MasterDetailPage.Detail>
         <NavigationPage>

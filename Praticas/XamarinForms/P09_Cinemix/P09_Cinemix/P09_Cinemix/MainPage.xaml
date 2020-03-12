@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:P09_Cinemix"
+             x:Class="P09_Cinemix.MainPage">
+    <ContentPage.Content>
+        <ScrollView>
+
+            <StackLayout>
+                <StackLayout Style="{StaticResource Head}">
+                    <Label Text="CINEMIX" Style="{StaticResource TituloApp}" />
+                    <Label Text="Seu app de cinema" Style="{StaticResource SubtituloApp}" />
+                </StackLayout>
+                <StackLayout Style="{StaticResource Body}">
+                    <Label Text="Lançamento" Style="{StaticResource lancamento}" />
+                    <Label Text="Pantera Negra" Style="{StaticResource TituloFilme}" />
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Image Source="Fundo.png"
+                           Grid.ColumnSpan="2"
+                           Grid.Row="0"
+                           Grid.Column="0"
+                           Style="{StaticResource Fundo}" />
+                        <StackLayout
+                                Grid.ColumnSpan="2"
+                                Grid.Row="0"
+                                Grid.Column="0">
+                            <Image Source="Poster.png"
+                                Style="{StaticResource Poster}" />
+                            <Label Text="Após a morte do rei T'Chaka (John Kani), o príncipe T'Challa (Chadwick Boseman) retorna a Wakanda para a cerimônia de coroação. Nela são reunidas as cinco tribos que compõem o reino, sendo que uma delas, os Jabari, não apoia o atual governo. T'Challa logo recebe o apoio de Okoye (Danai Gurira), a chefe da guarda de Wakanda, da irmã Shuri (Laetitia Wright), que coordena a área tecnológica do reino, e também de Nakia (Lupita Nyong'o), a grande paixão do atual Pantera Negra, que não quer se tornar rainha. Juntos, eles estão à procura de Ulysses Klaue (Andy Serkis), que roubou de Wakanda um punhado de vibranium, alguns anos atrás."
+                                Style="{StaticResource Sinopse}" />
+                            <StackLayout Style="{StaticResource Horarios}">
+                                <StackLayout Style="{StaticResource Horario}">
+                                    <Label Text="10:30h" TextColor="White" />
+                                </StackLayout>
+                                <StackLayout Style="{StaticResource Horario}">
+                                    <Label Text="10:30h" TextColor="White" />
+                                </StackLayout>
+                                <StackLayout Style="{StaticResource Horario}">
+                                    <Label Text="10:30h" TextColor="White" />
+                                </StackLayout>
+                                <StackLayout Style="{StaticResource Horario}">
+                                    <Label Text="10:30h" TextColor="White" />
+                                </StackLayout>
+                            </StackLayout>
+                        </StackLayout>
+                        <Image Source="FundoValor.png"
+                           Aspect="AspectFill"
+                           Grid.ColumnSpan="2"
+                           Grid.Row="1"
+                           Grid.Column="0"
+                           HorizontalOptions="Center" />
+                        <StackLayout HorizontalOptions="End" Grid.Row="1" Grid.Column="0" Spacing="0" Padding="10">
+                            <Label Text="Meia" Style="{StaticResource SubtituloApp}" />
+                            <Label Text="R$15,00" Style="{StaticResource TituloApp}" />
+                        </StackLayout>
+                        <StackLayout HorizontalOptions="Start" Grid.Row="1" Grid.Column="1" Spacing="0" Padding="10">
+                            <Label Text="Inteira" Style="{StaticResource SubtituloApp}" />
+                            <Label Text="R$30,00" Style="{StaticResource TituloApp}" />
+                        </StackLayout>
+                    </Grid>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
