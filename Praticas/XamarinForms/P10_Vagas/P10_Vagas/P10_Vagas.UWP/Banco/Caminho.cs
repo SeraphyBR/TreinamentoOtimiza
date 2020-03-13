@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Windows.Storage;
-
+﻿using P10_Vagas.Banco;
 using P10_Vagas.UWP.Banco;
-using P10_Vagas.Banco;
+using Windows.Storage;
 using Xamarin.Forms;
 
-[assembly:Dependency(typeof(Caminho))]
+[assembly: Dependency(typeof(Caminho))]
+
 namespace P10_Vagas.UWP.Banco
 {
     public class Caminho : ICaminho

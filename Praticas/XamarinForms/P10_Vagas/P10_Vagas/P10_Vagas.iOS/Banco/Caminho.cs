@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Foundation;
-using UIKit;
-
+﻿using P10_Vagas.Banco;
 using P10_Vagas.iOS.Banco;
-using P10_Vagas.Banco;
 using Xamarin.Forms;
 
+[assembly: Dependency(typeof(Caminho))]
 
-[assembly:Dependency(typeof(Caminho))]
 namespace P10_Vagas.iOS.Banco
 {
     public class Caminho : ICaminho

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-using SQLite;
+﻿using SQLite;
 
 namespace P10_Vagas.Modelos
 {
+    public enum TypeContratacao { PJ, CLT }
+
     [Table("Vaga")]
     public class Vaga
     {
@@ -18,7 +16,7 @@ namespace P10_Vagas.Modelos
         public string Cidade { get; set; }
         public double Salario { get; set; }
         public string Descricao { get; set; }
-        public string TipoContratacao { get; set; }
+        public TypeContratacao TipoContratacao { get; set; }
         public string Telefone { get; set; }
         public string Email { get; set; }
     }

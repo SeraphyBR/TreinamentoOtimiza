@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using P10_Vagas.Modelos;
 using SQLite;
-using P10_Vagas.Modelos;
+using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace P10_Vagas.Banco
 {
-    class Database
+    public class Database
     {
         private readonly SQLiteConnection _conexao;
 

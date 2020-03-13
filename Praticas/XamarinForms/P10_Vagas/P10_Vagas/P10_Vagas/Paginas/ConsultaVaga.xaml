@@ -5,35 +5,37 @@
     <ContentPage.Content>
         <StackLayout>
             <StackLayout Orientation="Horizontal">
-                <Label Text="Vagas" FontSize="24"/>
-                <Label Text="encontre o seu emprego aqui" FontSize="12"/>
+                <Label Text="Vagas" FontSize="24" />
+                <Label Text="encontre o seu emprego aqui" FontSize="12" />
             </StackLayout>
             <StackLayout Orientation="Horizontal">
                 <Button x:Name="ButtonCadastraVaga" Text="Adicionar" Clicked="HandleClickedEvent" />
-                <Button x:Name="ButtonMinhasVagas" Text="Minhas Vagas" Clicked="HandleClickedEvent"/>
+                <Button x:Name="ButtonMinhasVagas" Text="Minhas Vagas" Clicked="HandleClickedEvent" />
             </StackLayout>
-            <Entry Placeholder="Pesquisar"/>
-            <Label x:Name="LabelCount" Text="15 vagas encontradas"/>
+            <Entry Placeholder="Pesquisar" TextChanged="SearchVaga" />
+            <Label x:Name="LabelCount" Text="15 vagas encontradas" />
             <ListView x:Name="ListaVagas">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="100" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <Label Grid.Column="0" Text="{Binding Nome}" FontAttributes="Bold"/>
-                                <Label Grid.Column="0" Text="{Binding Empresa}" />
-                                <Label Grid.Column="0" Text="{Binding Cidade}" />
-                                <Label Text="+Detalhes" Grid.Column="1">
-                                    <Label.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="ShowDetalhes" CommandParameter="{Binding .}"/>
-                                    </Label.GestureRecognizers>
-                                </Label>
+                                <StackLayout Grid.Column="0">
+                                    <Label Text="{Binding Nome}" FontAttributes="Bold" />
+                                    <Label Text="{Binding Empresa}" />
+                                    <Label Text="{Binding Cidade}" />
+                                    <Label Text="+Detalhes" Grid.Column="1">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="ShowDetalhes" CommandParameter="{Binding .}" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </StackLayout>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
