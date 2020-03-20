@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="P12_NossoChat.View.Chats"
+             Title="NossoChat">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Icon="add.png" Text="Adicionar Chat" Command="{Binding AddChatCommand}"/>
+        <ToolbarItem Icon="sort.png" Text="Ordenar Alfabeticamente" Command="{Binding OrdernarChatsCommand}"/>
+        <ToolbarItem Icon="refresh.png" Text="Atualizar lista de Chats" Command="{Binding AtualizarChatsCommand}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ListView ItemsSource="{Binding Chats}" SelectedItem="{Binding SelectedChat, Mode=TwoWay}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Padding="10">
+                            <Label Text="{Binding nome}" TextColor="Black"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="P12_NossoChat.View.Mensagem">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Atualizar mensagens" Icon="refresh.png" Command="{Binding AtualizarCommand}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <ScrollView>
+                <StackLayout x:Name="MensagensStack">
+                    <Frame BorderColor="{Binding MainColor}" CornerRadius="0" HorizontalOptions="Start">
+                        <StackLayout>
+                            <Label Text="SeraphyBR" FontSize="10" TextColor="{Binding MainColor}"/>
+                            <Label Text="Yo!" TextColor="{Binding MainColor}"/>
+                        </StackLayout>
+                    </Frame>
+
+                    <StackLayout Padding="5" BackgroundColor="{Binding MainColor}" HorizontalOptions="End">
+                        <Label Text="Hello World!" TextColor="{Binding SecondaryColor}"/>
+                    </StackLayout>
+                </StackLayout>
+            </ScrollView>
+            <StackLayout Orientation="Horizontal">
+                <Entry Placeholder="Digite uma mensagem"
+                           Text="{Binding UserMsg}"
+                           BackgroundColor="{Binding SecondaryColor}"
+                           TextColor="{Binding MainColor}"
+                           HorizontalOptions="FillAndExpand"/>
+                <Button Text="Enviar" 
+                        BackgroundColor="{Binding MainColor}"
+                        Command="{Binding BtnSendCommand}"
+                        TextColor="{Binding SecondaryColor}"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
