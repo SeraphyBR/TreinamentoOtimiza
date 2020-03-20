@@ -4,11 +4,12 @@ using System.Text;
 using Xamarin.Forms;
 using P12_NossoChat.Model;
 using P12_NossoChat.Service;
+using P12_NossoChat.Utils;
 using System.ComponentModel;
 
 namespace P12_NossoChat.ViewModel
 {
-    public class CadastrarChatViewModel : BaseViewModel, INotifyPropertyChanged
+    public class CadastrarChatViewModel : Colors, INotifyPropertyChanged
     {
         private string _alerta { get; set; }
         public string nomeChat { get; set; }

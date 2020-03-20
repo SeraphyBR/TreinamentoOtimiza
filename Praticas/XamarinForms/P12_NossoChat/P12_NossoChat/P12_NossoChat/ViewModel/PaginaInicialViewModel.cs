@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace P12_NossoChat.ViewModel
 {
-    public class PaginaInicialViewModel : BaseViewModel, INotifyPropertyChanged
+    public class PaginaInicialViewModel : Colors, INotifyPropertyChanged
     {
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -18,6 +18,7 @@ namespace P12_NossoChat.ViewModel
         private string _nome;
         private string _senha;
         private string _alerta;
+        private bool _carregando;
 
         public string Nome {
             get {
@@ -47,6 +48,15 @@ namespace P12_NossoChat.ViewModel
                 PropertyChanged(this, new PropertyChangedEventArgs("Alerta"));
             }
         }
+        public bool Carregando {
+            get {
+                return _carregando;
+            }
+            set {
+                _carregando = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("Carregando"));
+            }
+        }
 
         public Command EntrarCommand { get; set; }
         
@@ -55,14 +65,15 @@ namespace P12_NossoChat.ViewModel
             EntrarCommand = new Command(EntrarAction);
         }
 
-        private void EntrarAction()
+        private async void EntrarAction()
         {
             var user = new Usuario() {
                 nome = Nome,
                 password = Senha
             };
-
-            var userLogged = WebService.GetUsuario(user); 
+            this.Carregando = true;
+            var userLogged = await WebService.GetUsuario(user);
+            this.Carregando = false;
             if(userLogged is null) {
                 Alerta = "Senha incorreta.";
             }

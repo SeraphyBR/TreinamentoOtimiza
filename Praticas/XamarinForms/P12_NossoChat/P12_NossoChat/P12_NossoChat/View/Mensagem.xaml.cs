@@ -16,7 +16,7 @@ namespace P12_NossoChat.View
 		public Mensagem (Chat c)
 		{
 			InitializeComponent ();
-            BindingContext = new ViewModel.MensagemViewModel(c, MensagensStack);
+            BindingContext = new ViewModel.MensagemViewModel(c);
 		}
 	}
 }

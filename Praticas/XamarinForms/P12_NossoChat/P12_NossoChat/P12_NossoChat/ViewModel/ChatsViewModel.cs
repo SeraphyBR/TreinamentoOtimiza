@@ -5,11 +5,13 @@ using System.Linq;
 using System.ComponentModel;
 using P12_NossoChat.Model;
 using P12_NossoChat.Service;
+using P12_NossoChat.Utils;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace P12_NossoChat.ViewModel
 {
-    public class ChatsViewModel : BaseViewModel, INotifyPropertyChanged
+    public class ChatsViewModel : Colors, INotifyPropertyChanged
     {
         private List<Chat> _chats;
         public List<Chat> Chats {
@@ -33,6 +35,17 @@ namespace P12_NossoChat.ViewModel
                 this.ToMessagemPage(_selectedchat);
             }
         }
+        private bool _carregando;
+        public bool Carregando {
+            get {
+                return _carregando;
+            }
+            set {
+                _carregando = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("Carregando"));
+            }
+        }
+
         private void ToMessagemPage(Chat c)
         {
             if(App.Current.MainPage is NavigationPage np && c != null) {
@@ -49,7 +62,7 @@ namespace P12_NossoChat.ViewModel
 
         public ChatsViewModel()
         {
-            this.Chats = WebService.GetChats();
+            this.Atualizar();
             this.AddChatCommand = new Command(Adicionar);
             this.OrdernarChatsCommand = new Command(Ordernar);
             this.AtualizarChatsCommand = new Command(Atualizar);
@@ -69,7 +82,11 @@ namespace P12_NossoChat.ViewModel
 
         private void Atualizar()
         {
-            this.Chats = WebService.GetChats();
+            Task.Run(async() => {
+                this.Carregando = true;
+                this.Chats = await WebService.GetChats();
+                this.Carregando = false;
+            });
         }
 
         private void OnPropertyChanged(string PropertyName)

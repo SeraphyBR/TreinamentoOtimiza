@@ -4,6 +4,7 @@ using System.Text;
 using System.Net;
 using System.Net.Http;
 using P12_NossoChat.Model;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace P12_NossoChat.Service
@@ -13,7 +14,7 @@ namespace P12_NossoChat.Service
         private static HttpClient hc = new HttpClient();
         private static readonly string baseurl = "http://ws.spacedu.com.br/xf2018/rest/api";
 
-        public static Usuario GetUsuario(Usuario u)
+        public async static Task<Usuario> GetUsuario(Usuario u)
         {
             var url = $"{baseurl}/usuario";
 
@@ -25,10 +26,10 @@ namespace P12_NossoChat.Service
                 new KeyValuePair<string,string>("password", u.password),
             });
 
-            var resposta = hc.PostAsync(url, param).GetAwaiter().GetResult();
+            var resposta = await hc.PostAsync(url, param);
             Usuario user = null;
             if (resposta.StatusCode is HttpStatusCode.OK) {
-                string content = resposta.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                string content = await resposta.Content.ReadAsStringAsync();
                 if (content.Length > 2) {
                     user = JsonConvert.DeserializeObject<Usuario>(content);
                 }
@@ -36,15 +37,15 @@ namespace P12_NossoChat.Service
             return user;
         }
 
-        public static List<Chat> GetChats()
+        public async static Task<List<Chat>> GetChats()
         {
             var url = $"{baseurl}/chats";
 
-            var resposta = hc.GetAsync(url).GetAwaiter().GetResult();
+            var resposta = await hc.GetAsync(url);
             List<Chat> lista = null;
 
             if (resposta.StatusCode is HttpStatusCode.OK) {
-                string content = resposta.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                string content = await resposta.Content.ReadAsStringAsync();
                 if (content.Length > 2) {
                     lista = JsonConvert.DeserializeObject<List<Chat>>(content);
                 }
@@ -90,16 +91,16 @@ namespace P12_NossoChat.Service
             return hasDeleted;
         }
 
-        public static List<Mensagem> GetMensagens(Chat c)
+        public async static Task<List<Mensagem>> GetMensagens(Chat c)
         {
             var url = $"{baseurl}/chat/{c.id}/msg";
 
-            var resposta = hc.GetAsync(url).GetAwaiter().GetResult();
+            var resposta = await hc.GetAsync(url);
 
             List<Mensagem> lista = null;
 
             if(resposta.StatusCode is HttpStatusCode.OK) {
-                string content = resposta.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                string content = await resposta.Content.ReadAsStringAsync();
                 if (content.Length > 2) {
                     lista = JsonConvert.DeserializeObject<List<Mensagem>>(content);
                 }

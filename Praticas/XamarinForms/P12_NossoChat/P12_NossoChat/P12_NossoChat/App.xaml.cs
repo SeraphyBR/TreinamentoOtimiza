@@ -7,6 +7,7 @@ namespace P12_NossoChat
 {
     public partial class App : Application
     {
+
         public App()
         {
             InitializeComponent();
