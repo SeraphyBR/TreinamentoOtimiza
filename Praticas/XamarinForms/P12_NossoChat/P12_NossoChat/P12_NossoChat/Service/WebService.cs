@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using P12_NossoChat.Model;
 using System.Collections.Generic;
-using System.Text;
 using System.Net;
 using System.Net.Http;
-using P12_NossoChat.Model;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace P12_NossoChat.Service
 {
@@ -46,7 +44,7 @@ namespace P12_NossoChat.Service
 
             if (resposta.StatusCode is HttpStatusCode.OK) {
                 string content = await resposta.Content.ReadAsStringAsync();
-                if (content.Length > 2) {
+                if (content?.Length > 2) {
                     lista = JsonConvert.DeserializeObject<List<Chat>>(content);
                 }
             }
@@ -54,7 +52,7 @@ namespace P12_NossoChat.Service
             return lista;
         }
 
-        public static bool InsertChat(Chat c)
+        public async static Task<bool> InsertChat(Chat c)
         {
             var url = $"{baseurl}/chat";
 
@@ -62,11 +60,12 @@ namespace P12_NossoChat.Service
                 new KeyValuePair<string,string>("nome", c.nome)
             });
 
-            var resposta = hc.PostAsync(url, content).GetAwaiter().GetResult();
+            var resposta = await hc.PostAsync(url, content);
 
             var hasInserted = resposta.StatusCode is HttpStatusCode.OK;
             return hasInserted;
         }
+
         public static bool RenameChat(Chat c)
         {
             var url = $"{baseurl}/chat/{c.id}";
@@ -99,9 +98,9 @@ namespace P12_NossoChat.Service
 
             List<Mensagem> lista = null;
 
-            if(resposta.StatusCode is HttpStatusCode.OK) {
+            if (resposta.StatusCode is HttpStatusCode.OK) {
                 string content = await resposta.Content.ReadAsStringAsync();
-                if (content.Length > 2) {
+                if (content?.Length > 2) {
                     lista = JsonConvert.DeserializeObject<List<Mensagem>>(content);
                 }
             }

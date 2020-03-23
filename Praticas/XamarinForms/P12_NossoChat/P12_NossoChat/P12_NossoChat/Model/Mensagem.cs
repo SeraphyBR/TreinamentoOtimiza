@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using P12_NossoChat.Utils;
+﻿using P12_NossoChat.Utils;
 
 namespace P12_NossoChat.Model
 {

@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using System.ComponentModel;
-using P12_NossoChat.Model;
+﻿using P12_NossoChat.Model;
 using P12_NossoChat.Service;
 using P12_NossoChat.Utils;
-using Xamarin.Forms;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace P12_NossoChat.ViewModel
 {
@@ -16,9 +13,11 @@ namespace P12_NossoChat.ViewModel
         private Chat CurrentChat;
         public Command BtnSendCommand { get; set; }
         public Command AtualizarCommand { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private List<Mensagem> _mensagens;
+
         public List<Mensagem> Mensagens {
             get {
                 return _mensagens;
@@ -30,6 +29,7 @@ namespace P12_NossoChat.ViewModel
         }
 
         private string _userMsg;
+
         public string UserMsg {
             get {
                 return _userMsg;
@@ -41,15 +41,17 @@ namespace P12_NossoChat.ViewModel
         }
 
         private bool _carregando;
+
         public bool Carregando {
             get {
                 return _carregando;
             }
             set {
                 _carregando = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("Carregando"));
+                OnPropertyChanged("Carregando");
             }
         }
+
         public MensagemViewModel(Chat c)
         {
             this.CurrentChat = c;
@@ -82,7 +84,7 @@ namespace P12_NossoChat.ViewModel
 
         private void Atualizar()
         {
-            Task.Run(async() => {
+            Task.Run(async () => {
                 this.Carregando = true;
                 this.Mensagens = await WebService.GetMensagens(CurrentChat);
                 this.Carregando = false;

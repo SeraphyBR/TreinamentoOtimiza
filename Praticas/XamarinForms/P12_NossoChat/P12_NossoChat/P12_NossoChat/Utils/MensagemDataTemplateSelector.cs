@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using P12_NossoChat.Model;
 using Xamarin.Forms;
-using P12_NossoChat.Model;
 
 namespace P12_NossoChat.Utils
 {

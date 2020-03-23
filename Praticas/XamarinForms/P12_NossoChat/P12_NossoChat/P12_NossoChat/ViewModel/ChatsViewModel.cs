@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using System.ComponentModel;
-using P12_NossoChat.Model;
+﻿using P12_NossoChat.Model;
 using P12_NossoChat.Service;
 using P12_NossoChat.Utils;
-using Xamarin.Forms;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace P12_NossoChat.ViewModel
 {
     public class ChatsViewModel : Colors, INotifyPropertyChanged
     {
         private List<Chat> _chats;
+
         public List<Chat> Chats {
             get {
                 return _chats;
@@ -25,6 +24,7 @@ namespace P12_NossoChat.ViewModel
         }
 
         private Chat _selectedchat;
+
         public Chat SelectedChat {
             get {
                 return _selectedchat;
@@ -35,20 +35,22 @@ namespace P12_NossoChat.ViewModel
                 this.ToMessagemPage(_selectedchat);
             }
         }
+
         private bool _carregando;
+
         public bool Carregando {
             get {
                 return _carregando;
             }
             set {
                 _carregando = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("Carregando"));
+                OnPropertyChanged("Carregando");
             }
         }
 
         private void ToMessagemPage(Chat c)
         {
-            if(App.Current.MainPage is NavigationPage np && c != null) {
+            if (App.Current.MainPage is NavigationPage np && c != null) {
                 SelectedChat = null;
                 np.Navigation.PushAsync(new View.Mensagem(c));
             }
@@ -70,7 +72,7 @@ namespace P12_NossoChat.ViewModel
 
         private void Adicionar()
         {
-            if(App.Current.MainPage is NavigationPage np) {
+            if (App.Current.MainPage is NavigationPage np) {
                 np.Navigation.PushAsync(new View.CadastrarChat());
             }
         }
@@ -82,7 +84,7 @@ namespace P12_NossoChat.ViewModel
 
         private void Atualizar()
         {
-            Task.Run(async() => {
+            Task.Run(async () => {
                 this.Carregando = true;
                 this.Chats = await WebService.GetChats();
                 this.Carregando = false;

@@ -4,22 +4,22 @@
              x:Class="P12_NossoChat.View.PaginaInicial"
              BackgroundColor="{Binding MainColor}">
     <ContentPage.Content>
-        <AbsoluteLayout >
+        <AbsoluteLayout>
             <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
-                <Label Text="NossoChat" TextColor="{Binding SecondaryColor}"/>
-                <StackLayout 
+                <Label Text="NossoChat" TextColor="{Binding SecondaryColor}" />
+                <StackLayout
                 VerticalOptions="CenterAndExpand"
                 HorizontalOptions="CenterAndExpand">
-                    <Entry Text="{Binding Nome}" BackgroundColor="{Binding SecondaryColor}" TextColor="{Binding MainColor}"/>
-                    <Entry Text="{Binding Senha}" IsPassword="True" BackgroundColor="{Binding SecondaryColor}" TextColor="{Binding MainColor}"/>
-                    <Button BackgroundColor="Transparent" TextColor="{Binding SecondaryColor}" Text="Entrar/Cadastrar" Command="{Binding EntrarCommand}"/>
-                    <Label Text="{Binding Alerta}" TextColor="{Binding SecondaryColor}"/>
+                    <Entry Text="{Binding Nome}" BackgroundColor="{Binding SecondaryColor}" TextColor="{Binding MainColor}" />
+                    <Entry Text="{Binding Senha}" IsPassword="True" BackgroundColor="{Binding SecondaryColor}" TextColor="{Binding MainColor}" />
+                    <Button BackgroundColor="Transparent" TextColor="{Binding SecondaryColor}" Text="Entrar/Cadastrar" Command="{Binding EntrarCommand}" />
+                    <Label Text="{Binding Alerta}" TextColor="{Binding SecondaryColor}" />
                 </StackLayout>
             </StackLayout>
             <StackLayout x:Name="LoadingStack" IsVisible="{Binding Carregando}" BackgroundColor="{Binding MainColor}" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
                 <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-                    <ActivityIndicator IsRunning="{Binding Carregando}" Color="{Binding SecondaryColor}"/>
-                    <Label Text="Logando..." TextColor="{Binding SecondaryColor}"/>
+                    <ActivityIndicator IsRunning="{Binding Carregando}" Color="{Binding SecondaryColor}" />
+                    <Label Text="Logando..." TextColor="{Binding SecondaryColor}" />
                 </StackLayout>
             </StackLayout>
         </AbsoluteLayout>

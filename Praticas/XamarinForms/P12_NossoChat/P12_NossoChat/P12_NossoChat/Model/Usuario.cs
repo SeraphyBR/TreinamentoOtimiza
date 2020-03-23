@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace P12_NossoChat.Model
+﻿namespace P12_NossoChat.Model
 {
     public class Usuario
     {

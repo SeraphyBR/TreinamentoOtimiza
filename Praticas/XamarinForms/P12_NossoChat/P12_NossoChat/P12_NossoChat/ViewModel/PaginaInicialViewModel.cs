@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.ComponentModel;
-using Xamarin.Forms;
-using P12_NossoChat.Model;
+﻿using P12_NossoChat.Model;
 using P12_NossoChat.Service;
 using P12_NossoChat.Utils;
-using Newtonsoft.Json;
+using System;
+using System.ComponentModel;
+using Xamarin.Forms;
 
 namespace P12_NossoChat.ViewModel
 {
     public class PaginaInicialViewModel : Colors, INotifyPropertyChanged
     {
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string _nome;
@@ -26,16 +22,17 @@ namespace P12_NossoChat.ViewModel
             }
             set {
                 _nome = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("Nome"));
+                OnPropertyChanged("Nome");
             }
         }
+
         public string Senha {
             get {
                 return _senha;
             }
             set {
                 _senha = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("Senha"));
+                OnPropertyChanged("Senha");
             }
         }
 
@@ -45,21 +42,27 @@ namespace P12_NossoChat.ViewModel
             }
             set {
                 _alerta = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("Alerta"));
+                OnPropertyChanged("Alerta");
             }
         }
+
         public bool Carregando {
             get {
                 return _carregando;
             }
             set {
                 _carregando = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("Carregando"));
+                OnPropertyChanged("Carregando");
             }
         }
 
+        private void OnPropertyChanged(string PropertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+        }
+
         public Command EntrarCommand { get; set; }
-        
+
         public PaginaInicialViewModel()
         {
             EntrarCommand = new Command(EntrarAction);
@@ -67,19 +70,27 @@ namespace P12_NossoChat.ViewModel
 
         private async void EntrarAction()
         {
-            var user = new Usuario() {
-                nome = Nome,
-                password = Senha
-            };
-            this.Carregando = true;
-            var userLogged = await WebService.GetUsuario(user);
-            this.Carregando = false;
-            if(userLogged is null) {
-                Alerta = "Senha incorreta.";
+            try {
+                var user = new Usuario() {
+                    nome = Nome,
+                    password = Senha
+                };
+                this.Carregando = true;
+                var userLogged = await WebService.GetUsuario(user);
+                this.Carregando = false;
+                if (userLogged is null) {
+                    Alerta = "Senha incorreta.";
+                }
+                else {
+                    UserUtils.UserLogged = userLogged;
+                    App.Current.MainPage = new NavigationPage(new View.Chats()) { BarBackgroundColor = MainColor, BarTextColor = SecondaryColor };
+                }
             }
-            else {
-                UserUtils.UserLogged = userLogged;
-                App.Current.MainPage = new NavigationPage(new View.Chats()) { BarBackgroundColor = MainColor, BarTextColor = SecondaryColor};
+            catch (Exception e) {
+                this.Alerta = "Ocorreu um problema no processamento! Tente novamente";
+            }
+            finally {
+                this.Carregando = false;
             }
         }
     }
