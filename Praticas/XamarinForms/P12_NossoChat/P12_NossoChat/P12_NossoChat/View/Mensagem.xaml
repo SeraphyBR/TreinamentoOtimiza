@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:utils="clr-namespace:P12_NossoChat.Utils"
+             x:Class="P12_NossoChat.View.Mensagem">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="othersMsgTemplate">
+                <ViewCell>
+                    <Frame BorderColor="{Binding MainColor}" Padding="10" Margin="10" CornerRadius="0" HorizontalOptions="Start">
+                        <StackLayout>
+                            <Label Text="{Binding usuario.nome}" FontSize="10" TextColor="{Binding MainColor}" />
+                            <Label Text="{Binding mensagem}" TextColor="{Binding MainColor}" />
+                        </StackLayout>
+                    </Frame>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="userMsgTemplate">
+                <ViewCell>
+                    <StackLayout Padding="10" BackgroundColor="{Binding MainColor}" Margin="10" HorizontalOptions="End">
+                        <Label Text="{Binding mensagem}" TextColor="{Binding SecondaryColor}" />
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+            <utils:MensagemDataTemplateSelector x:Key="MensagemDataTemplateSelector"
+                UserMsgTemplate="{StaticResource userMsgTemplate}"
+                OthersMsgTemplate="{StaticResource othersMsgTemplate}" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Atualizar mensagens" Icon="refresh.png" Command="{Binding AtualizarCommand}" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <AbsoluteLayout>
+            <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
+                <ListView ItemsSource="{Binding Mensagens}"
+                      HasUnevenRows="True"
+                      VerticalOptions="FillAndExpand"
+                      ItemTemplate="{StaticResource MensagemDataTemplateSelector}">
+                </ListView>
+
+                <StackLayout Orientation="Horizontal" VerticalOptions="End">
+                    <Entry Placeholder="Digite uma mensagem"
+                           Text="{Binding UserMsg}"
+                           BackgroundColor="{Binding SecondaryColor}"
+                           TextColor="{Binding MainColor}"
+                           HorizontalOptions="FillAndExpand" />
+                    <Button Text="Enviar"
+                        BackgroundColor="{Binding MainColor}"
+                        Command="{Binding BtnSendCommand}"
+                        TextColor="{Binding SecondaryColor}" />
+                </StackLayout>
+            </StackLayout>
+            <StackLayout x:Name="LoadingStack" IsVisible="{Binding Carregando}" BackgroundColor="{Binding MainColor}" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <ActivityIndicator IsRunning="{Binding Carregando}" Color="{Binding SecondaryColor}" />
+                    <Label Text="Carregando mensagens..." TextColor="{Binding SecondaryColor}" />
+                </StackLayout>
+            </StackLayout>
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width-device-width, initial-scale=1.0, shrink-to-fit=no"
+        />
+        <title>Formularios</title>
+        <link rel="stylesheet" href="css/bootstrap.min.css" />
+    </head>
+    <body>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <form>
+                        <div class="form-group">
+                          <label for="InputEmail1">Email</label>
+                          <input type="email" name="InputEmail1" id="InputEmail1" class="form-control" placeholder="Insira o seu email" aria-describedby="emailHelp" >
+                          <small id="emailHelp" class="form-text text-muted">Ex: seuemail@dominio.com.br</small>
+                        </div>
+                        <div class="form-group">
+                          <label for="InputSenha1">Senha</label>
+                          <input readonly type="password" name="InputSenha1" id="InputSenha1" class="form-control" placeholder="Insira a sua senha" >
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input">
+                                Manter Conectado
+                            </label>
+                        </div>
+                        <button class="btn btn-primary" type="submit">
+                            Entrar
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <input type="text" class="form-control form-control-lg">
+                    <input type="text" class="form-control">
+                    <input type="text" class="form-control form-control-sm">
+                </div>
+            </div>
+        </div>
+
+        <script src="js/jquery-3.4.1.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+    </body>
+</html>

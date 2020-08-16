@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="P12_NossoChat.View.CadastrarChat"
+             BackgroundColor="{Binding MainColor}">
+    <ContentPage.Content>
+        <AbsoluteLayout>
+            <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
+                <Entry
+                Text="{Binding nomeChat}"
+                Placeholder="Nome do chat" 
+                PlaceholderColor="{Binding MainColor}"
+                BackgroundColor="{Binding SecondaryColor}" 
+                TextColor="{Binding MainColor}"/>
+                <Button BackgroundColor="Transparent" 
+                    Text="Cadastrar" 
+                    TextColor="{Binding SecondaryColor}"
+                    Command="{Binding CadastrarCommand}"
+                    />
+                <Label Text="{Binding Alerta}" TextColor="{Binding SecondaryColor}"/>
+            </StackLayout>
+            <StackLayout x:Name="LoadingStack" IsVisible="{Binding Carregando}" BackgroundColor="{Binding MainColor}" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <ActivityIndicator IsRunning="{Binding Carregando}" Color="{Binding SecondaryColor}"/>
+                    <Label Text="Cadastrando chat..." TextColor="{Binding SecondaryColor}"/>
+                </StackLayout>
+            </StackLayout>
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>

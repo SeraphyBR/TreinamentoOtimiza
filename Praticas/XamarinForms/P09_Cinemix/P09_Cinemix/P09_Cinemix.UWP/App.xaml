@@ -1,0 +1,7 @@
+﻿<Application
+    x:Class="P09_Cinemix.UWP.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:P09_Cinemix.UWP"
+    RequestedTheme="Light">
+</Application>

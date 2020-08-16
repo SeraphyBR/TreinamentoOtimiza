@@ -1,5 +1,6 @@
 # Nota das aulas do curso De Xamarin Forms - Otimiza
 
+-   Recomendo ver as [anotações de Matheussop](https://github.com/Matheussop/TreinamentoOtimiza/tree/master/Anotações/Xamarin)
 -   Curso da Udemy de referencia: https://www.udemy.com/course/xamarin-forms-2018-apps-para-android-ios-e-uwp-8-apps
 -   Documentação Oficial: https://docs.microsoft.com/pt-br/xamarin/
 

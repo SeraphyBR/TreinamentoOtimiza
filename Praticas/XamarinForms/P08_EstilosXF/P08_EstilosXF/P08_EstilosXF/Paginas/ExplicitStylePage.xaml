@@ -2,11 +2,22 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="P08_EstilosXF.Paginas.ExplicitStylePage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="BackgroundColor" Value="Green" />
+            </Style>
+            <Style x:Key="LabelStyle2" TargetType="Label">
+                <Setter Property="BackgroundColor" Value="YellowGreen" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Label Text="Welcome to Xamarin.Forms! 1" />
+            <Label Text="Welcome to Xamarin.Forms! 2" />
+            <Label Text="Welcome to Xamarin.Forms! 3" Style="{StaticResource LabelStyle2}" />
+            <Label Text="Welcome to Xamarin.Forms! 4" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

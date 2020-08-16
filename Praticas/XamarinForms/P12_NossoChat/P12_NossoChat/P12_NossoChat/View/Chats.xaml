@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="P12_NossoChat.View.Chats"
+             Title="NossoChat">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Icon="add.png" Text="Adicionar Chat" Command="{Binding AddChatCommand}"/>
+        <ToolbarItem Icon="sort.png" Text="Ordenar Alfabeticamente" Command="{Binding OrdernarChatsCommand}"/>
+        <ToolbarItem Icon="refresh.png" Text="Atualizar lista de Chats" Command="{Binding AtualizarChatsCommand}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <AbsoluteLayout>
+            <ListView AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" ItemsSource="{Binding Chats}" SelectedItem="{Binding SelectedChat, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="10">
+                                <Label Text="{Binding nome}" TextColor="{Binding MainColor}"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackLayout x:Name="LoadingStack" IsVisible="{Binding Carregando}" BackgroundColor="{Binding MainColor}" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <ActivityIndicator IsRunning="{Binding Carregando}" Color="{Binding SecondaryColor}"/>
+                    <Label Text="Carregando chats..." TextColor="{Binding SecondaryColor}"/>
+                </StackLayout>
+            </StackLayout>
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>

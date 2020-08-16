@@ -5,10 +5,10 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style TargetType="Label">
-                <Setter Property="BackgroundColor" Value="Green"/>
-                <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
-                <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
-            </Style> 
+                <Setter Property="BackgroundColor" Value="Green" />
+                <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -21,8 +21,8 @@
                 <StackLayout.Resources>
                     <ResourceDictionary>
                         <Style TargetType="Label">
-                            <Setter Property="BackgroundColor" Value="YellowGreen"/>
-                            <Setter Property="HorizontalOptions" Value="StartAndExpand"/>
+                            <Setter Property="BackgroundColor" Value="YellowGreen" />
+                            <Setter Property="HorizontalOptions" Value="StartAndExpand" />
                         </Style>
                     </ResourceDictionary>
                 </StackLayout.Resources>
